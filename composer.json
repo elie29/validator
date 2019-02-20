@@ -1,6 +1,6 @@
 {
    "name": "elie29/validator",
-   "description": "Validator package that validates a context by running all given rules",
+   "description": "A library for validating a context (POST, GET etc...) by running given rules.",
    "type": "library",
    "license": "MIT",
    "minimum-stability": "stable",
