@@ -32,7 +32,7 @@ composer require elie29/validator
 ## Getting Started ##
 `Validator` requires one or several rules ([constraints](#available-rules)) in order to validate a given context.
 
-A basic example with $_GET
+A basic example with $_POST
 ```php
 <?php
 
@@ -59,17 +59,18 @@ $validator->validate(); // bool depends on $_POST content
 ```
 ### Available rules ###
 
+1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accepts required and trim options. required is false by default, trim is true by default.
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
-1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php)
-1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php)
+1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts sign and expected options. sign is [equal](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php) by default, expectd is null by default.
+1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts format and separator options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
-1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php)
+1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts flag option.
 1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php)
-1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php)
-1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php)
-1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php)
-1. [StringRule](https://github.com/elie29/validator/blob/master/src/Rule/StringRule.php)
+1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php) requies pattern option.
+1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts min and max options.
+1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php) accepts range option.
+1. [StringRule](https://github.com/elie29/validator/blob/master/src/Rule/StringRule.php) accepts min and max options.
 1. [TimeRule](https://github.com/elie29/validator/blob/master/src/Rule/TimeRule.php)
 1. [Your own rule](#how-to-add-a-new-rule)
 
