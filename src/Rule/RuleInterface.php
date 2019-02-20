@@ -29,6 +29,20 @@ interface RuleInterface
     /**#@-*/
 
     /**
+     * Supported signs
+     */
+    public const SIGNS = [
+        self::EQ   => 'equal to',
+        self::SEQ  => 'same as',
+        self::NEQ  => 'not equal to',
+        self::NSEQ => 'not same as',
+        self::LTE  => 'less or equal to',
+        self::GTE  => 'greater or equal to',
+        self::LT   => 'less than',
+        self::GT   => 'greater than',
+    ];
+
+    /**
      * Verify that value is valid.
      *
      * @param string $key Context key.

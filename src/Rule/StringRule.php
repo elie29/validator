@@ -36,6 +36,7 @@ class StringRule extends AbstractRule
         if (isset($params['min'])) {
             $this->min = (int) $params['min'];
         }
+
         if (isset($params['max'])) {
             $this->max = (int) $params['max'];
         }
