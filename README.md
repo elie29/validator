@@ -61,6 +61,7 @@ $validator->validate(); // bool depends on $_POST content
 
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
+1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php)
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php)
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php)
