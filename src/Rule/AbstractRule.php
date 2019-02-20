@@ -60,7 +60,7 @@ abstract class AbstractRule implements RuleInterface
         return $this->key;
     }
 
-    public function getValue(): string
+    public function getValue()
     {
         return $this->value;
     }

@@ -92,6 +92,8 @@ interface ValidatorInterface
 
     /**
      * Change stopOnError value.
+     *
+     * @return ValidatorInterface
      */
     public function setStopOnError(bool $stopOnError);
 
@@ -103,5 +105,5 @@ interface ValidatorInterface
      *
      * @return bool
      */
-    public function valdiate(): bool;
+    public function validate(): bool;
 }

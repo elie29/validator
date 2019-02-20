@@ -70,7 +70,7 @@ interface RuleInterface
      * Retrieve the value. Value will be trimmed
      * if trim is set to true.
      *
-     * @return string
+     * @return mixed
      */
-    public function getValue(): string;
+    public function getValue();
 }
