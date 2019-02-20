@@ -32,7 +32,7 @@ class ValidatorTest extends TestCase
         assertThat($value, nullValue());
 
         $rules = $validator->getRules();
-        assertThat($rules[0], anInstanceOf(StringRule::class));
+        assertThat($rules[0], anArray($rule));
 
         assertThat($validator->shouldStopOnError(), is(false));
     }

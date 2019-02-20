@@ -59,14 +59,7 @@ class Validator implements ValidatorInterface
 
     public function setRules(array $rules):self
     {
-        $this->rules = [];
-        foreach ($rules as $rule) {
-            // The first element must be the key context
-            $key = $rule[0];
-            // The second element must be the class valdiator name
-            $class = $rule[1];
-            $this->rules[] = new $class($key, $this->get($key), $rule);
-        }
+        $this->rules = $rules;
         // Keep chaining
         return $this;
     }
@@ -106,8 +99,9 @@ class Validator implements ValidatorInterface
         $res = true;
         $this->errors = [];
 
-        foreach ($this->rules as $rule) {
-            /* @var $rule RuleInterface */
+        foreach ($this->rules as $ruleValue) {
+            $rule = $this->resolve($ruleValue);
+
             if ($rule->validate() !== RuleInterface::ERROR) {
                 $this->validatedContext[$rule->getKey()] = $rule->getValue();
                 continue;
@@ -122,5 +116,15 @@ class Validator implements ValidatorInterface
         }
 
         return $res;
+    }
+
+    protected function resolve(array $rule): RuleInterface
+    {
+        // The first element must be the key context
+        $key = $rule[0];
+        // The second element must be the class valdiator name
+        $class = $rule[1];
+
+        return new $class($key, $this->get($key), $rule);
     }
 }
