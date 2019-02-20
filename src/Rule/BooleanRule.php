@@ -26,9 +26,6 @@ class BooleanRule extends AbstractRule
         return RuleInterface::VALID;
     }
 
-    /**
-     * @return boolean
-     */
     protected function isBool(): bool
     {
         $val = $this->value;
