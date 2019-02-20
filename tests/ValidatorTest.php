@@ -37,6 +37,24 @@ class ValidatorTest extends TestCase
         assertThat($validator->shouldStopOnError(), is(false));
     }
 
+    public function testValidatorStopOnError(): void
+    {
+        $validator = new Validator(['name' => 'Ben '], true);
+
+        $validator->setRules([
+            ['name', StringRule::class, 'min' => 4, 'max' => 12]
+        ]);
+
+        $res = $validator->validate();
+        assertThat($res, is(false));
+
+        // value should not exist on error
+        $validatedContext = $validator->getValidatedContext();
+        assertThat($validatedContext, emptyArray());
+
+        assertThat($validator->shouldStopOnError(), is(true));
+    }
+
     /**
      * @dataProvider getValidatorProvider
      */

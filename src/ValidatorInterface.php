@@ -75,7 +75,7 @@ interface ValidatorInterface
     public function getErrors(): array;
 
     /**
-     * Retrieves the value of a requested key in the context.
+     * Retrieves the value of a requested key from the {@link context}.
      *
      * @param string $key Key to be get.
      *
