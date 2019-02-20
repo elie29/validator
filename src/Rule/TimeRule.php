@@ -57,6 +57,6 @@ class TimeRule extends AbstractRule
               . str_pad($second, 2, '0', STR_PAD_RIGHT);
 
         // we test hh:mm:ss from 00:00:00 => 23:59:59
-        return !! preg_match(self::TIME_REGEX, $time);
+        return (bool) preg_match(self::TIME_REGEX, $time);
     }
 }
