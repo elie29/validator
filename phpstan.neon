@@ -2,6 +2,8 @@
 
 parameters:
     level: max
+    ignoreErrors:
+        - '#^Call to an undefined method Mockery\\Mock.*#'
 
 includes:
     - vendor/phpstan/phpstan-mockery/extension.neon
