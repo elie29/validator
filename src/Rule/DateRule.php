@@ -48,6 +48,7 @@ class DateRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'format'=>{string|array:optional:dd/mm/yyyy by default},
      *   'separator'=>{string:optional:(,-./) by default}
      * ]
@@ -99,35 +100,45 @@ class DateRule extends AbstractRule
         }
 
         // We try to check value over all format
+        $codeError = null;
         foreach ($this->getFormat() as $format) {
-            if (static::checkDate($this->separator, $format, $this->value)) {
+            $codeError = static::checkDate($this->separator, $format, $this->value);
+            if (null === $codeError) {
                 // The first valid format
                 return RuleInterface::VALID;
             }
         }
 
-        $this->error = "{$this->key}: {$this->value} is not valid. Check your date, format and separator";
-        return RuleInterface::ERROR;
+        return $this->setAndReturnError($codeError, [
+            '%format%' => $this->canonize($this->format),
+            '%separator%' => $this->separator
+        ]);
     }
 
     /**
-     * Verify if a value fits a provided format.
+     * Validate a Gregorian date according to sparator and format options.
+     * <code>
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyyy', '27/02/2017'); // returns null<br/>
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyyy', '29/02/2017'); // returns INVALID_DATE<br/>
+     * </code>
+     *
+     * @return string|NULL Null if date is valid otherwise INVALID_DATE|INVALID_DATE_FORMAT
      */
-    public static function checkDate(string $separator, string $format, string $date): bool
+    public static function checkDate(string $separator, string $format, string $date): ?string
     {
         $separator = '#' . $separator . '#';
 
         $tokens = preg_split($separator, $format);
 
         if ($tokens === false || static::invalidTokens($tokens)) {
-            return false;
+            return RuleInterface::INVALID_DATE_FORMAT;
         }
 
         $dates = preg_split($separator, $date);
 
         // We must have 3 tokens for a date
         if ($dates === false || count($dates) !== 3) {
-            return false;
+            return RuleInterface::INVALID_DATE;
         }
 
         return static::checkDatesWithTokens($tokens, $dates);
@@ -148,7 +159,7 @@ class DateRule extends AbstractRule
         return count($seen) !== 3;
     }
 
-    protected static function checkDatesWithTokens(array $tokens, array $dates): bool
+    protected static function checkDatesWithTokens(array $tokens, array $dates): ?string
     {
         $d = $m = $y = 0;
 
@@ -171,16 +182,11 @@ class DateRule extends AbstractRule
                     $y = (int) $dates[$t];
                     break;
                 default:
-                    // No valid token
-                    return false;
+                    // No valid format
+                    return RuleInterface::INVALID_DATE_FORMAT;
             }
         }
 
-        // If one of the numbers are not valid
-        if ($d < 1 || $d > 31 || $m < 1 || $m > 12 || $y < 1) {
-            return false;
-        }
-
-        return checkdate($m, $d, $y);
+        return checkdate($m, $d, $y) ? null : RuleInterface::INVALID_DATE;
     }
 }

@@ -19,8 +19,7 @@ class JsonRule extends AbstractRule
         }
 
         if (! $this->isValid()) {
-            $this->error = "{$this->key}: {$this->value} is not a valid json format";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_JSON);
         }
 
         return RuleInterface::VALID;

@@ -20,6 +20,7 @@ class IpRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'flag' => {int:optional:FILTER_FLAG_IPV4 by default}
      * ]
      */
@@ -53,8 +54,9 @@ class IpRule extends AbstractRule
 
         // accepted flag only
         if (($all & $this->flag) !== $this->flag || $this->flag === (FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6)) {
-            $this->error = "Filter flag <{$this->flag}> is not valid";
-            return false;
+            return (bool) $this->setAndReturnError(self::INVALID_IP_FLAG, [
+                '%flag%' => $this->flag
+            ]);
         }
 
         return true;
@@ -63,8 +65,7 @@ class IpRule extends AbstractRule
     protected function isValidIp(): bool
     {
         if (filter_var($this->value, FILTER_VALIDATE_IP, $this->flag) === false) {
-            $this->error = "{$this->key}: {$this->value} is not a valid IP";
-            return false;
+            return (bool) $this->setAndReturnError(self::INVALID_IP);
         }
 
         return true;

@@ -42,11 +42,11 @@ class NumericRuleTest extends TestCase
         ];
 
         yield 'Given value is greated than 29' => [
-            '30', ['min' => 24, 'max' => 29], RuleInterface::ERROR, 'age: 30 is greater 29'
+            '30', ['min' => 24, 'max' => 29], RuleInterface::ERROR, 'age: 30 is greater than 29'
         ];
 
         yield 'Given value could not be empty' => [
-            '', ['required' => true], RuleInterface::ERROR, 'age is required and should not be empty'
+            '', ['required' => true], RuleInterface::ERROR, 'age is required and should not be empty: '
         ];
     }
 }

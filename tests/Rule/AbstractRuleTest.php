@@ -55,24 +55,31 @@ class AbstractRuleTest extends TestCase
             '  ', ['trim' => true, 'required' => false], '', RuleInterface::VALID
         ];
 
-        yield 'Required valued could be one character space' => [
+        yield 'Required value could be one character space' => [
             ' ', ['trim' => false, 'required' => true], '', RuleInterface::CHECK
         ];
 
-        yield 'Required valued could be false' => [
+        yield 'Required value could be false' => [
             false, ['required' => true], '', RuleInterface::CHECK
         ];
 
-        yield 'Required value should not be empty string' => [
-            '', ['required' => true], 'key is required and should not be empty', RuleInterface::ERROR
+        yield 'Required value should not be an empty string' => [
+            '', ['required' => true], 'key is required and should not be empty: ', RuleInterface::ERROR
         ];
 
         yield 'Required value should not be null' => [
-            null, ['required' => true], 'key is required and should not be empty', RuleInterface::ERROR
+            null, ['required' => true], 'key is required and should not be empty: ', RuleInterface::ERROR
         ];
 
-        yield 'Required value should not be empty array' => [
-            [], ['required' => true], 'key is required and should not be empty', RuleInterface::ERROR
+        yield 'Required value should not be an empty array' => [
+            [], ['required' => true], 'key is required and should not be empty: array ()', RuleInterface::ERROR
+        ];
+
+        yield 'Required value should not be an empty array, with specific message' => [
+            [], ['required' => true, 'messages' => [
+                RuleInterface::EMPTY_KEY => '%key% is required. `%value%` is empty!'
+            ]],
+            'key is required. `array ()` is empty!', RuleInterface::ERROR
         ];
     }
 }

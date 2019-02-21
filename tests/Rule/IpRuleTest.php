@@ -78,7 +78,7 @@ class IpRuleTest extends TestCase
         ];
 
         yield 'Given 255.255.255.255 should not be valid' => [
-            '255.255.255.255', ['flag' => 5], RuleInterface::ERROR, 'Filter flag <5> is not valid'
+            '255.255.255.255', ['flag' => 5], RuleInterface::ERROR, 'Filter IP flag: 5 is not valid'
         ];
     }
 }

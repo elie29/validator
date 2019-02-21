@@ -54,35 +54,35 @@ class BicRuleTest extends TestCase
         ];
 
         yield 'Given value ASPKAT2LXX should not be valid' => [
-            'ASPKAT2LXX', RuleInterface::ERROR, 'name: ASPKAT2LXX is not a valid BIC'
+            'ASPKAT2LXX', RuleInterface::ERROR, 'name: ASPKAT2LXX has an invalid length'
         ];
 
         yield 'Given value ASPKAT2LX should not be valid' => [
-            'ASPKAT2LX', RuleInterface::ERROR, 'name: ASPKAT2LX is not a valid BIC'
+            'ASPKAT2LX', RuleInterface::ERROR, 'name: ASPKAT2LX has an invalid length'
         ];
 
         yield 'Given value ASPKAT2LXXX1 should not be valid' => [
-            'ASPKAT2LXXX1', RuleInterface::ERROR, 'name: ASPKAT2LXXX1 is not a valid BIC'
+            'ASPKAT2LXXX1', RuleInterface::ERROR, 'name: ASPKAT2LXXX1 has an invalid length'
         ];
 
         yield 'Given value DABADKK should not be valid' => [
-            'DABADKK', RuleInterface::ERROR, 'name: DABADKK is not a valid BIC'
+            'DABADKK', RuleInterface::ERROR, 'name: DABADKK has an invalid length'
         ];
 
         yield 'Given value RZ00AT2L303 should not be valid' => [
-            'RZ00AT2L303', RuleInterface::ERROR, 'name: RZ00AT2L303 is not a valid BIC'
+            'RZ00AT2L303', RuleInterface::ERROR, 'name: RZ00AT2L303 has an invalid bank code'
         ];
 
         yield 'Given value 1SBACNBXSHA should not be valid' => [
-            '1SBACNBXSHA', RuleInterface::ERROR, 'name: 1SBACNBXSHA is not a valid BIC'
+            '1SBACNBXSHA', RuleInterface::ERROR, 'name: 1SBACNBXSHA has an invalid bank code'
         ];
 
         yield 'Given value DSBA5NBXSHA should not be valid' => [
-            'DSBA5NBXSHA', RuleInterface::ERROR, 'name: DSBA5NBXSHA is not a valid BIC'
+            'DSBA5NBXSHA', RuleInterface::ERROR, 'name: DSBA5NBXSHA has an invalid country code'
         ];
 
         yield 'Given value Dsba5nbxshA should not be valid' => [
-            'Dsba5nbxshA', RuleInterface::ERROR, 'name: Dsba5nbxshA is not a valid BIC'
+            'Dsba5nbxshA', RuleInterface::ERROR, 'name: Dsba5nbxshA should be uppercase'
         ];
     }
 }

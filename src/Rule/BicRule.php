@@ -20,43 +20,51 @@ class BicRule extends AbstractRule
 
         $this->value = str_replace([' ', '-'], '', $this->value);
 
-        if (! $this->isValid()) {
-            $this->error = "{$this->key}: {$this->value} is not a valid BIC";
-            return RuleInterface::ERROR;
+        return $this->setErrorCode();
+    }
+
+    protected function setErrorCode(): int
+    {
+        $methodsValidation = [
+            'invalidLimit',
+            'invalidUppercase',
+            'invalidAlphaNumeric',
+            'invalidBankCode',
+            'invalidCountryCode'
+        ];
+
+        foreach ($methodsValidation as $method) {
+            $codeError = $this->$method();
+            if ($codeError !== null) {
+                return $this->setAndReturnError($codeError);
+            }
         }
 
         return RuleInterface::VALID;
     }
 
-    protected function isValid(): bool
+    protected function invalidLimit(): ?string
     {
-        return $this->shouldBeLimited() && $this->shouldBeUppercase() &&
-            $this->shouldBeAlphaNumeric() && $this->shouldHaveBankCode() &&
-            $this->shouldHaveCountryCode();
+        return in_array(strlen($this->value), [8, 11]) ? null : RuleInterface::INVALID_BIC_LIMIT;
     }
 
-    protected function shouldBeLimited(): bool
+    protected function invalidUppercase(): ?string
     {
-        return in_array(strlen($this->value), [8, 11]);
+        return strtoupper($this->value) === $this->value ? null : RuleInterface::INVALID_BIC_UPPER;
     }
 
-    protected function shouldBeUppercase(): bool
+    protected function invalidAlphaNumeric(): ?string
     {
-        return strtoupper($this->value) === $this->value;
+        return ctype_alnum($this->value) ? null : RuleInterface::INVALID_BIC_ALNUM;
     }
 
-    protected function shouldBeAlphaNumeric(): bool
+    protected function invalidBankCode(): ?string
     {
-        return ctype_alnum($this->value);
+        return ctype_alpha(substr($this->value, 0, 4)) ? null : RuleInterface::INVALID_BIC_BC;
     }
 
-    protected function shouldHaveBankCode(): bool
+    protected function invalidCountryCode(): ?string
     {
-        return ctype_alpha(substr($this->value, 0, 4));
-    }
-
-    protected function shouldHaveCountryCode(): bool
-    {
-        return ctype_alpha(substr($this->value, 4, 2));
+        return ctype_alpha(substr($this->value, 4, 2)) ? null : RuleInterface::INVALID_BIC_CC;
     }
 }

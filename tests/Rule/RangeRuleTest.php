@@ -34,11 +34,13 @@ class RangeRuleTest extends TestCase
         ];
 
         yield 'Given value foot should not be valid' => [
-            'foot', ['range' => ['foo', 'bar']], RuleInterface::ERROR, 'value: foot is out of range'
+            'foot', ['range' => ['foo', 'bar']], RuleInterface::ERROR,
+            'value: foot is out of range array (  0 => \'foo\',  1 => \'bar\',)'
         ];
 
         yield 'Given value false should not be valid' => [
-            '0', ['range' => [0, 'false']], RuleInterface::ERROR, 'value: 0 is out of range'
+            '0', ['range' => [0, 'false']], RuleInterface::ERROR,
+            'value: 0 is out of range array (  0 => 0,  1 => \'false\',)'
         ];
     }
 }

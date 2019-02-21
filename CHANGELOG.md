@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#2](https://github.com/elie29/validator/issues/2) Add customizable messages on error.
 
 ### Changed
 

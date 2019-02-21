@@ -37,8 +37,16 @@ class CompareRuleTest extends TestCase
             '5', ['sign' => RuleInterface::SEQ, 'expected' => '5'], RuleInterface::VALID, ''
         ];
 
+        yield 'Given value should be same as [5, 4, false]' => [
+            [5, 4, false], ['sign' => RuleInterface::SEQ, 'expected' => [5, 4, false]], RuleInterface::VALID, ''
+        ];
+
         yield 'Given value should not be equal to 5' => [
             '15', ['sign' => RuleInterface::NEQ, 'expected' => 5], RuleInterface::VALID, ''
+        ];
+
+        yield 'Given value should not be same as [5, 4, 0]' => [
+            [5, 4, false], ['sign' => RuleInterface::NSEQ, 'expected' => [5, 4, 0]], RuleInterface::VALID, ''
         ];
 
         yield 'Given value should not be same as 5' => [

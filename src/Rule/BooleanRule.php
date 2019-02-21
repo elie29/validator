@@ -19,8 +19,7 @@ class BooleanRule extends AbstractRule
         }
 
         if (! $this->isBool()) {
-            $this->error = "{$this->key}: {$this->value} is not a valid boolean";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_BOOL);
         }
 
         return RuleInterface::VALID;

@@ -25,6 +25,7 @@ class StringRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:0 by default},
      *   'max' => {int:optional:value length by default}
      * ]
@@ -51,8 +52,7 @@ class StringRule extends AbstractRule
         }
 
         if (! is_string($this->value)) {
-            $this->error = "{$this->key} does not have a string value";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_STRING);
         }
 
         return $this->checkMinMax();
@@ -64,8 +64,10 @@ class StringRule extends AbstractRule
         $maxOrLen = $this->max ?: $len;
 
         if ($len < $this->min || $len > $maxOrLen) {
-            $this->error = "{$this->key}: The length of {$this->value} is not between {$this->min} and {$this->max}";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_STRING_LENGTH, [
+                '%min%' => $this->min,
+                '%max%' => $this->max,
+            ]);
         }
 
         return RuleInterface::VALID;

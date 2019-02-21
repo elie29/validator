@@ -22,6 +22,7 @@ class MatchRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'pattern' => {string:required}
      * ]
      */
@@ -41,8 +42,9 @@ class MatchRule extends AbstractRule
         }
 
         if (! preg_match($this->pattern, $this->value)) {
-            $this->error = "{$this->key}: {$this->value} does not match {$this->pattern}";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_PATTERN, [
+                '%pattern%' => $this->pattern
+            ]);
         }
 
         return RuleInterface::VALID;

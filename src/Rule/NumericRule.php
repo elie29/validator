@@ -25,8 +25,9 @@ class NumericRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
-     *   'min' => {int:optional:0 by default},
-     *   'max' => {int:optional:value length by default}
+     *   'messages' => {array:optional:key/value message patterns},
+     *   'min' => {int:optional:null by default},
+     *   'max' => {int:optional:null by default}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
@@ -50,8 +51,7 @@ class NumericRule extends AbstractRule
         }
 
         if (! is_numeric($this->value)) {
-            $this->error = "{$this->key}: {$this->value} is not numeric";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_NUMERIC);
         }
 
         return $this->checkMinMax();
@@ -60,13 +60,19 @@ class NumericRule extends AbstractRule
     protected function checkMinMax(): int
     {
         if (null !== $this->min && $this->value < $this->min) {
-            $this->error = "{$this->key}: {$this->value} is less than {$this->min}";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_NUMERIC_LT, [
+                // in case both are needed in the message pattern
+                '%min%' => $this->min,
+                '%max%' => $this->max
+            ]);
         }
 
         if (null !== $this->max && $this->value > $this->max) {
-            $this->error = "{$this->key}: {$this->value} is greater {$this->max}";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_NUMERIC_GT, [
+                // in case both are needed in the message pattern
+                '%min%' => $this->min,
+                '%max%' => $this->max
+            ]);
         }
 
         return RuleInterface::VALID;

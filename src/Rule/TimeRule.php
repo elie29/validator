@@ -23,8 +23,7 @@ class TimeRule extends AbstractRule
         }
 
         if (! static::checkTime($this->value)) {
-            $this->error = "{$this->key}: {$this->value} is not a valid time";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_TIME);
         }
 
         return RuleInterface::VALID;

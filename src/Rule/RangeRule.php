@@ -22,6 +22,7 @@ class RangeRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'range' => {array:optional:empty array by default}
      * ]
      */
@@ -43,8 +44,9 @@ class RangeRule extends AbstractRule
         }
 
         if (! in_array($this->value, $this->range, true)) {
-            $this->error = "{$this->key}: {$this->value} is out of range";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_RANGE, [
+                '%range%' => $this->canonize($this->range)
+            ]);
         }
 
         return RuleInterface::VALID;

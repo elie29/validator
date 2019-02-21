@@ -19,8 +19,7 @@ class EmailRule extends AbstractRule
         }
 
         if (! $this->isValid()) {
-            $this->error = "{$this->key}: {$this->value} is not a valid email";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_EMAIL);
         }
 
         return RuleInterface::VALID;

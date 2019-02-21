@@ -42,6 +42,34 @@ interface RuleInterface
         self::GT   => 'greater than',
     ];
 
+    /**#@+
+     * Supported error message code
+     */
+    public const UNDEFINDED_CODE = 'undefindedCode';
+    public const EMPTY_KEY = 'emptyKey';
+    public const INVALID_BIC_LIMIT = 'invalidBicLimit';
+    public const INVALID_BIC_UPPER = 'invalidBicUpper';
+    public const INVALID_BIC_ALNUM = 'invalidBicAlnum';
+    public const INVALID_BIC_BC = 'invalidBicBC';
+    public const INVALID_BIC_CC = 'invalidBicCC';
+    public const INVALID_BOOL = 'invalidBoolean';
+    public const INVALID_DATE = 'invalidDate';
+    public const INVALID_DATE_FORMAT = 'invalidDateFormat';
+    public const INVALID_COMPARE = 'invalidComprare';
+    public const INVALID_EMAIL = 'invalidEmail';
+    public const INVALID_IP = 'invalidIP';
+    public const INVALID_IP_FLAG = 'invalidIPFlag';
+    public const INVALID_JSON = 'invalidJsonFormat';
+    public const INVALID_PATTERN = 'invalidPattern';
+    public const INVALID_NUMERIC = 'invalidNumeric';
+    public const INVALID_NUMERIC_LT = 'invalidNumericLessThan';
+    public const INVALID_NUMERIC_GT = 'invalidNumericGreaterThan';
+    public const INVALID_RANGE = 'invalidRange';
+    public const INVALID_STRING = 'invalidString';
+    public const INVALID_STRING_LENGTH = 'invalidStringLength';
+    public const INVALID_TIME = 'invalidTime';
+    /**#@-*/
+
     /**
      * Verify that value is valid.
      *
@@ -52,7 +80,8 @@ interface RuleInterface
      * Params could have the following structure:
      * [
      *    'required' => {bool:optional:false by default},
-     *    'trim' => {bool:optional:true by default}
+     *    'trim' => {bool:optional:true by default},
+     *    'messages' => {array:optional:key/value message patterns}
      * ]
      */
     public function __construct(string $key, $value, array $params = []);

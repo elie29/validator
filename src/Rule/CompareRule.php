@@ -20,7 +20,7 @@ class CompareRule extends AbstractRule
     /**
      * Expected value.
      * Default sets to null.
-     * @var string
+     * @var mixed
      */
     protected $expected = null;
 
@@ -29,8 +29,9 @@ class CompareRule extends AbstractRule
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns},
      *   'sign' => {string:optional:EQ by default},
-     *   'expected' => {string:optional:null by default}
+     *   'expected' => {mixed:optional:null by default}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
@@ -56,9 +57,10 @@ class CompareRule extends AbstractRule
 
         $method = $this->sign;
         if (! $this->$method()) {
-            $label = self::SIGNS[$this->sign];
-            $this->error = "{$this->key}: {$this->value} is not {$label} {$this->expected}";
-            return RuleInterface::ERROR;
+            return $this->setAndReturnError(self::INVALID_COMPARE, [
+                '%label%' => self::SIGNS[$this->sign],
+                '%expected%' => $this->canonize($this->expected)
+            ]);
         }
 
         return RuleInterface::VALID;

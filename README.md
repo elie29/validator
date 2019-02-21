@@ -59,7 +59,8 @@ $validator->validate(); // bool depends on $_POST content
 ```
 ### Available rules ###
 
-1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required` and `trim` options. `required` is false by default while `trim` is true by default.
+1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
+ `required` is false by default while `trim` is true.
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
 1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [RuleInterface::EQ](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php#L21) by default, `expected` is null by default.
@@ -77,4 +78,45 @@ $validator->validate(); // bool depends on $_POST content
 ### How to add a new rule ###
 
 You need to implement [RuleInterface](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php) or to extend [AbstractRule](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php)
+
+```php
+<?php
+
+use Elie\Validator\Rule\AbstractRule;
+use Elie\Validator\Rule\RuleInterface;
+
+class XXXRule extends AbstractRule
+{
+
+    public const INVALID_XXX = 'invalidXXX';
+
+    public function __construct(string $key, $value, array $params = [])
+    {
+        parent::__construct($key, $value, $params);
+
+        // + in order to add unexistant key
+        $this->messages += [
+            self::INVALID_XXX => '%key%: %value% my message %new_key%'
+        ];
+    }
+
+    public function validate(): int
+    {
+        $run = parent::validate();
+
+        if ($run !== RuleInterface::CHECK) {
+            return $run;
+        }
+
+        if ($any_invalid_condition) {
+            return $this->setAndReturnError(self::INVALID_XXX, [
+                '%new_key%' => 'my_key'
+            ]);
+        }
+
+        return RuleInterface::VALID;
+    }
+}
+
+```
 
