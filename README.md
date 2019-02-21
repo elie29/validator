@@ -6,21 +6,6 @@
 ## Introduction
 A library for validating a context (POST, GET etc...) by running given rules.
 
-## Text file encoding
-- UTF-8
-
-## Code style formatter
-- Zend Framework coding standard
-
-## Composer commands
-   - `clean`: Clean all generated files
-   - `test`: Launch unit test
-   - `test-coverage`: Launch unit test with clover.xml file generation
-   - `cs-check`: code sniffer check
-   - `cs-fix`: code sniffer fix
-   - `phpstan`: Launch PHP Static Analysis Tool
-   - `check`: Launch `clean`, `cs-check`, `test` and `phpstan`
-
 ## Installation ##
 
 Run the command below to install via Composer:
@@ -149,3 +134,21 @@ Assert::true($validator->validate(), $validator->getImplodedErrors());
 
 Assertion::true($validator->validate(), $validator->getImplodedErrors());
 ```
+
+## Development Prerequisites
+
+### Text file encoding
+- UTF-8
+
+### Code style formatter
+- Zend Framework coding standard
+
+### Composer commands
+   - `clean`: Clean all generated files
+   - `test`: Launch unit test
+   - `test-coverage`: Launch unit test with clover.xml file generation
+   - `cs-check`: code sniffer check
+   - `cs-fix`: code sniffer fix
+   - `phpstan`: Launch PHP Static Analysis Tool
+   - `check`: Launch `clean`, `cs-check`, `test` and `phpstan`
+
