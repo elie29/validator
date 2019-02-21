@@ -41,19 +41,19 @@ use Elie\Validator\Rule\NumericRule;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 
-$validator = new Validator($_POST, true); // stop processing on error.
-
 /**
  * A key could have multiple rules
  *  - age could be empty (unexistant, null or '') otherwise NumericRule is applied
  *  - name could not be empty (required and minimum 1 character length)
  *  - email is required and should be a valid email
  */
-$validator->setRules([
+$rules =[
     ['age', NumericRule::class, 'max' => 60],
     ['name', StringRule::class, 'min' => 1, 'required' => true],
     ['email', EmailRule::class, 'required' => true],
-]);
+];
+
+$validator = new Validator($_POST, $rules, true); // stop processing on error.
 
 $validator->validate(); // bool depends on $_POST content
 ```

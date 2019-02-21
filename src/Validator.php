@@ -40,9 +40,10 @@ class Validator implements ValidatorInterface
      */
     protected $errors = [];
 
-    public function __construct(array $context, bool $stopOnError = false)
+    public function __construct(array $context, array $rules = [], bool $stopOnError = false)
     {
         $this->setContext($context);
+        $this->setRules($rules);
         $this->setStopOnError($stopOnError);
     }
 

@@ -39,7 +39,7 @@ class ValidatorTest extends TestCase
 
     public function testValidatorStopOnError(): void
     {
-        $validator = new Validator(['name' => 'Ben '], true);
+        $validator = new Validator(['name' => 'Ben '], [], true);
 
         $validator->setRules([
             ['name', StringRule::class, 'min' => 4, 'max' => 12]

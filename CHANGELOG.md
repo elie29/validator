@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#1](https://github.com/elie29/validator/issues/1) Add rules to Validator signature.
 
 ### Deprecated
 

@@ -16,10 +16,13 @@ interface ValidatorInterface
      * @param array $context Associative array of keys to be validated.
      *     Each key should correspond to rule's key to be validated.
      *
+     * @param array $rules List of rules {@see setRules} in order to
+     *     validate the context.
+     *
      * @param bool  $stopOnError Defaults to false, meaning
      *     all rules will be validated regardless errors found.
      */
-    public function __construct(array $context, bool $stopOnError = false);
+    public function __construct(array $context, array $rules = [], bool $stopOnError = false);
 
     /**
      * Add a new context to be validated.
