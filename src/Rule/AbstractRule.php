@@ -41,6 +41,8 @@ abstract class AbstractRule implements RuleInterface
     protected $messages = [
         self::UNDEFINDED_CODE => 'Code message %code% is undefined',
         self::EMPTY_KEY => '%key% is required and should not be empty: %value%',
+        self::INVALID_ARRAY => '%key% does not have an array value: %value%',
+        self::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
         self::INVALID_BIC_LIMIT => '%key%: %value% has an invalid length',
         self::INVALID_BIC_UPPER => '%key%: %value% should be uppercase',
         self::INVALID_BIC_ALNUM => '%key%: %value% should be alphanumeric',

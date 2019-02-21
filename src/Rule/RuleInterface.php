@@ -47,6 +47,8 @@ interface RuleInterface
      */
     public const UNDEFINDED_CODE = 'undefindedCode';
     public const EMPTY_KEY = 'emptyKey';
+    public const INVALID_ARRAY = 'invalidArray';
+    public const INVALID_ARRAY_LENGTH = 'invalidArrayLength';
     public const INVALID_BIC_LIMIT = 'invalidBicLimit';
     public const INVALID_BIC_UPPER = 'invalidBicUpper';
     public const INVALID_BIC_ALNUM = 'invalidBicAlnum';

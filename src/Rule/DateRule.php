@@ -100,7 +100,7 @@ class DateRule extends AbstractRule
         }
 
         // We try to check value over all format
-        $codeError = null;
+        $codeError = RuleInterface::INVALID_DATE;
         foreach ($this->getFormat() as $format) {
             $codeError = static::checkDate($this->separator, $format, $this->value);
             if (null === $codeError) {
