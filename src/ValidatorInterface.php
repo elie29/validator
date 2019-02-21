@@ -78,6 +78,13 @@ interface ValidatorInterface
     public function getErrors(): array;
 
     /**
+     * Return all errors found.
+     *
+     * @return string
+     */
+    public function getImplodedErrors(string $separator = '<br/>'): string;
+
+    /**
      * Retrieves the value of a requested key from the {@link context}.
      *
      * @param string $key Key to be get.

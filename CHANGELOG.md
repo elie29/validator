@@ -3,11 +3,11 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.0.3 - TBD
+## V1.0.3 - 2019-02-21
 
 ### Added
 
-- Nothing.
+- [#5](https://github.com/elie29/validator/issues/5) Add imploded errors.
 
 ### Changed
 

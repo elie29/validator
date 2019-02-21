@@ -118,6 +118,34 @@ class XXXRule extends AbstractRule
         return RuleInterface::VALID;
     }
 }
-
 ```
 
+## Assertion Integration
+
+Instead of using assertion key by key, you can validate the whole context and than use [Assertion](https://github.com/beberlei/assert) or [Assert](https://github.com/webmozart/assert) as follow:
+
+```php
+<?php
+
+use Assert\Assertion;
+use Elie\Validator\Rule\EmailRule;
+use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Rule\RuleConstInterface;
+use Elie\Validator\Rule\StringRule;
+use Elie\Validator\Validator;
+use Webmozart\Assert\Assert;
+
+$rules =[
+    ['age', NumericRule::class, RuleConstInterface::MAX => 60],
+    ['name', StringRule::class, RuleConstInterface::MIN => 1, RuleConstInterface::REQUIRED => true],
+    ['email', EmailRule::class, RuleConstInterface::REQUIRED => true],
+];
+
+$validator = new Validator($_POST, $rules);
+
+Assert::true($validator->validate(), $validator->getImplodedErrors());
+
+// OR
+
+Assertion::true($validator->validate(), $validator->getImplodedErrors());
+```

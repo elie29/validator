@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Elie\Validator;
 
+use Elie\Validator\Rule\ArrayRule;
+use Elie\Validator\Rule\BooleanRule;
 use Elie\Validator\Rule\NumericRule;
 use Elie\Validator\Rule\StringRule;
 use PHPUnit\Framework\TestCase;
@@ -53,6 +55,25 @@ class ValidatorTest extends TestCase
         assertThat($validatedContext, emptyArray());
 
         assertThat($validator->shouldStopOnError(), is(true));
+    }
+
+    public function testValidatorGetImplodedErrors(): void
+    {
+        $validator = new Validator(['name' => 'Ben'], [
+            ['name', NumericRule::class],
+            ['name', ArrayRule::class],
+            ['name', BooleanRule::class],
+        ]);
+
+        $res = $validator->validate();
+        assertThat($res, is(false));
+
+        // value should not exist on error
+        $validatedContext = $validator->getValidatedContext();
+        assertThat($validatedContext, emptyArray());
+
+        $expected = 'name: Ben is not numeric,name does not have an array value: Ben,name: Ben is not a valid boolean';
+        assertThat($validator->getImplodedErrors(','), is($expected));
     }
 
     /**

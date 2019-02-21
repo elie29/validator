@@ -75,6 +75,11 @@ class Validator implements ValidatorInterface
         return $this->errors;
     }
 
+    public function getImplodedErrors(string $separator = '<br/>'): string
+    {
+        return implode($separator, $this->errors);
+    }
+
     public function get(string $key)
     {
         return $this->context[$key] ?? null;
