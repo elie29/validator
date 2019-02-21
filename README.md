@@ -62,7 +62,7 @@ $validator->validate(); // bool depends on $_POST content
 1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required` and `trim` options. `required` is false by default while `trim` is true by default.
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
-1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [equal](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php) by default, `expected` is null by default.
+1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [RuleInterface::EQ](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php#L21) by default, `expected` is null by default.
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
