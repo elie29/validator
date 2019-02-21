@@ -52,31 +52,32 @@ class AbstractRuleTest extends TestCase
         ];
 
         yield 'Value could be empty if not required' => [
-            '  ', ['trim' => true, 'required' => false], '', RuleInterface::VALID
+            '  ', [RuleInterface::TRIM => true, RuleInterface::REQUIRED => false], '', RuleInterface::VALID
         ];
 
         yield 'Required value could be one character space' => [
-            ' ', ['trim' => false, 'required' => true], '', RuleInterface::CHECK
+            ' ', [RuleInterface::TRIM => false, RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
         ];
 
         yield 'Required value could be false' => [
-            false, ['required' => true], '', RuleInterface::CHECK
+            false, [RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
         ];
 
         yield 'Required value should not be an empty string' => [
-            '', ['required' => true], 'key is required and should not be empty: ', RuleInterface::ERROR
+            '', [RuleInterface::REQUIRED => true], 'key is required and should not be empty: ', RuleInterface::ERROR
         ];
 
         yield 'Required value should not be null' => [
-            null, ['required' => true], 'key is required and should not be empty: ', RuleInterface::ERROR
+            null, [RuleInterface::REQUIRED => true], 'key is required and should not be empty: ', RuleInterface::ERROR
         ];
 
         yield 'Required value should not be an empty array' => [
-            [], ['required' => true], 'key is required and should not be empty: array ()', RuleInterface::ERROR
+            [], [RuleInterface::REQUIRED => true], 'key is required and should not be empty: array ()',
+            RuleInterface::ERROR
         ];
 
         yield 'Required value should not be an empty array, with specific message' => [
-            [], ['required' => true, 'messages' => [
+            [], [RuleInterface::REQUIRED => true, 'messages' => [
                 RuleInterface::EMPTY_KEY => '%key% is required. `%value%` is empty!'
             ]],
             'key is required. `array ()` is empty!', RuleInterface::ERROR

@@ -57,12 +57,12 @@ class DateRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params['format'])) {
-            $this->setFormat($params['format']);
+        if (isset($params[self::FORMAT])) {
+            $this->setFormat($params[self::FORMAT]);
         }
 
-        if (isset($params['separator'])) {
-            $this->setSeparator($params['separator']);
+        if (isset($params[self::SEPARATOR])) {
+            $this->setSeparator($params[self::SEPARATOR]);
         }
     }
 

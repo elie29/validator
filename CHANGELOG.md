@@ -12,7 +12,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#4](https://github.com/elie29/validator/issues/4) Change options into constants.
 
 ### Deprecated
 

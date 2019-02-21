@@ -34,11 +34,11 @@ class ArrayRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params['min'])) {
-            $this->min = (int) $params['min'];
+        if (isset($params[self::MIN])) {
+            $this->min = (int) $params[self::MIN];
         }
-        if (isset($params['max'])) {
-            $this->max = (int) $params['max'];
+        if (isset($params[self::MAX])) {
+            $this->max = (int) $params[self::MAX];
         }
     }
 

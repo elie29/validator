@@ -30,8 +30,8 @@ class RangeRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params['range'])) {
-            $this->range = $params['range'];
+        if (isset($params[self::RANGE])) {
+            $this->range = $params[self::RANGE];
         }
     }
 

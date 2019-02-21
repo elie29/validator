@@ -38,6 +38,7 @@ A basic example with $_POST
 
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Rule\RuleConstInterface;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 
@@ -48,9 +49,9 @@ use Elie\Validator\Validator;
  *  - email is required and should be a valid email
  */
 $rules =[
-    ['age', NumericRule::class, 'max' => 60],
-    ['name', StringRule::class, 'min' => 1, 'required' => true],
-    ['email', EmailRule::class, 'required' => true],
+    ['age', NumericRule::class, RuleConstInterface::MAX => 60],
+    ['name', StringRule::class, RuleConstInterface::MIN => 1, RuleConstInterface::REQUIRED => true],
+    ['email', EmailRule::class, RuleConstInterface::REQUIRED => true],
 ];
 
 $validator = new Validator($_POST, $rules, true); // stop processing on error.

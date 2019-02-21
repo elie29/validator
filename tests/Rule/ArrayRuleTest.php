@@ -30,11 +30,11 @@ class ArrayRuleTest extends TestCase
         ];
 
         yield 'Given value between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], ['min' => 3, 'max' => 8], RuleInterface::VALID, ''
+            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 3, RuleInterface::MAX => 8], RuleInterface::VALID, ''
         ];
 
         yield 'Given value should be more than 3' => [
-            ['Peter', 'Ben', 'Harold'], ['min' => 3], RuleInterface::VALID, ''
+            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 3], RuleInterface::VALID, ''
         ];
 
         yield 'Given value should be an array' => [
@@ -42,7 +42,7 @@ class ArrayRuleTest extends TestCase
         ];
 
         yield 'Given value is not between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], ['min' => 4, 'max' => 8], RuleInterface::ERROR,
+            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 4, RuleInterface::MAX => 8], RuleInterface::ERROR,
             "name: The length of array (  0 => 'Peter',  1 => 'Ben',  2 => 'Harold',) is not between 4 and 8"
         ];
     }

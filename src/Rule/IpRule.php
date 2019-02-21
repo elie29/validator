@@ -28,8 +28,8 @@ class IpRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params['flag'])) {
-            $this->flag = (int) $params['flag'];
+        if (isset($params[self::FLAG])) {
+            $this->flag = (int) $params[self::FLAG];
         }
     }
 

@@ -78,17 +78,17 @@ abstract class AbstractRule implements RuleInterface
     {
         $this->key = $key;
 
-        if (isset($params['required'])) {
-            $this->required = (bool) $params['required'];
+        if (isset($params[self::REQUIRED])) {
+            $this->required = (bool) $params[self::REQUIRED];
         }
 
-        if (isset($params['trim'])) {
-            $this->trim = (bool) $params['trim'];
+        if (isset($params[self::TRIM])) {
+            $this->trim = (bool) $params[self::TRIM];
         }
 
-        if (isset($params['messages'])) {
+        if (isset($params[self::MESSAGES])) {
             // replace existant by given messages
-            $this->messages = array_merge($this->messages, $params['messages']);
+            $this->messages = array_merge($this->messages, $params[self::MESSAGES]);
         }
 
         $this->setValue($value);

@@ -30,7 +30,7 @@ class MatchRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->pattern = $params['pattern'];
+        $this->pattern = $params[self::PATTERN];
     }
 
     public function validate(): int

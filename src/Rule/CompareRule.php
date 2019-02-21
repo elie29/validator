@@ -38,8 +38,8 @@ class CompareRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params['sign'])) {
-            $this->sign = $params['sign'];
+        if (isset($params[self::SIGN])) {
+            $this->sign = $params[self::SIGN];
         }
 
         if (isset($params['expected'])) {
