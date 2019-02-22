@@ -144,11 +144,11 @@ Assertion::true($validator->validate(), $validator->getImplodedErrors());
 - Zend Framework coding standard
 
 ### Composer commands
-   - `clean`: Clean all generated files
-   - `test`: Launch unit test
-   - `test-coverage`: Launch unit test with clover.xml file generation
-   - `cs-check`: code sniffer check
-   - `cs-fix`: code sniffer fix
-   - `phpstan`: Launch PHP Static Analysis Tool
-   - `check`: Launch `clean`, `cs-check`, `test` and `phpstan`
+   - `clean`: Cleans all generated files
+   - `test`: Launches unit test
+   - `test-coverage`: Launches unit test with clover.xml file generation
+   - `cs-check`: For code sniffer check
+   - `cs-fix`: For code sniffer fix
+   - `phpstan`: Launches PHP Static Analysis Tool
+   - `check`: Launches `clean`, `cs-check`, `test` and `phpstan`
 
