@@ -37,7 +37,7 @@ class ArrayRule extends AbstractRule
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
+     *   'required' => {bool:optional:false by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:0 by default},
      *   'max' => {int:optional:value count by default}

@@ -45,8 +45,8 @@ class NumericRule extends AbstractRule
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
-     *   'trim' => {bool:optional:only if value is string},
+     *   'required' => {bool:optional:false by default},
+     *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:null by default},
      *   'max' => {int:optional:null by default},

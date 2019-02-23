@@ -32,8 +32,8 @@ class RangeRule extends AbstractRule
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
-     *   'trim' => {bool:optional:only if value is string},
+     *   'required' => {bool:optional:false by default},
+     *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'range' => {array:optional:empty array by default}
      * ]

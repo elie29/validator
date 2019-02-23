@@ -32,8 +32,8 @@ class IpRule extends AbstractRule
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
-     *   'trim' => {bool:optional},
+     *   'required' => {bool:optional:false by default},
+     *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'flag' => {int:optional:FILTER_FLAG_IPV4 by default}
      * ]

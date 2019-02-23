@@ -27,8 +27,8 @@ class CompareRule extends AbstractRule implements CompareConstants
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
-     *   'trim' => {bool:optional},
+     *   'required' => {bool:optional:false by default},
+     *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'sign' => {string:optional:EQ by default},
      *   'expected' => {mixed:optional:null by default}

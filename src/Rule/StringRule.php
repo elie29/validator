@@ -38,8 +38,8 @@ class StringRule extends AbstractRule
     /**
      * Params could have the following structure:
      * [
-     *   'required' => {bool:optional},
-     *   'trim' => {bool:optional},
+     *   'required' => {bool:optional:false by default},
+     *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:0 by default},
      *   'max' => {int:optional:value length by default}
