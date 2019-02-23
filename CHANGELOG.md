@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
+- [#8](https://github.com/elie29/validator/issues/8) Enable Cast option in order to return a valid value.
 - [#7](https://github.com/elie29/validator/issues/7) Reorganize constants so each Rule could manage its own.
 
 ### Deprecated

@@ -9,6 +9,20 @@ use PHPUnit\Framework\TestCase;
 class ArrayRuleTest extends TestCase
 {
 
+    public function testValidateEmptyValue(): void
+    {
+        // Empty string value. Value is not required by default!
+        $rule = new ArrayRule('name', '');
+        $res = $rule->validate();
+        assertThat($res, identicalTo(ArrayRule::VALID));
+        assertThat($rule->getValue(), emptyArray());
+
+        $rule = new ArrayRule('name', ['foo' => 'bar']);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(ArrayRule::VALID));
+        assertThat($rule->getValue(), hasEntry('foo', 'bar'));
+    }
+
     /**
      * @dataProvider getArrayValueProvider
      */

@@ -24,6 +24,7 @@ class NumericRule extends AbstractRule
     public const TRIM = 'trim';
     public const MIN = 'min';
     public const MAX = 'max';
+    public const CAST = 'cast';
     /**#@-*/
 
     /**
@@ -37,13 +38,19 @@ class NumericRule extends AbstractRule
     protected $max = null;
 
     /**
+     * Cast the value into numeric float or int.
+     */
+    protected $cast = false;
+
+    /**
      * Params could have the following structure:
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:null by default},
-     *   'max' => {int:optional:null by default}
+     *   'max' => {int:optional:null by default},
+     *   'cast' => {bool:optional:cast the value into numeric:false by default}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
@@ -53,8 +60,13 @@ class NumericRule extends AbstractRule
         if (isset($params[$this::MIN])) {
             $this->min = (int) $params[$this::MIN];
         }
+
         if (isset($params[$this::MAX])) {
             $this->max = (int) $params[$this::MAX];
+        }
+
+        if (isset($params[$this::CAST])) {
+            $this->cast = (bool) $params[$this::CAST];
         }
 
         $this->messages = $this->messages + [
@@ -62,6 +74,15 @@ class NumericRule extends AbstractRule
             $this::INVALID_NUMERIC_LT => '%key%: %value% is less than %min%',
             $this::INVALID_NUMERIC_GT => '%key%: %value% is greater than %max%',
         ];
+    }
+
+    public function getValue()
+    {
+        if ($this->cast) {
+            // float or int and empty value
+            return $this->value ? 0 + $this->value : 0;
+        }
+        return $this->value;
     }
 
     public function validate(): int

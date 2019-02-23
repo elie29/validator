@@ -9,6 +9,26 @@ use PHPUnit\Framework\TestCase;
 class BooleanRuleTest extends TestCase
 {
 
+    public function testValidateEmptyValue(): void
+    {
+        // Empty string value.  Value is not required by default!
+        $rule = new BooleanRule('name', '');
+
+        $res = $rule->validate();
+
+        assertThat($res, identicalTo(BooleanRule::VALID));
+        assertThat($rule->getValue(), emptyString());
+
+        $rule = new BooleanRule('name', '', [
+            BooleanRule::CAST => true
+        ]);
+
+        $res = $rule->validate();
+
+        assertThat($res, identicalTo(BooleanRule::VALID));
+        assertThat($rule->getValue(), identicalTo(false));
+    }
+
     /**
      * @dataProvider getBooleanValueProvider
      */

@@ -15,26 +15,46 @@ class BooleanRule extends AbstractRule
      */
     public const INVALID_BOOLEAN = 'invalidBoolean';
 
-    /**
+    /**#@+
      * Specific option for BooleanRule
      */
     public const TRIM = 'trim';
+    public const CAST = 'cast';
+    /**#@-*/
+
+    /**
+     * Cast the value into boolean
+     */
+    protected $cast = false;
 
     /**
      * Params could have the following structure:
      * [
      *   'required' => {bool:optional},
      *   'trim' => {bool:optional:only if value is string},
-     *   'messages' => {array:optional:key/value message patterns}
+     *   'messages' => {array:optional:key/value message patterns},
+     *   'cast' => {bool:optional:cast the value into bool:false by default}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
+        if (isset($params[$this::CAST])) {
+            $this->cast = (bool) $params[$this::CAST];
+        }
+
         $this->messages = $this->messages + [
             $this::INVALID_BOOLEAN => '%key%: %value% is not a valid boolean',
         ];
+    }
+
+    public function getValue()
+    {
+        if ($this->cast) {
+            return (bool) $this->value;
+        }
+        return $this->value;
     }
 
     public function validate(): int

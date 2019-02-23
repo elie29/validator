@@ -47,15 +47,16 @@ $validator->validate(); // bool depends on $_POST content
 
 1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
  `required` is false by default while `trim` is true.
+1. [ArrayRule](https://github.com/elie29/validator/blob/master/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to empty array [].
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
-1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
+1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php) accepts `cast` option.
 1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/blob/master/src/Rule/CompareConstants.php) by default, `expected` is null by default.
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
 1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php)
 1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php) requires `pattern` option.
-1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts `min` and `max` options.
+1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts `min`, `max` and `cast` options.
 1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php) accepts `range` option.
 1. [StringRule](https://github.com/elie29/validator/blob/master/src/Rule/StringRule.php) accepts `min` and `max` options.
 1. [TimeRule](https://github.com/elie29/validator/blob/master/src/Rule/TimeRule.php)

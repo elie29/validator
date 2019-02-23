@@ -9,6 +9,39 @@ use PHPUnit\Framework\TestCase;
 class NumericRuleTest extends TestCase
 {
 
+    public function testValidateEmptyValue(): void
+    {
+        // Empty string value.  Value is not required by default!
+        $rule = new NumericRule('name', '');
+        $res = $rule->validate();
+        assertThat($res, identicalTo(NumericRule::VALID));
+        assertThat($rule->getValue(), emptyString());
+
+        // Empty string value with cast
+        $rule = new NumericRule('name', '', [
+            NumericRule::CAST => true
+        ]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(NumericRule::VALID));
+        assertThat($rule->getValue(), identicalTo(0));
+
+        // int
+        $rule = new NumericRule('name', '12', [
+            NumericRule::CAST => true
+        ]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(NumericRule::VALID));
+        assertThat($rule->getValue(), identicalTo(12));
+
+        // float
+        $rule = new NumericRule('name', '12.2', [
+            NumericRule::CAST => true
+        ]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(NumericRule::VALID));
+        assertThat($rule->getValue(), identicalTo(12.2));
+    }
+
     /**
      * @dataProvider getNumericValueProvider
      */

@@ -50,6 +50,7 @@ class ArrayRule extends AbstractRule
         if (isset($params[$this::MIN])) {
             $this->min = (int) $params[$this::MIN];
         }
+
         if (isset($params[$this::MAX])) {
             $this->max = (int) $params[$this::MAX];
         }
@@ -59,6 +60,14 @@ class ArrayRule extends AbstractRule
             $this::INVALID_ARRAY => '%key% does not have an array value: %value%',
             $this::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
         ];
+    }
+
+    public function getValue()
+    {
+        if (! $this->value) {
+            return [];
+        }
+        return $this->value;
     }
 
     public function validate(): int
