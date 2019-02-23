@@ -9,6 +9,31 @@ use PHPUnit\Framework\TestCase;
 class JsonRuleTest extends TestCase
 {
 
+    public function testValidateJsonDecode(): void
+    {
+        // Empty string value. Value is not required by default!
+        $rule = new JsonRule('name', '');
+        $res = $rule->validate();
+        assertThat($res, identicalTo(JsonRule::VALID));
+        assertThat($rule->getValue(), emptyString());
+
+        $rule = new JsonRule('name', '', [JsonRule::DECODE => true]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(JsonRule::VALID));
+        assertThat($rule->getValue(), emptyArray());
+
+        $rule = new JsonRule('name', '[{"name":"John Doe","age":25}]', [JsonRule::DECODE => true]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(JsonRule::VALID));
+        assertThat($rule->getValue(), arrayWithSize(1));
+
+        // With error
+        $rule = new JsonRule('name', 'aaa', [JsonRule::DECODE => true]);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(JsonRule::ERROR));
+        assertThat($rule->getValue(), is('aaa'));
+    }
+
     /**
      * @dataProvider getJsonValueProvider
      */

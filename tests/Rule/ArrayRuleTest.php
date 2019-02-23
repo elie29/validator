@@ -21,6 +21,12 @@ class ArrayRuleTest extends TestCase
         $res = $rule->validate();
         assertThat($res, identicalTo(ArrayRule::VALID));
         assertThat($rule->getValue(), hasEntry('foo', 'bar'));
+
+        // with error : value remains unchanged
+        $rule = new ArrayRule('name', 15);
+        $res = $rule->validate();
+        assertThat($res, identicalTo(ArrayRule::ERROR));
+        assertThat($rule->getValue(), is(15));
     }
 
     /**

@@ -54,7 +54,7 @@ $validator->validate(); // bool depends on $_POST content
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
-1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php)
+1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php) accepts `decode` option
 1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php) requires `pattern` option.
 1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts `min`, `max` and `cast` options.
 1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php) accepts `range` option.
@@ -178,6 +178,44 @@ array:4 [▼
 ]
 */
 ```
+
+### Partial Validation with a multidimensional array
+Usually with JsonRule, we could expect a multidimensional array. In this case, the validation process will be similar
+to [Partial Validation](#partial-validation) without merging data:
+
+```php
+$rules = [
+    // With Json decode, validated value will be decoded into array
+    ['users', JsonRule::class, JsonRule::REQUIRED => true, JsonRule::DECODE => true],
+];
+
+$validator = new Validator([
+    'users' => '[{"name":"John Doe","age":25},{"name":"Brad Pitt","age":42}]'
+], $rules);
+
+Assertion::true($validator->validate()); // this validate that users is a valid Json format
+
+// But we need to validate all user data as well (suppose it should contain name and age):
+$validator->setRules([
+    ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+    ['age', NumericRule::class, NumericRule::MAX => 80],
+]);
+
+$validatedContext = $validator->getValidatedContext();
+
+$users = $validatedContext['users'];
+
+Assertion::isArray($users);
+
+foreach ($users as $user) {
+    // each user is a new context
+    $validator->setContext($user);
+    // do not merge data !!
+    Assertion::true($validator->validate()); // we could validate all users and determine wich ones are invalid!
+}
+
+```
+
 ## Development Prerequisites
 
 ### Text file encoding

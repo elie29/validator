@@ -19,22 +19,43 @@ class JsonRule extends AbstractRule
      * Specific options for JsonRule
      */
     public const TRIM = 'trim';
+    public const DECODE = 'decode';
+
+    /**
+     * Decode the value to be returned.
+     */
+    protected $decode = false;
 
     /**
      * Params could have the following structure:
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
-     *   'messages' => {array:optional:key/value message patterns}
+     *   'messages' => {array:optional:key/value message patterns},
+     *   'decode' => {bool:optional:false by default:decode the value}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
+        if (isset($params[$this::DECODE])) {
+            $this->decode = (bool) $params[$this::DECODE];
+        }
+
         $this->messages = $this->messages + [
             $this::INVALID_JSON => '%key%: %value% is not a valid json format',
         ];
+    }
+
+    public function getValue()
+    {
+        if ($this->error || $this->value || ! $this->decode) {
+            return $this->value;
+        }
+
+        // only if no error and decoded is requested for empty value
+        return [];
     }
 
     public function validate(): int
@@ -54,6 +75,14 @@ class JsonRule extends AbstractRule
 
     protected function isValid(): bool
     {
-        return json_decode($this->value) !== null;
+        $decoded = json_decode($this->value, true);
+
+        if ($decoded === null) {
+            return false;
+        }
+
+        $this->value = $this->decode ? $decoded : $this->value;
+
+        return true;
     }
 }
