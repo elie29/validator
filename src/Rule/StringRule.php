@@ -56,7 +56,7 @@ class StringRule extends AbstractRule
             $this->max = (int) $params[$this::MAX];
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_STRING => '%key% does not have a string value: %value%',
             $this::INVALID_STRING_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
         ];

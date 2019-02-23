@@ -57,7 +57,7 @@ class NumericRule extends AbstractRule
             $this->max = (int) $params[$this::MAX];
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_NUMERIC => '%key%: %value% is not numeric',
             $this::INVALID_NUMERIC_LT => '%key%: %value% is less than %min%',
             $this::INVALID_NUMERIC_GT => '%key%: %value% is greater than %max%',

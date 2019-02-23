@@ -46,7 +46,7 @@ class CompareRule extends AbstractRule implements CompareConstants
             $this->expected = $params['expected'];
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_COMPARE => '%key%: %value% is not %label% %expected%',
         ];
     }

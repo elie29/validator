@@ -55,7 +55,7 @@ class ArrayRule extends AbstractRule
         }
 
         // + won't replace existent keys set by users
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_ARRAY => '%key% does not have an array value: %value%',
             $this::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
         ];

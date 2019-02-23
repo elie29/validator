@@ -80,7 +80,7 @@ class DateRule extends AbstractRule
             $this->setSeparator($params[$this::SEPARATOR]);
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_DATE => '%key%: %value% is not a valid date',
             $this::INVALID_DATE_FORMAT => '%key%: %value% does not have a valid format: ' .
                 '%format% or separator: %separator%',

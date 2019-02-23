@@ -32,7 +32,7 @@ class BooleanRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_BOOLEAN => '%key%: %value% is not a valid boolean',
         ];
     }

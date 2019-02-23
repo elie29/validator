@@ -32,7 +32,7 @@ class EmailRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             self::INVALID_EMAIL => '%key%: %value% is not a valid email',
         ];
     }

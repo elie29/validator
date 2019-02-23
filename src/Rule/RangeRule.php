@@ -46,7 +46,7 @@ class RangeRule extends AbstractRule
             $this->range = $params[$this::RANGE];
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_RANGE => '%key%: %value% is out of range %range%',
         ];
     }

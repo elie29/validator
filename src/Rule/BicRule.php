@@ -37,7 +37,7 @@ class BicRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_BIC_LIMIT => '%key%: %value% has an invalid length',
             $this::INVALID_BIC_UPPER => '%key%: %value% should be uppercase',
             $this::INVALID_BIC_ALNUM => '%key%: %value% should be alphanumeric',

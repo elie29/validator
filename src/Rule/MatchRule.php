@@ -44,7 +44,7 @@ class MatchRule extends AbstractRule
 
         $this->pattern = $params[$this::PATTERN];
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_PATTERN => '%key%: %value% does not match %pattern%',
         ];
     }

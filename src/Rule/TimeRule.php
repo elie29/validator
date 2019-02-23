@@ -36,7 +36,7 @@ class TimeRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_TIME => '%key%: %value% is not a valid time',
         ];
     }

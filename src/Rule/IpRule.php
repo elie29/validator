@@ -46,7 +46,7 @@ class IpRule extends AbstractRule
             $this->flag = (int) $params[$this::FLAG];
         }
 
-        $this->messages += [
+        $this->messages = $this->messages + [
             $this::INVALID_IP => '%key%: %value% is not a valid IP',
             $this::INVALID_IP_FLAG => 'Filter IP flag: %flag% is not valid',
         ];
