@@ -12,21 +12,48 @@ namespace Elie\Validator\Rule;
 class TimeRule extends AbstractRule
 {
 
-    public const TIME_REGEX = '/^([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/';
+    /**
+     * Specific message error code
+     */
+    public const INVALID_TIME = 'invalidTime';
+
+    /**
+     * Specific options for TimeRule
+     */
+    public const TRIM = 'trim';
+
+    protected const TIME_REGEX = '/^([0-1]{1}[0-9]{1}|[2]{1}[0-3]{1}):[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}$/';
+
+    /**
+     * Params could have the following structure:
+     * [
+     *   'required' => {bool:optional},
+     *   'trim' => {bool:optional:only if value is string},
+     *   'messages' => {array:optional:key/value message patterns}
+     * ]
+     */
+    public function __construct(string $key, $value, array $params = [])
+    {
+        parent::__construct($key, $value, $params);
+
+        $this->messages += [
+            $this::INVALID_TIME => '%key%: %value% is not a valid time',
+        ];
+    }
 
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! static::checkTime($this->value)) {
-            return $this->setAndReturnError(self::INVALID_TIME);
+            return $this->setAndReturnError($this::INVALID_TIME);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     /**

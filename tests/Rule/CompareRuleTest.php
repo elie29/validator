@@ -26,52 +26,54 @@ class CompareRuleTest extends TestCase
     public function getCompareValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', [], RuleInterface::VALID, ''
+            '', [], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be equal to 5' => [
-            '5', ['sign' => RuleInterface::EQ, 'expected' => 5], RuleInterface::VALID, ''
+            '5', [CompareRule::SIGN => CompareRule::EQ, CompareRule::EXPECTED => 5], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be same as 5' => [
-            '5', ['sign' => RuleInterface::SEQ, 'expected' => '5'], RuleInterface::VALID, ''
+            '5', [CompareRule::SIGN => CompareRule::SEQ, CompareRule::EXPECTED => '5'], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be same as [5, 4, false]' => [
-            [5, 4, false], ['sign' => RuleInterface::SEQ, 'expected' => [5, 4, false]], RuleInterface::VALID, ''
+            [5, 4, false], [CompareRule::SIGN => CompareRule::SEQ,
+            CompareRule::EXPECTED => [5, 4, false]], CompareRule::VALID, ''
         ];
 
         yield 'Given value should not be equal to 5' => [
-            '15', ['sign' => RuleInterface::NEQ, 'expected' => 5], RuleInterface::VALID, ''
+            '15', [CompareRule::SIGN => CompareRule::NEQ, CompareRule::EXPECTED => 5], CompareRule::VALID, ''
         ];
 
         yield 'Given value should not be same as [5, 4, 0]' => [
-            [5, 4, false], ['sign' => RuleInterface::NSEQ, 'expected' => [5, 4, 0]], RuleInterface::VALID, ''
+            [5, 4, false], [CompareRule::SIGN => CompareRule::NSEQ,
+                CompareRule::EXPECTED => [5, 4, 0]], CompareRule::VALID, ''
         ];
 
         yield 'Given value should not be same as 5' => [
-            '25', ['sign' => RuleInterface::NSEQ, 'expected' => '5'], RuleInterface::VALID, ''
+            '25', [CompareRule::SIGN => CompareRule::NSEQ, CompareRule::EXPECTED => '5'], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be less than5' => [
-            '4', ['sign' => RuleInterface::LT, 'expected' => 5], RuleInterface::VALID, ''
+            '4', [CompareRule::SIGN => CompareRule::LT, CompareRule::EXPECTED => 5], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be less or equal to 5' => [
-            '5', ['sign' => RuleInterface::LTE, 'expected' => '5'], RuleInterface::VALID, ''
+            '5', [CompareRule::SIGN => CompareRule::LTE, CompareRule::EXPECTED => '5'], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be greater than 5' => [
-            '6', ['sign' => RuleInterface::GT, 'expected' => 5], RuleInterface::VALID, ''
+            '6', [CompareRule::SIGN => CompareRule::GT, CompareRule::EXPECTED => 5], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be geater or equal to 5' => [
-            '5', ['sign' => RuleInterface::GTE, 'expected' => '5'], RuleInterface::VALID, ''
+            '5', [CompareRule::SIGN => CompareRule::GTE, CompareRule::EXPECTED => '5'], CompareRule::VALID, ''
         ];
 
         yield 'Given value should be geater or equal to 5' => [
-            '2', ['sign' => RuleInterface::GTE, 'expected' => '5'],
-            RuleInterface::ERROR, 'name: 2 is not greater or equal to 5'
+            '2', [CompareRule::SIGN => CompareRule::GTE, CompareRule::EXPECTED => '5'],
+                CompareRule::ERROR, 'name: 2 is not greater or equal to 5'
         ];
     }
 }

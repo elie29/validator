@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.0.5 - TBD
+## V1.1.0 - TBD
 
 ### Added
 
@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#7](https://github.com/elie29/validator/issues/7) Reorganize constants so each Rule could manage its own.
 
 ### Deprecated
 

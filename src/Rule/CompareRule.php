@@ -7,7 +7,7 @@ namespace Elie\Validator\Rule;
 /**
  * This class verifies that a value is valid.
  */
-class CompareRule extends AbstractRule
+class CompareRule extends AbstractRule implements CompareConstants
 {
 
     /**
@@ -15,7 +15,7 @@ class CompareRule extends AbstractRule
      * Default sets to ==.
      * @var string
      */
-    protected $sign = RuleInterface::EQ;
+    protected $sign = self::EQ;
 
     /**
      * Expected value.
@@ -38,32 +38,36 @@ class CompareRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params[self::SIGN])) {
-            $this->sign = $params[self::SIGN];
+        if (isset($params[$this::SIGN])) {
+            $this->sign = $params[$this::SIGN];
         }
 
         if (isset($params['expected'])) {
             $this->expected = $params['expected'];
         }
+
+        $this->messages += [
+            $this::INVALID_COMPARE => '%key%: %value% is not %label% %expected%',
+        ];
     }
 
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         $method = $this->sign;
         if (! $this->$method()) {
-            return $this->setAndReturnError(self::INVALID_COMPARE, [
-                '%label%' => self::SIGNS[$this->sign],
+            return $this->setAndReturnError($this::INVALID_COMPARE, [
+                '%label%' => $this::SIGNS[$this->sign],
                 '%expected%' => $this->canonize($this->expected)
             ]);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     /**

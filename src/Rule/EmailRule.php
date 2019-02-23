@@ -10,11 +10,38 @@ namespace Elie\Validator\Rule;
 class EmailRule extends AbstractRule
 {
 
+    /**
+     * Specific message error code
+     */
+    public const INVALID_EMAIL = 'invalidEmail';
+
+    /**
+     * Specific options for EmailRule
+     */
+    public const TRIM = 'trim';
+
+    /**
+     * Params could have the following structure:
+     * [
+     *   'required' => {bool:optional},
+     *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns}
+     * ]
+     */
+    public function __construct(string $key, $value, array $params = [])
+    {
+        parent::__construct($key, $value, $params);
+
+        $this->messages += [
+            self::INVALID_EMAIL => '%key%: %value% is not a valid email',
+        ];
+    }
+
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
@@ -22,7 +49,7 @@ class EmailRule extends AbstractRule
             return $this->setAndReturnError(self::INVALID_EMAIL);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     protected function isValid(): bool

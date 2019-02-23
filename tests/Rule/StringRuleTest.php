@@ -30,11 +30,11 @@ class StringRuleTest extends TestCase
         ];
 
         yield 'Given value between 4 and 8 characters' => [
-            'Peter ', ['min' => 4, 'max' => 8], RuleInterface::VALID, ''
+            'Peter ', [StringRule::MIN => 4, StringRule::MAX => 8], RuleInterface::VALID, ''
         ];
 
         yield 'Given value should be more than 3 characters' => [
-            'Simon ', ['min' => 3], RuleInterface::VALID, ''
+            'Simon ', [StringRule::MIN => 3], RuleInterface::VALID, ''
         ];
 
         yield 'Given value should be a string' => [
@@ -42,7 +42,8 @@ class StringRuleTest extends TestCase
         ];
 
         yield 'Given value is not between 4 and 8 characters' => [
-            'Ben', ['min' => 4, 'max' => 8], RuleInterface::ERROR, 'name: The length of Ben is not between 4 and 8'
+            'Ben', [StringRule::MIN => 4, StringRule::MAX => 8],
+            RuleInterface::ERROR, 'name: The length of Ben is not between 4 and 8'
         ];
     }
 }

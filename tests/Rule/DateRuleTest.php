@@ -12,8 +12,8 @@ class DateRuleTest extends TestCase
     public function testValidateWithSeparator(): void
     {
         $rule = new DateRule('date', '2017,22,03', [
-            'format' => 'yyyy/dd/mm',
-            'separator' => '[,/]'
+            DateRule::FORMAT => 'yyyy/dd/mm',
+            DateRule::SEPARATOR => '[,/]'
         ]);
 
         $res = $rule->validate();
@@ -42,52 +42,52 @@ class DateRuleTest extends TestCase
     public function getDateValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', [], RuleInterface::VALID, ''
+            '', [], DateRule::VALID, ''
         ];
 
         yield 'Given value 12/03/2017 should be valid' => [
-            '12/03/2017', ['format' => 'dd/mm/yyyy'], RuleInterface::VALID, ''
+            '12/03/2017', [DateRule::FORMAT => 'dd/mm/yyyy'], DateRule::VALID, ''
         ];
 
         yield 'Given value 12/03/17 should be valid' => [
-            '12/03/17', ['format' => 'dd/mm/yy'], RuleInterface::VALID, ''
+            '12/03/17', [DateRule::FORMAT => 'dd/mm/yy'], DateRule::VALID, ''
         ];
 
         yield 'Given value 29/02/2017 should not be valid' => [
-            '29/02/2017', ['format' => 'dd/mm/yyyy'], RuleInterface::ERROR,
+            '29/02/2017', [DateRule::FORMAT => 'dd/mm/yyyy'], DateRule::ERROR,
             "date: 29/02/2017 is not a valid date"
         ];
 
         yield 'Given value 0/02/2017 should not be valid' => [
-            '0/02/2017', ['format' => 'dd/mm/yyyy'], RuleInterface::ERROR,
+            '0/02/2017', [DateRule::FORMAT => 'dd/mm/yyyy'], DateRule::ERROR,
             "date: 0/02/2017 is not a valid date"
         ];
 
         yield 'Given value 0/02 should not be valid' => [
-            '0/02', ['format' => 'dd/mm/yyyy'], RuleInterface::ERROR,
+            '0/02', [DateRule::FORMAT => 'dd/mm/yyyy'], DateRule::ERROR,
             "date: 0/02 is not a valid date"
         ];
 
         yield 'Given value separator . should not be valid' => [
-            '12/02/2017', ['separator' => '.'], RuleInterface::ERROR,
+            '12/02/2017', ['separator' => '.'], DateRule::ERROR,
             "date: 12/02/2017 does not have a valid format: array (  0 => 'dd/mm/yyyy',) or separator: ."
         ];
 
         yield 'Given value format dd/dd/mm should not be valid' => [
-            '12/02/2017', ['format' => 'dd/dd/mm'], RuleInterface::ERROR,
+            '12/02/2017', [DateRule::FORMAT => 'dd/dd/mm'], DateRule::ERROR,
             "date: 12/02/2017 does not have a valid format: array (  0 => 'dd/dd/mm',) or separator: [,-./]"
         ];
 
         yield 'Given value format dd/ss/mm should not be valid' => [
-            '12/02/2017', ['format' => 'dd/ss/mm'], RuleInterface::ERROR,
+            '12/02/2017', [DateRule::FORMAT => 'dd/ss/mm'], DateRule::ERROR,
             "date: 12/02/2017 does not have a valid format: array (  0 => 'dd/ss/mm',) or separator: [,-./]"
         ];
 
         yield 'Given value format dd/ss/mm should not be valid, with specific message' => [
-            '12/02/2017', ['format' => 'dd/ss/mm', 'messages' => [
-                RuleInterface::INVALID_DATE_FORMAT => '%key% has invalid format: %format%'
+            '12/02/2017', [DateRule::FORMAT => 'dd/ss/mm', DateRule::MESSAGES => [
+                DateRule::INVALID_DATE_FORMAT => '%key% has invalid format: %format%'
             ]],
-            RuleInterface::ERROR, "date has invalid format: array (  0 => 'dd/ss/mm',)"
+            DateRule::ERROR, "date has invalid format: array (  0 => 'dd/ss/mm',)"
         ];
     }
 }

@@ -26,23 +26,23 @@ class ArrayRuleTest extends TestCase
     public function getArrayValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', [], RuleInterface::VALID, ''
+            '', [], ArrayRule::VALID, ''
         ];
 
         yield 'Given value between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 3, RuleInterface::MAX => 8], RuleInterface::VALID, ''
+            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 3, ArrayRule::MAX => 8], ArrayRule::VALID, ''
         ];
 
         yield 'Given value should be more than 3' => [
-            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 3], RuleInterface::VALID, ''
+            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 3], ArrayRule::VALID, ''
         ];
 
         yield 'Given value should be an array' => [
-            new \stdClass(), [], RuleInterface::ERROR, 'name does not have an array value: stdClass object'
+            new \stdClass(), [], ArrayRule::ERROR, 'name does not have an array value: stdClass object'
         ];
 
         yield 'Given value is not between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], [RuleInterface::MIN => 4, RuleInterface::MAX => 8], RuleInterface::ERROR,
+            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 4, ArrayRule::MAX => 8], ArrayRule::ERROR,
             "name: The length of array (  0 => 'Peter',  1 => 'Ben',  2 => 'Harold',) is not between 4 and 8"
         ];
     }

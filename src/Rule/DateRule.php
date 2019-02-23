@@ -12,6 +12,21 @@ namespace Elie\Validator\Rule;
 class DateRule extends AbstractRule
 {
 
+    /**#@+
+     * Specific message code error
+     */
+    public const INVALID_DATE = 'invalidDate';
+    public const INVALID_DATE_FORMAT = 'invalidDateFormat';
+    /**#@-*/
+
+    /**#@+
+     * Specific options for DateRule
+     */
+    public const TRIM = 'trim';
+    public const FORMAT = 'format';
+    public const SEPARATOR = 'separator';
+    /**#@-*/
+
     /**
      * Date format.
      * simple: d/m/y => 2/9/71
@@ -57,13 +72,19 @@ class DateRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params[self::FORMAT])) {
-            $this->setFormat($params[self::FORMAT]);
+        if (isset($params[$this::FORMAT])) {
+            $this->setFormat($params[$this::FORMAT]);
         }
 
-        if (isset($params[self::SEPARATOR])) {
-            $this->setSeparator($params[self::SEPARATOR]);
+        if (isset($params[$this::SEPARATOR])) {
+            $this->setSeparator($params[$this::SEPARATOR]);
         }
+
+        $this->messages += [
+            $this::INVALID_DATE => '%key%: %value% is not a valid date',
+            $this::INVALID_DATE_FORMAT => '%key%: %value% does not have a valid format: ' .
+                '%format% or separator: %separator%',
+        ];
     }
 
     public function getFormat(): array
@@ -95,17 +116,17 @@ class DateRule extends AbstractRule
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         // We try to check value over all format
-        $codeError = RuleInterface::INVALID_DATE;
+        $codeError = $this::INVALID_DATE;
         foreach ($this->getFormat() as $format) {
             $codeError = static::checkDate($this->separator, $format, $this->value);
             if (null === $codeError) {
                 // The first valid format
-                return RuleInterface::VALID;
+                return $this::VALID;
             }
         }
 
@@ -131,14 +152,14 @@ class DateRule extends AbstractRule
         $tokens = preg_split($separator, $format);
 
         if ($tokens === false || static::invalidTokens($tokens)) {
-            return RuleInterface::INVALID_DATE_FORMAT;
+            return self::INVALID_DATE_FORMAT;
         }
 
         $dates = preg_split($separator, $date);
 
         // We must have 3 tokens for a date
         if ($dates === false || count($dates) !== 3) {
-            return RuleInterface::INVALID_DATE;
+            return self::INVALID_DATE;
         }
 
         return static::checkDatesWithTokens($tokens, $dates);
@@ -183,10 +204,10 @@ class DateRule extends AbstractRule
                     break;
                 default:
                     // No valid format
-                    return RuleInterface::INVALID_DATE_FORMAT;
+                    return self::INVALID_DATE_FORMAT;
             }
         }
 
-        return checkdate($m, $d, $y) ? null : RuleInterface::INVALID_DATE;
+        return checkdate($m, $d, $y) ? null : self::INVALID_DATE;
     }
 }

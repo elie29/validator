@@ -23,7 +23,6 @@ A basic example with $_POST
 
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\NumericRule;
-use Elie\Validator\Rule\RuleConstInterface;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 
@@ -34,9 +33,9 @@ use Elie\Validator\Validator;
  *  - email is required and should be a valid email
  */
 $rules =[
-    ['age', NumericRule::class, RuleConstInterface::MAX => 60],
-    ['name', StringRule::class, RuleConstInterface::MIN => 1, RuleConstInterface::REQUIRED => true],
-    ['email', EmailRule::class, RuleConstInterface::REQUIRED => true],
+    ['age', NumericRule::class, NumericRule::MAX => 60],
+    ['name', StringRule::class, StringRule::MIN => 1, StringRule::REQUIRED => true],
+    ['email', EmailRule::class, EmailRule::REQUIRED => true],
 ];
 
 $validator = new Validator($_POST, $rules, true); // stop processing on error.
@@ -50,7 +49,7 @@ $validator->validate(); // bool depends on $_POST content
  `required` is false by default while `trim` is true.
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php)
-1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [RuleInterface::EQ](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php#L21) by default, `expected` is null by default.
+1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/blob/master/src/Rule/CompareConstants.php) by default, `expected` is null by default.
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
@@ -70,7 +69,6 @@ You need to implement [RuleInterface](https://github.com/elie29/validator/blob/m
 <?php
 
 use Elie\Validator\Rule\AbstractRule;
-use Elie\Validator\Rule\RuleInterface;
 
 class XXXRule extends AbstractRule
 {
@@ -91,17 +89,17 @@ class XXXRule extends AbstractRule
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if ($any_invalid_condition) {
-            return $this->setAndReturnError(self::INVALID_XXX, [
+            return $this->setAndReturnError($this::INVALID_XXX, [
                 '%new_key%' => 'my_key'
             ]);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 }
 ```
@@ -116,15 +114,14 @@ Instead of using assertion key by key, you can validate the whole context and th
 use Assert\Assertion;
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\NumericRule;
-use Elie\Validator\Rule\RuleConstInterface;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 use Webmozart\Assert\Assert;
 
 $rules =[
-    ['age', NumericRule::class, RuleConstInterface::MAX => 60],
-    ['name', StringRule::class, RuleConstInterface::MIN => 1, RuleConstInterface::REQUIRED => true],
-    ['email', EmailRule::class, RuleConstInterface::REQUIRED => true],
+    ['age', NumericRule::class, NumericRule::MAX => 60],
+    ['name', StringRule::class, StringRule::MIN => 1, StringRule::REQUIRED => true],
+    ['email', EmailRule::class, EmailRule::REQUIRED => true],
 ];
 
 $validator = new Validator($_POST, $rules);
@@ -138,10 +135,10 @@ Assertion::true($validator->validate(), $validator->getImplodedErrors());
 
 ### Partial Validation
 
-Sometimes we need to validate the context partially, several times, because we could have a Json item or
+Sometimes we need to validate the context partially, whenever we have a Json item or
 keys that depend on each others.
 
-The following is an example of a case when $_POST should contains a Json user data:
+The following is an example when a context - eg. $_POST - should contains a Json user data:
 
 ```php
 $rules = [

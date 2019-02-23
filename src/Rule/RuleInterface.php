@@ -4,8 +4,30 @@ declare(strict_types = 1);
 
 namespace Elie\Validator\Rule;
 
-interface RuleInterface extends RuleConstInterface
+interface RuleInterface
 {
+
+    /**#@+
+     * Validation return constants
+     */
+    public const ERROR = 0;
+    public const VALID = 1;
+    public const CHECK = 2;
+    /**#@-*/
+
+    /**#@+
+     * Supported error message code for all rules
+     */
+    public const UNDEFINDED_CODE = 'undefindedCode';
+    public const EMPTY_KEY = 'emptyKey';
+    /**#@-*/
+
+    /**#@+
+     * Supported options for all rules
+     */
+    public const REQUIRED = 'required';
+    public const MESSAGES = 'messages';
+    /**#@-*/
 
     /**
      * Verify that value is valid.

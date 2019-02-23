@@ -11,6 +11,18 @@ class MatchRule extends AbstractRule
 {
 
     /**
+     * Specific message error code
+     */
+    public const INVALID_PATTERN = 'invalidPattern';
+
+    /**#@+
+     * Specific options for MatchRule
+     */
+    public const TRIM = 'trim';
+    public const PATTERN = 'pattern';
+    /**#@-*/
+
+    /**
      * A regular pattern string, e.g.:
      * /^[a-z]{2, 12}$/i
      * @var string
@@ -30,23 +42,27 @@ class MatchRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        $this->pattern = $params[self::PATTERN];
+        $this->pattern = $params[$this::PATTERN];
+
+        $this->messages += [
+            $this::INVALID_PATTERN => '%key%: %value% does not match %pattern%',
+        ];
     }
 
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! preg_match($this->pattern, $this->value)) {
-            return $this->setAndReturnError(self::INVALID_PATTERN, [
+            return $this->setAndReturnError($this::INVALID_PATTERN, [
                 '%pattern%' => $this->pattern
             ]);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 }

@@ -26,19 +26,19 @@ class BooleanRuleTest extends TestCase
     public function getBooleanValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', RuleInterface::VALID, ''
+            '', BooleanRule::VALID, ''
         ];
 
         yield 'Given value could be 1' => [
-            '1 ', RuleInterface::VALID, ''
+            '1 ', BooleanRule::VALID, ''
         ];
 
         yield 'Given value could be true' => [
-            true, RuleInterface::VALID, ''
+            true, BooleanRule::VALID, ''
         ];
 
         yield 'Given value could not be a string' => [
-            'test', RuleInterface::ERROR, 'name: test is not a valid boolean'
+            'test', BooleanRule::ERROR, 'name: test is not a valid boolean'
         ];
     }
 }

@@ -10,19 +10,46 @@ namespace Elie\Validator\Rule;
 class BooleanRule extends AbstractRule
 {
 
+    /**
+     * Specific message error code
+     */
+    public const INVALID_BOOLEAN = 'invalidBoolean';
+
+    /**
+     * Specific option for BicRule
+     */
+    public const TRIM = 'trim';
+
+    /**
+     * Params could have the following structure:
+     * [
+     *   'required' => {bool:optional},
+     *   'trim' => {bool:optional:only if value is string},
+     *   'messages' => {array:optional:key/value message patterns}
+     * ]
+     */
+    public function __construct(string $key, $value, array $params = [])
+    {
+        parent::__construct($key, $value, $params);
+
+        $this->messages += [
+            $this::INVALID_BOOLEAN => '%key%: %value% is not a valid boolean',
+        ];
+    }
+
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! $this->isBool()) {
-            return $this->setAndReturnError(self::INVALID_BOOL);
+            return $this->setAndReturnError($this::INVALID_BOOLEAN);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     protected function isBool(): bool

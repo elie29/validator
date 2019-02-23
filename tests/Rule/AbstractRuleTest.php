@@ -52,11 +52,11 @@ class AbstractRuleTest extends TestCase
         ];
 
         yield 'Value could be empty if not required' => [
-            '  ', [RuleInterface::TRIM => true, RuleInterface::REQUIRED => false], '', RuleInterface::VALID
+            '  ', [StringRule::TRIM => true, RuleInterface::REQUIRED => false], '', RuleInterface::VALID
         ];
 
         yield 'Required value could be one character space' => [
-            ' ', [RuleInterface::TRIM => false, RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
+            ' ', [StringRule::TRIM => false, RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
         ];
 
         yield 'Required value could be false' => [

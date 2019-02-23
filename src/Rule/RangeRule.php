@@ -11,6 +11,18 @@ class RangeRule extends AbstractRule
 {
 
     /**
+     * Specific message error code
+     */
+    public const INVALID_RANGE = 'invalidRange';
+
+    /**#@+
+     * Specific options for RangeRule
+     */
+    public const TRIM = 'trim';
+    public const RANGE = 'range';
+    /**#@-*/
+
+    /**
      * Range values.
      * Default sets to empty array.
      * @var array
@@ -21,7 +33,7 @@ class RangeRule extends AbstractRule
      * Params could have the following structure:
      * [
      *   'required' => {bool:optional},
-     *   'trim' => {bool:optional},
+     *   'trim' => {bool:optional:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'range' => {array:optional:empty array by default}
      * ]
@@ -30,25 +42,29 @@ class RangeRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params[self::RANGE])) {
-            $this->range = $params[self::RANGE];
+        if (isset($params[$this::RANGE])) {
+            $this->range = $params[$this::RANGE];
         }
+
+        $this->messages += [
+            $this::INVALID_RANGE => '%key%: %value% is out of range %range%',
+        ];
     }
 
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! in_array($this->value, $this->range, true)) {
-            return $this->setAndReturnError(self::INVALID_RANGE, [
+            return $this->setAndReturnError($this::INVALID_RANGE, [
                 '%range%' => $this->canonize($this->range)
             ]);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 }

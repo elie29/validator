@@ -10,19 +10,46 @@ namespace Elie\Validator\Rule;
 class JsonRule extends AbstractRule
 {
 
+    /**
+     * Specific message error code
+     */
+    public const INVALID_JSON = 'invalidJsonFormat';
+
+    /**
+     * Specific options for JsonRule
+     */
+    public const TRIM = 'trim';
+
+    /**
+     * Params could have the following structure:
+     * [
+     *   'required' => {bool:optional},
+     *   'trim' => {bool:optional},
+     *   'messages' => {array:optional:key/value message patterns}
+     * ]
+     */
+    public function __construct(string $key, $value, array $params = [])
+    {
+        parent::__construct($key, $value, $params);
+
+        $this->messages += [
+            $this::INVALID_JSON => '%key%: %value% is not a valid json format',
+        ];
+    }
+
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! $this->isValid()) {
-            return $this->setAndReturnError(self::INVALID_JSON);
+            return $this->setAndReturnError($this::INVALID_JSON);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     protected function isValid(): bool

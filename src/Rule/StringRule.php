@@ -10,6 +10,21 @@ namespace Elie\Validator\Rule;
 class StringRule extends AbstractRule
 {
 
+    /**#@+
+     * Specific message error code
+     */
+    public const INVALID_STRING = 'invalidString';
+    public const INVALID_STRING_LENGTH = 'invalidStringLength';
+    /**#@-*/
+
+    /**#@+
+     * Specific options for StringRule
+     */
+    public const TRIM = 'trim';
+    public const MIN = 'min';
+    public const MAX = 'max';
+    /**#@-*/
+
     /**
      * Minimun string length.
      */
@@ -34,24 +49,29 @@ class StringRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params[self::MIN])) {
-            $this->min = (int) $params[self::MIN];
+        if (isset($params[$this::MIN])) {
+            $this->min = (int) $params[$this::MIN];
         }
-        if (isset($params[self::MAX])) {
-            $this->max = (int) $params[self::MAX];
+        if (isset($params[$this::MAX])) {
+            $this->max = (int) $params[$this::MAX];
         }
+
+        $this->messages += [
+            $this::INVALID_STRING => '%key% does not have a string value: %value%',
+            $this::INVALID_STRING_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
+        ];
     }
 
     public function validate(): int
     {
         $run = parent::validate();
 
-        if ($run !== RuleInterface::CHECK) {
+        if ($run !== $this::CHECK) {
             return $run;
         }
 
         if (! is_string($this->value)) {
-            return $this->setAndReturnError(self::INVALID_STRING);
+            return $this->setAndReturnError($this::INVALID_STRING);
         }
 
         return $this->checkMinMax();
@@ -63,12 +83,12 @@ class StringRule extends AbstractRule
         $maxOrLen = $this->max ?: $len;
 
         if ($len < $this->min || $len > $maxOrLen) {
-            return $this->setAndReturnError(self::INVALID_STRING_LENGTH, [
+            return $this->setAndReturnError($this::INVALID_STRING_LENGTH, [
                 '%min%' => $this->min,
                 '%max%' => $this->max,
             ]);
         }
 
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 }

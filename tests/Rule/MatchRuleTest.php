@@ -26,15 +26,15 @@ class MatchRuleTest extends TestCase
     public function getMatchValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', ['pattern' => ''], RuleInterface::VALID, ''
+            '', [MatchRule::PATTERN => ''], RuleInterface::VALID, ''
         ];
 
         yield 'Given value test should be valid' => [
-            'test', ['pattern' => '/^[a-z]+$/'], RuleInterface::VALID, ''
+            'test', [MatchRule::PATTERN => '/^[a-z]+$/'], RuleInterface::VALID, ''
         ];
 
         yield 'Given value test should not be valid' => [
-            'test', ['pattern' => '/^[0-9]+$/'], RuleInterface::ERROR, 'value: test does not match /^[0-9]+$/'
+            'test', [MatchRule::PATTERN => '/^[0-9]+$/'], RuleInterface::ERROR, 'value: test does not match /^[0-9]+$/'
         ];
     }
 }

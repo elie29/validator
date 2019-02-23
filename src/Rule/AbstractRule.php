@@ -41,29 +41,6 @@ abstract class AbstractRule implements RuleInterface
     protected $messages = [
         self::UNDEFINDED_CODE => 'Code message %code% is undefined',
         self::EMPTY_KEY => '%key% is required and should not be empty: %value%',
-        self::INVALID_ARRAY => '%key% does not have an array value: %value%',
-        self::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
-        self::INVALID_BIC_LIMIT => '%key%: %value% has an invalid length',
-        self::INVALID_BIC_UPPER => '%key%: %value% should be uppercase',
-        self::INVALID_BIC_ALNUM => '%key%: %value% should be alphanumeric',
-        self::INVALID_BIC_BC => '%key%: %value% has an invalid bank code',
-        self::INVALID_BIC_CC => '%key%: %value% has an invalid country code',
-        self::INVALID_BOOL => '%key%: %value% is not a valid boolean',
-        self::INVALID_DATE => '%key%: %value% is not a valid date',
-        self::INVALID_DATE_FORMAT => '%key%: %value% does not have a valid format: %format% or separator: %separator%',
-        self::INVALID_COMPARE => '%key%: %value% is not %label% %expected%',
-        self::INVALID_EMAIL => '%key%: %value% is not a valid email',
-        self::INVALID_IP => '%key%: %value% is not a valid IP',
-        self::INVALID_IP_FLAG => 'Filter IP flag: %flag% is not valid',
-        self::INVALID_JSON => '%key%: %value% is not a valid json format',
-        self::INVALID_PATTERN => '%key%: %value% does not match %pattern%',
-        self::INVALID_NUMERIC => '%key%: %value% is not numeric',
-        self::INVALID_NUMERIC_LT => '%key%: %value% is less than %min%',
-        self::INVALID_NUMERIC_GT => '%key%: %value% is greater than %max%',
-        self::INVALID_RANGE => '%key%: %value% is out of range %range%',
-        self::INVALID_STRING => '%key% does not have a string value: %value%',
-        self::INVALID_STRING_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
-        self::INVALID_TIME => '%key%: %value% is not a valid time',
     ];
 
     /**
@@ -78,17 +55,18 @@ abstract class AbstractRule implements RuleInterface
     {
         $this->key = $key;
 
-        if (isset($params[self::REQUIRED])) {
-            $this->required = (bool) $params[self::REQUIRED];
+        if (isset($params[$this::REQUIRED])) {
+            $this->required = (bool) $params[$this::REQUIRED];
         }
 
-        if (isset($params[self::TRIM])) {
-            $this->trim = (bool) $params[self::TRIM];
+        // trim constant is not available in all rules
+        if (isset($params['trim'])) {
+            $this->trim = (bool) $params['trim'];
         }
 
-        if (isset($params[self::MESSAGES])) {
+        if (isset($params[$this::MESSAGES])) {
             // replace existant by given messages
-            $this->messages = array_merge($this->messages, $params[self::MESSAGES]);
+            $this->messages = array_merge($this->messages, $params[$this::MESSAGES]);
         }
 
         $this->setValue($value);
@@ -115,16 +93,16 @@ abstract class AbstractRule implements RuleInterface
 
         if (! $this->isEmpty()) {
             // Value is not empty so keep checking
-            return RuleInterface::CHECK;
+            return $this::CHECK;
         }
 
         if ($this->isRequired()) {
             // Value is empty and required.
-            return $this->setAndReturnError(self::EMPTY_KEY);
+            return $this->setAndReturnError($this::EMPTY_KEY);
         }
 
         // Value is empty but not required.
-        return RuleInterface::VALID;
+        return $this::VALID;
     }
 
     /**
@@ -168,7 +146,7 @@ abstract class AbstractRule implements RuleInterface
      */
     protected function setAndReturnError(string $errorCode, array $replace = []): int
     {
-        $message = $this->messages[$errorCode] ?? $this->messages[self::UNDEFINDED_CODE];
+        $message = $this->messages[$errorCode] ?? $this->messages[$this::UNDEFINDED_CODE];
 
         // + is used to add unexistant keys
         $replace += [
