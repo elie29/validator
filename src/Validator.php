@@ -97,9 +97,9 @@ class Validator implements ValidatorInterface
         return $this;
     }
 
-    public function validate(): bool
+    public function validate(bool $mergeValidatedContext = false): bool
     {
-        $this->validatedContext = [];
+        $this->validatedContext = $mergeValidatedContext ? $this->validatedContext : [];
 
         // All rules supposed OK
         $res = true;
