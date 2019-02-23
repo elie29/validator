@@ -64,10 +64,11 @@ class ArrayRule extends AbstractRule
 
     public function getValue()
     {
-        if (! $this->value) {
-            return [];
+        // don't change value on error or if it is not empty
+        if ($this->value || $this->error) {
+            return $this->value;
         }
-        return $this->value;
+        return [];
     }
 
     public function validate(): int

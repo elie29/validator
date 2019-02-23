@@ -51,7 +51,7 @@ class BooleanRule extends AbstractRule
 
     public function getValue()
     {
-        if ($this->cast) {
+        if ($this->cast && ! $this->error) {
             return (bool) $this->value;
         }
         return $this->value;

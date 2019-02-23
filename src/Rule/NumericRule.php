@@ -78,7 +78,7 @@ class NumericRule extends AbstractRule
 
     public function getValue()
     {
-        if ($this->cast) {
+        if ($this->cast && ! $this->error) {
             // float or int and empty value
             return $this->value ? 0 + $this->value : 0;
         }
