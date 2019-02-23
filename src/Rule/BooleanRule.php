@@ -16,7 +16,7 @@ class BooleanRule extends AbstractRule
     public const INVALID_BOOLEAN = 'invalidBoolean';
 
     /**
-     * Specific option for BicRule
+     * Specific option for BooleanRule
      */
     public const TRIM = 'trim';
 
