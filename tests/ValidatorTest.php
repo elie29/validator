@@ -6,9 +6,12 @@ namespace Elie\Validator;
 
 use Elie\Validator\Rule\ArrayRule;
 use Elie\Validator\Rule\BooleanRule;
+use Elie\Validator\Rule\EmailRule;
+use Elie\Validator\Rule\JsonRule;
 use Elie\Validator\Rule\NumericRule;
 use Elie\Validator\Rule\StringRule;
 use PHPUnit\Framework\TestCase;
+use Elie\Validator\Rule\MatchRule;
 
 class ValidatorTest extends TestCase
 {
@@ -55,6 +58,39 @@ class ValidatorTest extends TestCase
         assertThat($validatedContext, emptyArray());
 
         assertThat($validator->shouldStopOnError(), is(true));
+    }
+
+    public function testValidatorWithPartialValidation(): void
+    {
+        $rules = [
+            ['email', EmailRule::class, EmailRule::REQUIRED => true],
+            ['user', JsonRule::class, JsonRule::REQUIRED => true],
+        ];
+
+        $data = [
+            'email' => 'elie29@gmail.com',
+            'user' => '{"name": "John Doe", "age": 25}',
+        ];
+
+        $validator = new Validator($data, $rules);
+
+        assertThat($validator->validate(), is(true));
+
+        // In order to validate users json context
+        $validator->setRules([
+            ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+            ['age', NumericRule::class, NumericRule::MAX => 80],
+        ]);
+
+        $user = json_decode($validator->getValidatedContext()['user'], true);
+        $validator->setContext($user);
+
+        // Validate and merge context
+        assertThat($validator->validate(true), is(true));
+
+        $validatedPost = $validator->getValidatedContext();
+        assertThat($validatedPost, hasEntry('age', 25));
+        assertThat($validatedPost, hasKey('user'));
     }
 
     public function testValidatorGetImplodedErrors(): void
@@ -105,7 +141,7 @@ class ValidatorTest extends TestCase
             ],
             // expectedResult
             true,
-            // $errorsSize
+            // errorsSize
             0
         ];
 
