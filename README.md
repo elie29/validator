@@ -43,6 +43,7 @@ $validator = new Validator($_POST, $rules, true); // stop processing on error.
 
 $validator->validate(); // bool depends on $_POST content
 ```
+
 ### Available rules ###
 
 1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
@@ -135,6 +136,50 @@ Assert::true($validator->validate(), $validator->getImplodedErrors());
 Assertion::true($validator->validate(), $validator->getImplodedErrors());
 ```
 
+### Partial Validation
+
+Sometimes we need to validate the context partially, several times, because we could have a Json item or
+keys that depend on each others.
+
+The following is an example of a case when $_POST should contains a Json user data:
+
+```php
+$rules = [
+    ['user', JsonRule::class, JsonRule::REQUIRED => true],
+];
+
+$validator = new Validator($_POST, $rules);
+
+Assertion::true($validator->validate()); // this assertion validates that the user is in Json format
+
+$validatedPost = $validator->getValidatedContext();
+
+// But we need to validate user data as well (suppose it should contain name and age):
+
+$rules = [
+    ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+    ['age', NumericRule::class, NumericRule::MAX => 80],
+];
+$validator->setRules($rules);
+
+// Decode user as it is a valid JSON
+$user = json_decode($validatedPost['user'], true);
+$validator->setContext($user); // new context is now user data
+
+Assertion::true($validator->validate()); // this assertion validates user data
+
+/*
+Validate accepts a boolean argument - mergedValidatedContext - which is false by default. If set to true
+$validator->getValidatedContext() would return:
+
+array:4 [▼
+  "email" => "elie29@gmail.com"
+  "user" => "{"name": "John Doe", "age": 25}"
+  "name" => "John Doe"
+  "age" => 25
+]
+*/
+```
 ## Development Prerequisites
 
 ### Text file encoding
