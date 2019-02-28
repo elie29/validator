@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.2 - TBD
+## V1.1.2 - 2019-02-28
 
 ### Added
 
@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#12](https://github.com/elie29/validator/issues/12) StringCleanerRule should not clean string on error.
 
 ## V1.1.1 - 2019-02-28
 

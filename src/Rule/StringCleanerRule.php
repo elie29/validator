@@ -9,7 +9,7 @@ use Elie\Validator\Helper\Text;
 /**
  * This class verifies that a value is a valid string.
  * It calls Text::removeInvisibleChars in order to clean the string
- * after validation.
+ * after validate returns VALID.
  */
 class StringCleanerRule extends StringRule
 {
@@ -19,7 +19,7 @@ class StringCleanerRule extends StringRule
         $value = parent::getValue();
 
         // better in case called before validate
-        if (is_string($value)) {
+        if (! $this->error && is_string($value)) {
             $value = Text::removeInvisibleChars($value);
         }
 
