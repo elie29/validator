@@ -11,22 +11,22 @@ class BooleanRuleTest extends TestCase
 
     public function testValidateEmptyValue(): void
     {
-        // Empty string value.  Value is not required by default!
-        $rule = new BooleanRule('name', '');
+        // Value is not required by default!
+        $rule = new BooleanRule('name', null);
 
         $res = $rule->validate();
 
         assertThat($res, identicalTo(BooleanRule::VALID));
-        assertThat($rule->getValue(), emptyString());
+        assertThat($rule->getValue(), nullValue());
 
-        $rule = new BooleanRule('name', '', [
+        $rule = new BooleanRule('name', null, [
             BooleanRule::CAST => true
         ]);
 
         $res = $rule->validate();
 
         assertThat($res, identicalTo(BooleanRule::VALID));
-        assertThat($rule->getValue(), identicalTo(false));
+        assertThat($rule->getValue(), is(false));
     }
 
     /**
@@ -46,7 +46,7 @@ class BooleanRuleTest extends TestCase
     public function getBooleanValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', BooleanRule::VALID, ''
+            null, BooleanRule::VALID, ''
         ];
 
         yield 'Given value could be 1' => [

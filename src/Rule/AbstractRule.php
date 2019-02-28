@@ -115,6 +115,7 @@ abstract class AbstractRule implements RuleInterface
         if (is_string($value) && $this->trim) {
             $value = trim($value);
         }
+
         $this->value = $value;
     }
 
@@ -130,15 +131,13 @@ abstract class AbstractRule implements RuleInterface
     }
 
     /**
-     * If value is equal to 0 or false, we consider that value is not empty.
+     * Empty value is null or '' only.
      *
      * @return bool
      */
     protected function isEmpty(): bool
     {
-        return $this->value === null ||
-        $this->value === [] ||
-        $this->value === '';
+        return $this->value === null || $this->value === '';
     }
 
     /**

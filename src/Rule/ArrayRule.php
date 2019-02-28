@@ -6,6 +6,7 @@ namespace Elie\Validator\Rule;
 
 /**
  * This class verifies that a value is a valid array.
+ * empty value could be null or []
  */
 class ArrayRule extends AbstractRule
 {
@@ -99,5 +100,15 @@ class ArrayRule extends AbstractRule
         }
 
         return $this::VALID;
+    }
+
+    /**
+     * Empty value is null or [] only.
+     *
+     * @return bool
+     */
+    protected function isEmpty(): bool
+    {
+        return $this->value === null || $this->value === [];
     }
 }
