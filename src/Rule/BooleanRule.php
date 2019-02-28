@@ -80,14 +80,4 @@ class BooleanRule extends AbstractRule
             $val === '0' || $val === '1' ||
             $val === true || $val === false;
     }
-
-    /**
-     * Empty value is null only.
-     *
-     * @return bool
-     */
-    protected function isEmpty(): bool
-    {
-        return $this->value === null;
-    }
 }

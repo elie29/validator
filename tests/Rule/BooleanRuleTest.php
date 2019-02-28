@@ -19,7 +19,7 @@ class BooleanRuleTest extends TestCase
         assertThat($res, identicalTo(BooleanRule::VALID));
         assertThat($rule->getValue(), nullValue());
 
-        $rule = new BooleanRule('name', null, [
+        $rule = new BooleanRule('name', '', [
             BooleanRule::CAST => true
         ]);
 
