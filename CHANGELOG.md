@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.1 - TBD
+## V1.1.1 - 2019-02-28
 
 ### Added
 
@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Changed
 
 - [#10](https://github.com/elie29/validator/issues/10) isEmpty could not be [] for StringRule.
+- [#11](https://github.com/elie29/validator/issues/11) Add StringCleanerRule.
 
 ### Deprecated
 
