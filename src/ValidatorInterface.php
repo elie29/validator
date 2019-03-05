@@ -113,7 +113,7 @@ interface ValidatorInterface
      *
      * keys context will be ignored if they don't have any rule.
      *
-     * @param bool $mergeValidatedContext Merge validated values with existent one.
+     * @param bool $mergeValidatedContext Merge validated values with existing one.
      *  Useful with partial validation
      *
      * @return bool

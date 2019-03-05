@@ -56,7 +56,7 @@ class ArrayRule extends AbstractRule
             $this->max = (int) $params[$this::MAX];
         }
 
-        // + won't replace existent keys set by users
+        // + won't replace existing keys set by users
         $this->messages = $this->messages + [
             $this::INVALID_ARRAY => '%key% does not have an array value: %value%',
             $this::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
