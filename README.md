@@ -22,20 +22,28 @@ A basic example with $_POST
 <?php
 
 use Elie\Validator\Rule\EmailRule;
+use Elie\Validator\Rule\MultipleAndRule;
 use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Rule\RangeRule;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 
 /**
  * A key could have multiple rules
- *  - age could be empty (unexistant, null or '') otherwise NumericRule is applied
  *  - name could not be empty (required and minimum 1 character length)
- *  - email is required and should be a valid email
+ *  - age could be empty (unexistant, null or '') otherwise NumericRule is applied
+ *  - age could be empty or among several values
+ *  - email is required and should be a valid string email
  */
 $rules =[
-    ['age', NumericRule::class, NumericRule::MAX => 60],
     ['name', StringRule::class, StringRule::MIN => 1, StringRule::REQUIRED => true],
-    ['email', EmailRule::class, EmailRule::REQUIRED => true],
+    ['age', NumericRule::class, NumericRule::MAX => 60],
+    ['age', RangeRule::class, RangeRule::RANGE => [30, 40, 50]],
+    // Use composition instead of valdiate the key twice
+    ['email', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
+        [StringRule::class, StringRule::MAX => 255],
+        [EmailRule::class],
+    ]],
 ];
 
 $validator = new Validator($_POST, $rules, true); // stop processing on error.
