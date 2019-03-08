@@ -8,10 +8,13 @@ use Elie\Validator\Rule\ArrayRule;
 use Elie\Validator\Rule\BooleanRule;
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\JsonRule;
+use Elie\Validator\Rule\MatchRule;
+use Elie\Validator\Rule\MultipleAndRule;
+use Elie\Validator\Rule\MultipleOrRule;
 use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Rule\RangeRule;
 use Elie\Validator\Rule\StringRule;
 use PHPUnit\Framework\TestCase;
-use Elie\Validator\Rule\MatchRule;
 
 class ValidatorTest extends TestCase
 {
@@ -142,6 +145,34 @@ class ValidatorTest extends TestCase
             // expectedResult
             true,
             // errorsSize
+            0
+        ];
+
+        yield 'Validate with multiple and rule' => [
+            [
+                'age' => 25,
+            ],
+            [
+                ['age', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
+                    [NumericRule::class, NumericRule::MIN => 14],
+                    [RangeRule::class, RangeRule::RANGE => [25, 26]],
+                ]]
+            ],
+            true,
+            0
+        ];
+
+        yield 'Validate with multiple or rule' => [
+            [
+                'foo' => 'bar',
+            ],
+            [
+                ['foo', MultipleOrRule::class, MultipleOrRule::REQUIRED => true, MultipleOrRule::RULES => [
+                    [NumericRule::class, NumericRule::MIN => 14],
+                    [StringRule::class, StringRule::MIN => 1],
+                ]]
+            ],
+            true,
             0
         ];
 
