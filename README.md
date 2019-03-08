@@ -39,7 +39,7 @@ $rules =[
     ['name', StringRule::class, StringRule::MIN => 1, StringRule::REQUIRED => true],
     ['age', NumericRule::class, NumericRule::MAX => 60],
     ['age', RangeRule::class, RangeRule::RANGE => [30, 40, 50]],
-    // Use composition instead of valdiate the key twice
+    // Use composition instead of valdating the key twice
     ['email', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
         [StringRule::class, StringRule::MAX => 255],
         [EmailRule::class],
