@@ -56,6 +56,8 @@ $validator->validate(); // bool depends on $_POST content
 1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
 1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php) accepts `decode` option
 1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php) requires `pattern` option.
+1. [MultipleAndRule](https://github.com/elie29/validator/blob/master/src/Rule/MultipleAndRule.php) requires `rules` option.
+1. [MultipleOrRule](https://github.com/elie29/validator/blob/master/src/Rule/MultipleOrRule.php) requires `rules` option.
 1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts `min`, `max` and `cast` options.
 1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php) accepts `range` option.
 1. [StringRule](https://github.com/elie29/validator/blob/master/src/Rule/StringRule.php) accepts `min` and `max` options.
