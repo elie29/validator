@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.6 - 2019-03-09
+## V1.1.7 - TBD
 
 ### Added
 
@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Fix typographical mistake in readme.
+- Nothing.
 
 ## V1.1.5 - 2019-03-09
 
