@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.5 - TBD
+## V1.1.5 - 2019-03-09
 
 ### Added
 
@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#15](https://github.com/elie29/validator/issues/15) Replace canonize by stringfiy.
 
 ### Deprecated
 
