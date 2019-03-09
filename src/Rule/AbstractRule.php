@@ -150,7 +150,7 @@ abstract class AbstractRule implements RuleInterface
         // + is used to add unexistant keys
         $replace += [
             '%key%'   => $this->key,
-            '%value%' => $this->canonize($this->value),
+            '%value%' => $this->stringify($this->value),
             '%code%'  => $errorCode,
         ];
 
@@ -159,7 +159,7 @@ abstract class AbstractRule implements RuleInterface
         return RuleInterface::ERROR;
     }
 
-    protected function canonize($value): string
+    protected function stringify($value): string
     {
         if (is_object($value) && ! in_array('__toString', get_class_methods($value))) {
             return get_class($value) . ' object';
@@ -167,6 +167,19 @@ abstract class AbstractRule implements RuleInterface
 
         if (is_array($value)) {
             return str_replace(["\n", "\r"], '', var_export($value, true));
+        }
+
+        return $this->fromScalar($value);
+    }
+
+    protected function fromScalar($value): string
+    {
+        if (is_bool($value)) {
+            return $value ? '<TRUE>' : '<FALSE>';
+        }
+
+        if (null === $value) {
+            return '<NULL>';
         }
 
         return (string) $value;

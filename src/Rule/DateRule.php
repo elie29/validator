@@ -131,7 +131,7 @@ class DateRule extends AbstractRule
         }
 
         return $this->setAndReturnError($codeError, [
-            '%format%' => $this->canonize($this->format),
+            '%format%' => $this->stringify($this->format),
             '%separator%' => $this->separator
         ]);
     }

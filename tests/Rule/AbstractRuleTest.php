@@ -68,7 +68,8 @@ class AbstractRuleTest extends TestCase
         ];
 
         yield 'Required value should not be null' => [
-            null, [RuleInterface::REQUIRED => true], 'key is required and should not be empty: ', RuleInterface::ERROR
+            null, [RuleInterface::REQUIRED => true], 'key is required and should not be empty: <NULL>',
+            RuleInterface::ERROR
         ];
     }
 }

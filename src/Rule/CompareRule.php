@@ -63,7 +63,7 @@ class CompareRule extends AbstractRule implements CompareConstants
         if (! $this->$method()) {
             return $this->setAndReturnError($this::INVALID_COMPARE, [
                 '%label%' => $this::SIGNS[$this->sign],
-                '%expected%' => $this->canonize($this->expected)
+                '%expected%' => $this->stringify($this->expected)
             ]);
         }
 
