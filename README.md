@@ -81,18 +81,24 @@ You need to implement [RuleInterface](https://github.com/elie29/validator/blob/m
 
 use Elie\Validator\Rule\AbstractRule;
 
-class XXXRule extends AbstractRule
+class MyValueRule extends AbstractRule
 {
 
-    public const INVALID_XXX = 'invalidXXX';
+    public const INVALID_MY_VALUE = 'invalidMyValue';
+
+    protected $my_value = null;
 
     public function __construct(string $key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
+        if (isset($params['my_value'])) {
+            $this->key = $params['my_value'];
+        }
+
         // + in order to add unexistant key
         $this->messages += [
-            self::INVALID_XXX => '%key%: %value% my message %new_key%'
+            $this::INVALID_MY_VALUE => '%key%: %value% my message %my_value%'
         ];
     }
 
@@ -104,9 +110,9 @@ class XXXRule extends AbstractRule
             return $run;
         }
 
-        if ($any_invalid_condition) {
-            return $this->setAndReturnError($this::INVALID_XXX, [
-                '%new_key%' => 'my_key'
+        if ($this->value !== $this->my_value) {
+            return $this->setAndReturnError($this::INVALID_MY_VALUE, [
+                '%my_value%' => $this->stringify($this->my_value)
             ]);
         }
 
