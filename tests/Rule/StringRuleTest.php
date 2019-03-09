@@ -37,8 +37,12 @@ class StringRuleTest extends TestCase
             'Simon ', [StringRule::MIN => 3], RuleInterface::VALID, ''
         ];
 
-        yield 'Given value should be a string' => [
+        yield 'Given value should be a string not number' => [
             25, [], RuleInterface::ERROR, 'name does not have a string value: 25'
+        ];
+
+        yield 'Given value should be a string not boolean' => [
+            false, [], RuleInterface::ERROR, 'name does not have a string value: <FALSE>'
         ];
 
         yield 'Given value is not between 4 and 8 characters' => [
