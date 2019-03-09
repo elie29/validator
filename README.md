@@ -93,7 +93,7 @@ class MyValueRule extends AbstractRule
         parent::__construct($key, $value, $params);
 
         if (isset($params['my_value'])) {
-            $this->key = $params['my_value'];
+            $this->my_value = $params['my_value'];
         }
 
         // + in order to add unexistant key
