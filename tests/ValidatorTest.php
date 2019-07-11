@@ -115,6 +115,31 @@ class ValidatorTest extends TestCase
         assertThat($validator->getImplodedErrors(','), is($expected));
     }
 
+    public function testExisitingKeysOnlyShouldBeAppendToTheValidatedContext(): void
+    {
+        $validator = new Validator(
+            // Context
+            ['name' => 'John', 'address' => null],
+            // Rules
+            [
+                ['name', StringRule::class],
+                ['address', StringRule::class],
+                ['age', NumericRule::class],
+            ]
+        );
+
+        $validator->appendExistingItemsOnly(true);
+
+        $res = $validator->validate();
+        assertThat($res, is(true));
+
+        $validatedContext = $validator->getValidatedContext();
+
+        assertThat($validatedContext, hasKey('name'));
+        assertThat($validatedContext, hasKey('address'));
+        assertThat($validatedContext, not(hasKey('age')));
+    }
+
     /**
      * @dataProvider getValidatorProvider
      */
