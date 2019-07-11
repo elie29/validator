@@ -71,6 +71,12 @@ interface ValidatorInterface
     public function getRules(): array;
 
     /**
+     * @param bool $value True, append only found keys in the context to the validated context.
+     * Defaults to false, so all keys set in the rules will be added to the validated context.
+     */
+    public function appendExistingItemsOnly(bool $value);
+
+    /**
      * Return all errors found.
      *
      * @return array

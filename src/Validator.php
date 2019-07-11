@@ -35,6 +35,14 @@ class Validator implements ValidatorInterface
     protected $stopOnError = false;
 
     /**
+     * Defaults to false, meaning that validation
+     * will append the key to the validated context if
+     * it is not found.
+     * @var bool
+     */
+    protected $appendExistingItemOnly = false;
+
+    /**
      * Contains the error(s) found during rules validation.
      * @var array
      */
@@ -68,6 +76,13 @@ class Validator implements ValidatorInterface
     public function getRules(): array
     {
         return $this->rules;
+    }
+
+    public function appendExistingItemsOnly(bool $choice): self
+    {
+        $this->appendExistingItemOnly = $choice;
+        // Keep chaining
+        return $this;
     }
 
     public function getErrors(): array
@@ -109,7 +124,7 @@ class Validator implements ValidatorInterface
             $rule = $this->resolve($ruleValue);
 
             if ($rule->validate() !== RuleInterface::ERROR) {
-                $this->validatedContext[$rule->getKey()] = $rule->getValue();
+                $this->addKeyToValidatedContext($rule);
                 continue;
             }
 
@@ -132,5 +147,16 @@ class Validator implements ValidatorInterface
         $class = $rule[1];
 
         return new $class($key, $this->get($key), $rule);
+    }
+
+    protected function addKeyToValidatedContext(RuleInterface $rule): void
+    {
+        $key = $rule->getKey();
+
+        if ($this->appendExistingItemOnly && ! array_key_exists($key, $this->context)) {
+            return;
+        }
+
+        $this->validatedContext[$key] = $rule->getValue();
     }
 }
