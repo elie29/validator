@@ -7,7 +7,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#16](https://github.com/elie29/validator/issues/16) Do not append none existing item.
 
 ### Changed
 

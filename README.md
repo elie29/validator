@@ -121,6 +121,14 @@ class MyValueRule extends AbstractRule
 }
 ```
 
+## Validated Context
+
+Once validate is called, we can use validatedContext method in order to retrieve all validated values from the original
+context.
+
+By default, all keys set in the rules array will be found in the validatedContext array. However, if we don't want to append
+non existing keys, we should call appendExistingItemsOnly(true) before validation.
+
 ## Assertion Integration
 
 Instead of using assertion key by key, you can validate the whole context and than use [Assertion](https://github.com/beberlei/assert) or [Assert](https://github.com/webmozart/assert) as follow:
