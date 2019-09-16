@@ -95,7 +95,7 @@ class Validator implements ValidatorInterface
         return implode($separator, $this->errors);
     }
 
-    public function get(string $key)
+    public function get($key)
     {
         return $this->context[$key] ?? null;
     }
@@ -142,7 +142,7 @@ class Validator implements ValidatorInterface
     protected function resolve(array $rule): RuleInterface
     {
         // The first element must be the key context
-        $key = $rule[0];
+        $key = (string) $rule[0];
         // The second element must be the class valdiator name
         $class = $rule[1];
 

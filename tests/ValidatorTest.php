@@ -211,5 +211,17 @@ class ValidatorTest extends TestCase
             false,
             1
         ];
+        yield 'Key with numeric value' => [
+            [
+                0 => 25,
+                1 => 'Test',
+            ],
+            [
+                [0, NumericRule::class, 'min' => 22, 'max' => 65],
+                [1, StringRule::class, 'min' => 0, 'max' => 10],
+            ],
+            true,
+            0
+        ];
     }
 }

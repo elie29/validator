@@ -93,11 +93,11 @@ interface ValidatorInterface
     /**
      * Retrieves the value of a requested key from the {@link context}.
      *
-     * @param string $key Key to be get.
+     * @param string|int $key Key to be get.
      *
      * @return mixed|null The retrieved value.
      */
-    public function get(string $key);
+    public function get($key);
 
     /**
      * Whether to stop on error or not.
