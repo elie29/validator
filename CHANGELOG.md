@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.8 - TBD
+## V1.1.8 - 2019-09-16
 
 ### Added
 
@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#17](https://github.com/elie29/validator/issues/17) Accept rules for indexed context.
 
 ### Deprecated
 
