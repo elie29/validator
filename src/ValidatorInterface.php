@@ -27,7 +27,7 @@ interface ValidatorInterface
     /**
      * Add a new context to be validated.
      *
-     * @param array $context Associative array containing a list of
+     * @param array $context Array containing a list of
      *     values to be validated such as a post or get or any information.
      *
      * @return ValidatorInterface
