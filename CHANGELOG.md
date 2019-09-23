@@ -23,7 +23,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#18](https://github.com/elie29/validator/issues/18) MultipleAndRule returns empty error.
 
 ## V1.1.8 - 2019-09-16
 
