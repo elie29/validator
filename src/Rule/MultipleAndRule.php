@@ -59,9 +59,12 @@ class MultipleAndRule extends AbstractRule
 
     protected function isValid(): int
     {
+        $this->error = '';
+
         foreach ($this->rules as $rule) {
             $class = $this->resolve($rule);
             if ($class->validate() === RuleInterface::ERROR) {
+                $this->error = $class->getError();
                 return RuleInterface::ERROR;
             }
         }

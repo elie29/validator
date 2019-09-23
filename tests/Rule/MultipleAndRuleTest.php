@@ -57,6 +57,6 @@ class MultipleAndRuleTest extends TestCase
 
         assertThat($res, identicalTo(RuleInterface::ERROR));
 
-        assertThat($rule->getError(), is(emptyString()));
+        assertThat($rule->getError(), is(identicalTo('name: foo is not a valid email')));
     }
 }
