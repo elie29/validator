@@ -51,6 +51,13 @@ abstract class AbstractRule implements RuleInterface
      */
     protected $required = false;
 
+    /**
+     * Default constructor to set common params.
+     *
+     * @param string $key Key is used in the error message.
+     * @param mixed $value Value to be validated.
+     * @param array $params Default params.
+     */
     public function __construct(string $key, $value, array $params = [])
     {
         $this->key = $key;
