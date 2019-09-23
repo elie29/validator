@@ -53,7 +53,7 @@ $validator->validate(); // bool depends on $_POST content
 
 ### Available rules ###
 
-1. [All Rulles](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
+1. [All Rules](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
  `required` is false by default while `trim` is true.
 1. [ArrayRule](https://github.com/elie29/validator/blob/master/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to empty array [].
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
