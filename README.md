@@ -58,6 +58,7 @@ $validator->validate(); // bool depends on $_POST content
 1. [ArrayRule](https://github.com/elie29/validator/blob/master/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to empty array [].
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php) accepts `cast` option.
+1. [ChoicesRule](https://github.com/elie29/validator/blob/master/src/Rule/ChoicesRule.php) accepts `list` option.
 1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/blob/master/src/Rule/CompareConstants.php) by default, `expected` is null by default.
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
