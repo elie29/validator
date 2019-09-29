@@ -3,7 +3,7 @@ Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V1.1.10 - TBD
+## V2.0.0 - 2019-09-29
 
 ### Added
 
@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#20](https://github.com/elie29/validator/i:qssues/20) Update composer [BC].
 
 ### Deprecated
 
