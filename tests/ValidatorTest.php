@@ -115,7 +115,7 @@ class ValidatorTest extends TestCase
         assertThat($validator->getImplodedErrors(','), is($expected));
     }
 
-    public function testExisitingKeysOnlyShouldBeAppendToTheValidatedContext(): void
+    public function testExistingKeysOnlyShouldBeAppendToTheValidatedContext(): void
     {
         $validator = new Validator(
             // Context

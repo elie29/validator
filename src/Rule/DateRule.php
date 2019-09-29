@@ -52,7 +52,7 @@ class DateRule extends AbstractRule
     protected $format = ['dd/mm/yyyy'];
 
     /**
-     * Accepted seperators for a date.
+     * Accepted separators for a date.
      * comma, dash, dot and slash.
      * @var string
      */
@@ -137,10 +137,10 @@ class DateRule extends AbstractRule
     }
 
     /**
-     * Validate a Gregorian date according to sparator and format options.
+     * Validate a Gregorian date according to separator and format options.
      * <code>
-     *    DateRule::checkDate('[/]', 'dd/mm/yyyyy', '27/02/2017'); // returns null<br/>
-     *    DateRule::checkDate('[/]', 'dd/mm/yyyyy', '29/02/2017'); // returns INVALID_DATE<br/>
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '27/02/2017'); // returns null<br/>
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '29/02/2017'); // returns INVALID_DATE<br/>
      * </code>
      *
      * @return string|NULL Null if date is valid otherwise INVALID_DATE|INVALID_DATE_FORMAT

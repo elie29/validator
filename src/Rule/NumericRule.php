@@ -28,7 +28,7 @@ class NumericRule extends AbstractRule
     /**#@-*/
 
     /**
-     * Minimun value.
+     * Minimum value.
      */
     protected $min = null;
 

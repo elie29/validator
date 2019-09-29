@@ -75,7 +75,7 @@ class NumericRuleTest extends TestCase
             '21', [NumericRule::MIN => 24, NumericRule::MAX => 29], RuleInterface::ERROR, 'age: 21 is less than 24'
         ];
 
-        yield 'Given value is greated than 29' => [
+        yield 'Given value is greater than 29' => [
             '30', [NumericRule::MIN => 24, NumericRule::MAX => 29], RuleInterface::ERROR, 'age: 30 is greater than 29'
         ];
 

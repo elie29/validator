@@ -16,7 +16,7 @@ class Validator implements ValidatorInterface
     protected $context = [];
 
     /**
-     * Validated coontext.
+     * Validated context.
      * @var array
      */
     protected $validatedContext = [];

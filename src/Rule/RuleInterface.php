@@ -18,7 +18,7 @@ interface RuleInterface
     /**#@+
      * Supported error message code for all rules
      */
-    public const UNDEFINDED_CODE = 'undefindedCode';
+    public const UNDEFINED_CODE = 'undefinedCode';
     public const EMPTY_KEY = 'emptyKey';
     /**#@-*/
 

@@ -4,8 +4,6 @@ declare(strict_types = 1);
 
 namespace Elie\Validator\Rule;
 
-use Elie\Validator\Rule\RuleInterface;
-
 abstract class AbstractRule implements RuleInterface
 {
 
@@ -39,8 +37,8 @@ abstract class AbstractRule implements RuleInterface
      * @var array
      */
     protected $messages = [
-        self::UNDEFINDED_CODE => 'Code message %code% is undefined',
-        self::EMPTY_KEY => '%key% is required and should not be empty: %value%',
+        self::UNDEFINED_CODE => 'Code message %code% is undefined',
+        self::EMPTY_KEY      => '%key% is required and should not be empty: %value%',
     ];
 
     /**
@@ -72,7 +70,7 @@ abstract class AbstractRule implements RuleInterface
         }
 
         if (isset($params[$this::MESSAGES])) {
-            // replace existant by given messages
+            // replace existent by given messages
             $this->messages = array_merge($this->messages, $params[$this::MESSAGES]);
         }
 
@@ -152,9 +150,9 @@ abstract class AbstractRule implements RuleInterface
      */
     protected function setAndReturnError(string $errorCode, array $replace = []): int
     {
-        $message = $this->messages[$errorCode] ?? $this->messages[$this::UNDEFINDED_CODE];
+        $message = $this->messages[$errorCode] ?? $this->messages[$this::UNDEFINED_CODE];
 
-        // + is used to add unexistant keys
+        // + is used to add non existent keys
         $replace += [
             '%key%'   => $this->key,
             '%value%' => $this->stringify($this->value),

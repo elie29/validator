@@ -26,7 +26,7 @@ class ArrayRule extends AbstractRule
     /**#@-*/
 
     /**
-     * Minimun size.
+     * Minimum size.
      */
     protected $min = 0;
 

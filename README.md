@@ -31,7 +31,7 @@ use Elie\Validator\Validator;
 /**
  * A key could have multiple rules
  *  - name could not be empty (required and minimum 1 character length)
- *  - age could be empty (unexistant, null or '') otherwise NumericRule is applied
+ *  - age could be empty (non existent, null or '') otherwise NumericRule is applied
  *  - age could be empty or among several values
  *  - email is required and should be a valid string email
  */
@@ -39,7 +39,7 @@ $rules =[
     ['name', StringRule::class, StringRule::MIN => 1, StringRule::REQUIRED => true],
     ['age', NumericRule::class, NumericRule::MAX => 60],
     ['age', RangeRule::class, RangeRule::RANGE => [30, 40, 50]],
-    // Use composition instead of valdating the key twice
+    // Use composition instead of validating the key twice
     ['email', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
         [StringRule::class, StringRule::MAX => 255],
         [EmailRule::class],
@@ -97,7 +97,7 @@ class MyValueRule extends AbstractRule
             $this->my_value = $params['my_value'];
         }
 
-        // + in order to add unexistant key
+        // + in order to add non existent key
         $this->messages += [
             $this::INVALID_MY_VALUE => '%key%: %value% my message %my_value%'
         ];

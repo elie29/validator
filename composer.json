@@ -20,7 +20,8 @@
       "source": "https://github.com/elie29/validator"
    },
    "require": {
-      "php": "^7.1"
+      "php": "^7.1",
+     "ext-json": "*"
    },
    "require-dev": {
       "mockery/mockery": "^1.2",

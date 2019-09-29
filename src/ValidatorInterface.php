@@ -86,6 +86,8 @@ interface ValidatorInterface
     /**
      * Return all errors found.
      *
+     * @param string $separator Default separator is <br/>.
+     *
      * @return string
      */
     public function getImplodedErrors(string $separator = '<br/>'): string;
@@ -108,6 +110,8 @@ interface ValidatorInterface
 
     /**
      * Change stopOnError value.
+     *
+     * @param bool $stopOnError Stop validation when a first error occurs.
      *
      * @return ValidatorInterface
      */
