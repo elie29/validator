@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Elie\Validator\Rule;
 
 /**
- * This class verifies that a value through a callable function.
+ * This class verifies that a value is valid through a callable function.
  */
 class CallableRule extends AbstractRule
 {
