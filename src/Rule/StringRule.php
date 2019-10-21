@@ -26,7 +26,7 @@ class StringRule extends AbstractRule
     /**#@-*/
 
     /**
-     * Minimun string length.
+     * Minimum string length.
      */
     protected $min = 0;
 

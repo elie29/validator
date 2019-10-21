@@ -143,7 +143,7 @@ class Validator implements ValidatorInterface
     {
         // The first element must be the key context
         $key = (string) $rule[0];
-        // The second element must be the class valdiator name
+        // The second element must be the class validator name
         $class = $rule[1];
 
         return new $class($key, $this->get($key), $rule);

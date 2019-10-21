@@ -37,7 +37,7 @@ interface CompareConstants
     /**
      * Specific message error code
      */
-    public const INVALID_COMPARE = 'invalidComprare';
+    public const INVALID_COMPARE = 'invalidCompare';
 
     /**#@+
      * Specific options for CompareRule
