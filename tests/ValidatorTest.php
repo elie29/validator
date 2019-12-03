@@ -223,5 +223,17 @@ class ValidatorTest extends TestCase
             true,
             0
         ];
+        yield 'Key with index context' => [
+            [
+                28,
+                'Test2',
+            ],
+            [
+                [0, NumericRule::class, 'min' => 22, 'max' => 65],
+                [1, StringRule::class, 'min' => 0, 'max' => 10],
+            ],
+            true,
+            0
+        ];
     }
 }
