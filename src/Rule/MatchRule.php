@@ -38,7 +38,7 @@ class MatchRule extends AbstractRule
      *   'pattern' => {string:required}
      * ]
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 

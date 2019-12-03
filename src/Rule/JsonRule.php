@@ -35,7 +35,7 @@ class JsonRule extends AbstractRule
      *   'decode' => {bool:optional:false by default:decode the value}
      * ]
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 

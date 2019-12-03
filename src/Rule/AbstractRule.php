@@ -8,7 +8,7 @@ abstract class AbstractRule implements RuleInterface
 {
 
     /**
-     * @var string
+     * @var int|string
      */
     protected $key;
 
@@ -52,11 +52,11 @@ abstract class AbstractRule implements RuleInterface
     /**
      * Default constructor to set common params.
      *
-     * @param string $key Key is used in the error message.
+     * @param int|string $key Key is used in the error message.
      * @param mixed $value Value to be validated.
      * @param array $params Default params.
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         $this->key = $key;
 
@@ -77,7 +77,7 @@ abstract class AbstractRule implements RuleInterface
         $this->setValue($value);
     }
 
-    public function getKey(): string
+    public function getKey()
     {
         return $this->key;
     }

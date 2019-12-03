@@ -38,7 +38,7 @@ class IpRule extends AbstractRule
      *   'flag' => {int:optional:FILTER_FLAG_IPV4 by default}
      * ]
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 

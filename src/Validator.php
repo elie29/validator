@@ -142,7 +142,7 @@ class Validator implements ValidatorInterface
     protected function resolve(array $rule): RuleInterface
     {
         // The first element must be the key context
-        $key = (string) $rule[0];
+        $key = $rule[0];
         // The second element must be the class validator name
         $class = $rule[1];
 

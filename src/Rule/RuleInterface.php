@@ -32,7 +32,7 @@ interface RuleInterface
     /**
      * Verify that value is valid.
      *
-     * @param string $key Context key.
+     * @param int|string $key Context key.
      * @param mixed $value Value to be tested.
      * @param array  $params Rule could be parameterized.
      *
@@ -43,7 +43,7 @@ interface RuleInterface
      *    'messages' => {array:optional:key/value message patterns}
      * ]
      */
-    public function __construct(string $key, $value, array $params = []);
+    public function __construct($key, $value, array $params = []);
 
     /**
      * Runs the rule and returns the result.
@@ -64,9 +64,9 @@ interface RuleInterface
     /**
      * Retrieve the key.
      *
-     * @return string
+     * @return int|string
      */
-    public function getKey(): string;
+    public function getKey();
 
     /**
      * Retrieve the value. Value will be trimmed

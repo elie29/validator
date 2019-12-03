@@ -68,7 +68,7 @@ class DateRule extends AbstractRule
      *   'separator'=>{string:optional:(,-./) by default}
      * ]
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 

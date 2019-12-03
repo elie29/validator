@@ -37,7 +37,7 @@ class MultipleAndRule extends AbstractRule
      *
      * Value is considered valid if 'rules' is empty
      */
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct($key, $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
