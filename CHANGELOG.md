@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#23](https://github.com/elie29/validator/issues/23) Make setValue public.
 
 ### Deprecated
 
