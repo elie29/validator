@@ -4,16 +4,11 @@ declare(strict_types = 1);
 
 namespace Elie\Validator\Rule;
 
+use Elie\Validator\Rule\Stub\StubAbstractRule;
 use PHPUnit\Framework\TestCase;
 
 class AbstractRuleTest extends TestCase
 {
-
-    protected function tearDown(): void
-    {
-        \Mockery::close();
-        parent::tearDown();
-    }
 
     /**
      * @dataProvider getValueProvider
@@ -21,8 +16,7 @@ class AbstractRuleTest extends TestCase
     public function testValidateEmptyCases($value, $params, $expectedError, $expectedResult): void
     {
         /*@var $rule RuleInterface */
-        $rule = \Mockery::mock(AbstractRule::class, ['key', $value, $params])
-            ->makePartial();
+        $rule = new StubAbstractRule('key', $value, $params);
 
         $res = $rule->validate();
         assertThat($res, identicalTo($expectedResult));
@@ -36,8 +30,7 @@ class AbstractRuleTest extends TestCase
     public function testValidatorValue(): void
     {
         /*@var $rule RuleInterface */
-        $rule = \Mockery::mock(AbstractRule::class, ['key', ' '])
-            ->makePartial();
+        $rule = new StubAbstractRule('key', ' ', []);
 
         $res = $rule->validate();
         assertThat($res, identicalTo(RuleInterface::VALID));

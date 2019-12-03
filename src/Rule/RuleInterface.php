@@ -75,4 +75,13 @@ interface RuleInterface
      * @return mixed
      */
     public function getValue();
+
+    /**
+     * Set value properly.
+     *
+     * @param mixed $value
+     *
+     * @return void
+     */
+    public function setValue($value);
 }

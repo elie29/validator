@@ -110,12 +110,7 @@ abstract class AbstractRule implements RuleInterface
         return $this::VALID;
     }
 
-    /**
-     * Set value properly.
-     *
-     * @param mixed $value
-     */
-    protected function setValue($value): void
+    public function setValue($value): void
     {
         if (is_string($value) && $this->trim) {
             $value = trim($value);
