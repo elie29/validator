@@ -32,8 +32,12 @@ class CallableRuleTest extends TestCase
         ];
 
         yield 'Given value should be validated through a callable' => [
-            '102', [CallableRule::CALLABLE => function ($key, $value): bool {
-                return $value === '102';
+            '102', [CallableRule::CALLABLE => function ($key, $value, CallableRule $rule): bool {
+                if ($value === '102') {
+                    $rule->setValue(102);
+                    return true;
+                }
+                return false;
             }], CallableRule::VALID, ''
         ];
 

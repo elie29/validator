@@ -31,7 +31,7 @@ class CallableRule extends AbstractRule
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
-     *   'callable' => {callable:required:should receive key/value and return boolean}
+     *   'callable' => {callable:required:should receive key/value/CallableRule and return boolean}
      * ]
      */
     public function __construct(string $key, $value, array $params = [])
@@ -55,7 +55,7 @@ class CallableRule extends AbstractRule
 
         $callable = $this->callable;
 
-        if (! $callable($this->key, $this->value)) {
+        if (! $callable($this->key, $this->value, $this)) {
             return $this->setAndReturnError($this::INVALID_CALLABLE_CHECK);
         }
 
