@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file, in reverse 
 ### Changed
 
 - [#23](https://github.com/elie29/validator/issues/23) Make setValue public.
+- [#24](https://github.com/elie29/validator/issues/24) Pass CallableRule to the Callable function.
 
 ### Deprecated
 
