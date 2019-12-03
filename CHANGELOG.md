@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#26](https://github.com/elie29/validator/issues/26) In all rules, key should be mixed.
 
 ### Deprecated
 
