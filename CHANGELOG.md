@@ -1,5 +1,4 @@
-Changelog
-=========
+# Changelog
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
@@ -11,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#25](https://github.com/elie29/validator/issues/25) PHP 7.4 migration [Only for travis, code is still 7.1 compliant].
 
 ### Deprecated
 

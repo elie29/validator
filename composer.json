@@ -1,66 +1,66 @@
 {
-   "name": "elie29/validator",
-   "description": "A library for validating a context (POST, GET etc...) by running given rules.",
-   "type": "library",
-   "license": "MIT",
-   "minimum-stability": "stable",
-   "keywords": [
-      "validator",
-      "php",
-      "rules"
-   ],
-   "authors": [
-      {
-         "name": "Elie NEHME",
-         "email": "elie29@gmail.com"
-      }
-   ],
-   "support": {
-      "issues": "https://github.com/elie29/validator/issues",
-      "source": "https://github.com/elie29/validator"
-   },
-   "require": {
-      "php": "^7.1",
-     "ext-json": "*"
-   },
-   "require-dev": {
-      "mockery/mockery": "^1.2",
-      "phpstan/phpstan": "^0.11.2",
-      "phpstan/phpstan-mockery": "^0.11.0",
-      "phpunit/phpunit": "^7.5",
-      "zendframework/zend-coding-standard": "^1.0"
-   },
-   "autoload": {
-      "psr-4": {
-         "Elie\\Validator\\": "src"
-      }
-   },
-   "autoload-dev": {
-      "files": [
-         "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-      ],
-      "psr-4": {
-         "Elie\\Validator\\": "tests"
-      }
-   },
-   "config": {
-      "sort-packages": true
-   },
-   "scripts": {
-      "check": [
-         "@clean",
-         "@cs-check",
-         "@test",
-         "@phpstan"
-      ],
-      "phpstan": "phpstan analyse src tests --error-format=checkstyle > build/phpstan.xml || true",
-      "cs-check": "phpcs",
-      "cs-fix": "phpcbf",
-      "test": "phpunit",
-      "test-coverage": "phpunit --coverage-clover clover.xml",
-      "clean": [
-         "rm -rf build/*",
-         "rm -f clover.xml"
-      ]
-   }
+  "name": "elie29/validator",
+  "description": "A library for validating a context (POST, GET etc...) by running given rules.",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "stable",
+  "keywords": [
+    "validator",
+    "php",
+    "rules"
+  ],
+  "authors": [
+    {
+      "name": "Elie NEHME",
+      "email": "elie29@gmail.com"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/elie29/validator/issues",
+    "source": "https://github.com/elie29/validator"
+  },
+  "require": {
+    "php": "^7.1",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "mockery/mockery": "^1.2",
+    "phpstan/phpstan": "^0.12.0",
+    "phpstan/phpstan-mockery": "^0.12.0",
+    "phpunit/phpunit": "^8.4",
+    "zendframework/zend-coding-standard": "^1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Elie\\Validator\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "files": [
+      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
+    ],
+    "psr-4": {
+      "Elie\\Validator\\": "tests"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "check": [
+      "@clean",
+      "@cs-check",
+      "@test",
+      "@phpstan"
+    ],
+    "phpstan": "phpstan analyse src tests --error-format=checkstyle > build/phpstan.xml || true",
+    "cs-check": "phpcs",
+    "cs-fix": "phpcbf",
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-clover clover.xml",
+    "clean": [
+      "rm -rf build/*",
+      "rm -f clover.xml"
+    ]
+  }
 }

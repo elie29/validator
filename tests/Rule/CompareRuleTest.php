@@ -71,7 +71,7 @@ class CompareRuleTest extends TestCase
             '5', [CompareRule::SIGN => CompareRule::GTE, CompareRule::EXPECTED => '5'], CompareRule::VALID, ''
         ];
 
-        yield 'Given value should be geater or equal to 5' => [
+        yield 'Given value should not be less than 5' => [
             '2', [CompareRule::SIGN => CompareRule::GTE, CompareRule::EXPECTED => '5'],
                 CompareRule::ERROR, 'name: 2 is not greater or equal to 5'
         ];
