@@ -6,6 +6,7 @@ namespace Elie\Validator;
 
 use Elie\Validator\Rule\ArrayRule;
 use Elie\Validator\Rule\BooleanRule;
+use Elie\Validator\Rule\CollectionRule;
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\JsonRule;
 use Elie\Validator\Rule\MatchRule;
@@ -131,6 +132,34 @@ class ValidatorTest extends TestCase
         }
 
         assertThat($data, arrayWithSize(3));
+    }
+
+    public function testValidatorWithCollection(): void
+    {
+        $rules = [
+            ['email', EmailRule::class, EmailRule::REQUIRED => true],
+            ['tags', CollectionRule::class, CollectionRule::RULES => [
+                ['code', NumericRule::class, NumericRule::MAX => 80],
+                ['slug', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,5}$/i'],
+            ]],
+        ];
+
+        $data = [
+            'email' => 'elie29@gmail.com',
+            'tags' => [
+                ['code' => 12, 'slug' => 'one'],
+                ['code' => 13, 'slug' => 'two'],
+                ['code' => 15, 'slug' => 'three'],
+            ],
+        ];
+
+        $validator = new Validator($data, $rules);
+
+        assertThat($validator->validate(), is(true));
+
+        $tags = $validator->getValidatedContext()['tags'];
+
+        assertThat($tags, arrayWithSize(3));
     }
 
     public function testValidatorGetImplodedErrors(): void
