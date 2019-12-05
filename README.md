@@ -181,7 +181,7 @@ $validatedPost = $validator->getValidatedContext();
 // But we need to validate user data as well (suppose it should contain name and age):
 
 $rules = [
-    ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+    ['name', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,20}$/i'],
     ['age', NumericRule::class, NumericRule::MAX => 80],
 ];
 $validator->setRules($rules);
