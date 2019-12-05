@@ -4,9 +4,10 @@
 [![Coverage Status](https://coveralls.io/repos/github/elie29/validator/badge.svg)](https://coveralls.io/github/elie29/validator)
 
 ## Introduction
+
 A library for validating a context (POST, GET etc...) by running given rules.
 
-## Installation ##
+## Installation
 
 Run the command below to install via Composer:
 
@@ -14,10 +15,12 @@ Run the command below to install via Composer:
 composer require elie29/validator
 ```
 
-## Getting Started ##
+## Getting Started
+
 `Validator` requires one or several rules ([constraints](#available-rules)) in order to validate a given context.
 
-A basic example with $_POST
+A basic example with \$\_POST
+
 ```php
 <?php
 
@@ -51,15 +54,16 @@ $validator = new Validator($_POST, $rules, true); // stop processing on error.
 $validator->validate(); // bool depends on $_POST content
 ```
 
-### Available rules ###
+### Available rules
 
 1. [All Rules](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
- `required` is false by default while `trim` is true.
+   `required` is false by default while `trim` is true.
 1. [ArrayRule](https://github.com/elie29/validator/blob/master/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to empty array [].
 1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
 1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php) accepts `cast` option.
 1. [CallableRule](https://github.com/elie29/validator/blob/master/src/Rule/CallableRule.php) accepts `callable` function.
 1. [ChoicesRule](https://github.com/elie29/validator/blob/master/src/Rule/ChoicesRule.php) accepts `list` option.
+1. [CollectionRule](https://github.com/elie29/validator/blob/master/src/Rule/CollectionRule.php) accepts `list` and `json` options.
 1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/blob/master/src/Rule/CompareConstants.php) by default, `expected` is null by default.
 1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
 1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
@@ -74,7 +78,7 @@ $validator->validate(); // bool depends on $_POST content
 1. [TimeRule](https://github.com/elie29/validator/blob/master/src/Rule/TimeRule.php)
 1. [Your own rule](#how-to-add-a-new-rule)
 
-### How to add a new rule ###
+### How to add a new rule
 
 You need to implement [RuleInterface](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php) or to extend [AbstractRule](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php)
 
@@ -165,7 +169,7 @@ Assertion::true($validator->validate(), $validator->getImplodedErrors());
 Sometimes we need to validate the context partially, whenever we have a Json item or
 keys that depend on each others.
 
-The following is an example when a context - eg. $_POST - should contains a Json user data:
+The following is an example when a context - eg. \$\_POST - should contains a Json user data:
 
 ```php
 $rules = [
@@ -198,14 +202,15 @@ $validator->getValidatedContext() would return:
 
 array:4 [▼
   "email" => "elie29@gmail.com"
-  "user" => "{"name": "John Doe", "age": 25}"
-  "name" => "John Doe"
+  "user" => "{"name": "John", "age": 25}"
+  "name" => "John"
   "age" => 25
 ]
 */
 ```
 
 ### Partial Validation with a multidimensional array
+
 Usually with JsonRule, we could expect a multidimensional array. In this case, the validation process will be similar
 to [Partial Validation](#partial-validation) without merging data:
 
@@ -216,14 +221,14 @@ $rules = [
 ];
 
 $validator = new Validator([
-    'users' => '[{"name":"John Doe","age":25},{"name":"Brad Pitt","age":42}]'
+    'users' => '[{"name":"John","age":25},{"name":"Brad","age":42}]'
 ], $rules);
 
 Assertion::true($validator->validate()); // this validate that users is a valid Json format
 
 // But we need to validate all user data as well (suppose it should contain name and age):
 $validator->setRules([
-    ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+    ['name', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,20}$/i'],
     ['age', NumericRule::class, NumericRule::MAX => 80],
 ]);
 
@@ -237,25 +242,50 @@ foreach ($users as $user) {
     // each user is a new context
     $validator->setContext($user);
     // do not merge data !!
-    Assertion::true($validator->validate()); // we could validate all users and determine wich ones are invalid!
+    Assertion::true($validator->validate()); // we could validate all users and determine which ones are invalid!
 }
 
+```
+
+A new [CollectionRule](https://github.com/elie29/validator/blob/master/src/Rule/CollectionRule.php) has been added in order to validate a collection data (array or json) as follow:
+
+```php
+$rules = [
+    ['users', CollectionRule::class, CollectionRule::JSON => true, CollectionRule::RULES => [
+        ['name', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,20}$/i'],
+        ['age', NumericRule::class, NumericRule::MAX => 80],
+    ]],
+];
+
+$data = [
+    'users' => '[{"name":"John","age":25},{"name":"Brad","age":42}]'
+];
+
+$validator = new Validator($data, $rules);
+
+assertThat($validator->validate(), is(true));
+
+$users = $validator->getValidatedContext()['users'];
+
+assertThat($users, arrayWithSize(2));
 ```
 
 ## Development Prerequisites
 
 ### Text file encoding
+
 - UTF-8
 
 ### Code style formatter
+
 - Zend Framework coding standard
 
 ### Composer commands
-   - `clean`: Cleans all generated files
-   - `test`: Launches unit test
-   - `test-coverage`: Launches unit test with clover.xml file generation
-   - `cs-check`: For code sniffer check
-   - `cs-fix`: For code sniffer fix
-   - `phpstan`: Launches PHP Static Analysis Tool
-   - `check`: Launches `clean`, `cs-check`, `test` and `phpstan`
 
+- `clean`: Cleans all generated files
+- `test`: Launches unit test
+- `test-coverage`: Launches unit test with clover.xml file generation
+- `cs-check`: For code sniffer check
+- `cs-fix`: For code sniffer fix
+- `phpstan`: Launches PHP Static Analysis Tool
+- `check`: Launches `clean`, `cs-check`, `test` and `phpstan`
