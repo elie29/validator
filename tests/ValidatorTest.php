@@ -63,16 +63,16 @@ class ValidatorTest extends TestCase
         assertThat($validator->shouldStopOnError(), is(true));
     }
 
-    public function testValidatorWithPartialValidation(): void
+    public function testValidatorWithJsonPartialValidation(): void
     {
         $rules = [
             ['email', EmailRule::class, EmailRule::REQUIRED => true],
-            ['user', JsonRule::class, JsonRule::REQUIRED => true],
+            ['user', JsonRule::class, JsonRule::REQUIRED => true, JsonRule::DECODE => true],
         ];
 
         $data = [
             'email' => 'elie29@gmail.com',
-            'user' => '{"name": "John Doe", "age": 25}',
+            'user' => '{"name": "John", "age": 25}',
         ];
 
         $validator = new Validator($data, $rules);
@@ -81,19 +81,56 @@ class ValidatorTest extends TestCase
 
         // In order to validate users json context
         $validator->setRules([
-            ['name', StringRule::class, MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1, 20}$/i'],
+            ['name', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,20}$/i'],
             ['age', NumericRule::class, NumericRule::MAX => 80],
         ]);
 
-        $user = json_decode($validator->getValidatedContext()['user'], true);
+        $user = $validator->getValidatedContext()['user'];
         $validator->setContext($user);
 
         // Validate and merge context
         assertThat($validator->validate(true), is(true));
 
-        $validatedPost = $validator->getValidatedContext();
-        assertThat($validatedPost, hasEntry('age', 25));
-        assertThat($validatedPost, hasKey('user'));
+        $data = $validator->getValidatedContext();
+        assertThat($data, hasEntry('age', 25));
+        assertThat($data, hasKey('user'));
+    }
+
+    public function testValidatorWithRawPartialValidation(): void
+    {
+        $rules = [
+            ['email', EmailRule::class, EmailRule::REQUIRED => true],
+            ['tags', ArrayRule::class, ArrayRule::REQUIRED => true],
+        ];
+
+        $data = [
+            'email' => 'elie29@gmail.com',
+            'tags' => [
+                ['code' => 12, 'slug' => 'one'],
+                ['code' => 13, 'slug' => 'two'],
+                ['code' => 15, 'slug' => 'three'],
+            ],
+        ];
+
+        $validator = new Validator($data, $rules);
+
+        assertThat($validator->validate(), is(true));
+
+        // In order to validate tags array context
+        $validator->setRules([
+            ['code', NumericRule::class, NumericRule::MAX => 80],
+            ['slug', MatchRule::class, MatchRule::PATTERN => '/^[a-z]+$/i'],
+        ]);
+
+        $tags = $validator->getValidatedContext()['tags'];
+        $data = [];
+        foreach ($tags as $tag) {
+            $validator->setContext($tag);
+            assertThat($validator->validate(), is(true));
+            $data[] = $validator->getValidatedContext();
+        }
+
+        assertThat($data, arrayWithSize(3));
     }
 
     public function testValidatorGetImplodedErrors(): void
