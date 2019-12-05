@@ -6,7 +6,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Added
 
-- Nothing.
+- [#28](https://github.com/elie29/validator/issues/28) Add a collection rule to validate collection data.
 
 ### Changed
 
