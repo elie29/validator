@@ -64,7 +64,7 @@ class TimeRule extends AbstractRule
      *
      * @return bool
      */
-    public static function checkTime($time): bool
+    public static function checkTime(string $time): bool
     {
         $tokens = explode(':', $time);
 

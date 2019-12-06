@@ -15,7 +15,7 @@ class AbstractRuleTest extends TestCase
      */
     public function testValidateEmptyCases($value, $params, $expectedError, $expectedResult): void
     {
-        /*@var $rule RuleInterface */
+        /** @var RuleInterface $rule */
         $rule = new StubAbstractRule('key', $value, $params);
 
         $res = $rule->validate();
@@ -29,7 +29,7 @@ class AbstractRuleTest extends TestCase
 
     public function testValidatorValue(): void
     {
-        /*@var $rule RuleInterface */
+        /** @var RuleInterface $rule */
         $rule = new StubAbstractRule('key', ' ', []);
 
         $res = $rule->validate();
@@ -41,28 +41,45 @@ class AbstractRuleTest extends TestCase
     public function getValueProvider(): \Generator
     {
         yield 'Trim is true but required is false by default' => [
-            '  ', [], '', RuleInterface::VALID
+            '  ',
+            [],
+            '',
+            RuleInterface::VALID,
         ];
 
         yield 'Value could be empty if not required' => [
-            '  ', [StringRule::TRIM => true, RuleInterface::REQUIRED => false], '', RuleInterface::VALID
+            '  ',
+            [StringRule::TRIM => true, RuleInterface::REQUIRED => false],
+            '',
+            RuleInterface::VALID,
         ];
 
         yield 'Required value could be one character space' => [
-            ' ', [StringRule::TRIM => false, RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
+            ' ',
+            [StringRule::TRIM => false, RuleInterface::REQUIRED => true],
+            '',
+            RuleInterface::CHECK,
         ];
 
         yield 'Required value could be false' => [
-            false, [RuleInterface::REQUIRED => true], '', RuleInterface::CHECK
+            false,
+            [RuleInterface::REQUIRED => true],
+            '',
+            RuleInterface::CHECK,
         ];
 
         yield 'Required value should not be an empty string' => [
-            '', [RuleInterface::REQUIRED => true], 'key is required and should not be empty: ', RuleInterface::ERROR
+            '',
+            [RuleInterface::REQUIRED => true],
+            'key is required and should not be empty: ',
+            RuleInterface::ERROR,
         ];
 
         yield 'Required value should not be null' => [
-            null, [RuleInterface::REQUIRED => true], 'key is required and should not be empty: <NULL>',
-            RuleInterface::ERROR
+            null,
+            [RuleInterface::REQUIRED => true],
+            'key is required and should not be empty: <NULL>',
+            RuleInterface::ERROR,
         ];
     }
 }

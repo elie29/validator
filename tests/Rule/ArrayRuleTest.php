@@ -46,38 +46,54 @@ class ArrayRuleTest extends TestCase
     public function getArrayValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            [], [], ArrayRule::VALID, ''
+            [],
+            [],
+            ArrayRule::VALID,
+            '',
         ];
 
         yield 'Given value between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 3, ArrayRule::MAX => 8], ArrayRule::VALID, ''
+            ['Peter', 'Ben', 'Harold'],
+            [ArrayRule::MIN => 3, ArrayRule::MAX => 8],
+            ArrayRule::VALID,
+            '',
         ];
 
         yield 'Given value should be more than 3' => [
-            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 3], ArrayRule::VALID, ''
+            ['Peter', 'Ben', 'Harold'],
+            [ArrayRule::MIN => 3],
+            ArrayRule::VALID,
+            '',
         ];
 
         yield 'Given value should be an array' => [
-            new \stdClass(), [], ArrayRule::ERROR, 'name does not have an array value: stdClass object'
+            new \stdClass(),
+            [],
+            ArrayRule::ERROR,
+            'name does not have an array value: stdClass object',
         ];
 
         yield 'Given value is not between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'], [ArrayRule::MIN => 4, ArrayRule::MAX => 8], ArrayRule::ERROR,
-            "name: The length of array (  0 => 'Peter',  1 => 'Ben',  2 => 'Harold',) is not between 4 and 8"
+            ['Peter', 'Ben', 'Harold'],
+            [ArrayRule::MIN => 4, ArrayRule::MAX => 8],
+            ArrayRule::ERROR,
+            "name: The length of array (  0 => 'Peter',  1 => 'Ben',  2 => 'Harold',) is not between 4 and 8",
         ];
 
         yield 'Required value should not be an empty array' => [
-            [], [RuleInterface::REQUIRED => true],
+            [],
+            [RuleInterface::REQUIRED => true],
             RuleInterface::ERROR,
-            'name is required and should not be empty: array ()'
+            'name is required and should not be empty: array ()',
         ];
 
         yield 'Required value should not be an empty array, with specific message' => [
-            [], [RuleInterface::REQUIRED => true, 'messages' => [
-                RuleInterface::EMPTY_KEY => '%key% is required. `%value%` is empty!'
+            [],
+            [RuleInterface::REQUIRED => true, 'messages' => [
+                RuleInterface::EMPTY_KEY => '%key% is required. `%value%` is empty!',
             ]],
             RuleInterface::ERROR,
-            'name is required. `array ()` is empty!'
+            'name is required. `array ()` is empty!',
         ];
     }
 }

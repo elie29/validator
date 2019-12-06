@@ -73,6 +73,8 @@ interface ValidatorInterface
     /**
      * @param bool $value True, append only found keys in the context to the validated context.
      * Defaults to false, so all keys set in the rules will be added to the validated context.
+     *
+     * @return ValidatorInterface
      */
     public function appendExistingItemsOnly(bool $value);
 

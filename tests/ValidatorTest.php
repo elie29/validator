@@ -51,7 +51,7 @@ class ValidatorTest extends TestCase
         $validator = new Validator(['name' => 'Ben '], [], true);
 
         $validator->setRules([
-            ['name', StringRule::class, 'min' => 4, 'max' => 12]
+            ['name', StringRule::class, 'min' => 4, 'max' => 12],
         ]);
 
         $res = $validator->validate();
@@ -226,7 +226,7 @@ class ValidatorTest extends TestCase
             // context
             [
                 'age' => 25,
-                'name' => 'Ben'
+                'name' => 'Ben',
             ],
             // rules
             [
@@ -236,7 +236,7 @@ class ValidatorTest extends TestCase
             // expectedResult
             true,
             // errorsSize
-            0
+            0,
         ];
 
         yield 'Validate with multiple and rule' => [
@@ -247,10 +247,10 @@ class ValidatorTest extends TestCase
                 ['age', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
                     [NumericRule::class, NumericRule::MIN => 14],
                     [RangeRule::class, RangeRule::RANGE => [25, 26]],
-                ]]
+                ]],
             ],
             true,
-            0
+            0,
         ];
 
         yield 'Validate with multiple or rule' => [
@@ -261,10 +261,10 @@ class ValidatorTest extends TestCase
                 ['foo', MultipleOrRule::class, MultipleOrRule::REQUIRED => true, MultipleOrRule::RULES => [
                     [NumericRule::class, NumericRule::MIN => 14],
                     [StringRule::class, StringRule::MIN => 1],
-                ]]
+                ]],
             ],
             true,
-            0
+            0,
         ];
 
         yield 'Age is not valid' => [
@@ -275,7 +275,7 @@ class ValidatorTest extends TestCase
                 ['age', NumericRule::class, 'min' => 26, 'max' => 65],
             ],
             false,
-            1
+            1,
         ];
         yield 'Key with numeric value' => [
             [
@@ -287,7 +287,7 @@ class ValidatorTest extends TestCase
                 [1, StringRule::class, 'min' => 0, 'max' => 10],
             ],
             true,
-            0
+            0,
         ];
         yield 'Key with index context' => [
             [
@@ -299,7 +299,7 @@ class ValidatorTest extends TestCase
                 [1, StringRule::class, 'min' => 0, 'max' => 10],
             ],
             true,
-            0
+            0,
         ];
     }
 }

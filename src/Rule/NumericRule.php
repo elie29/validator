@@ -102,19 +102,19 @@ class NumericRule extends AbstractRule
 
     protected function checkMinMax(): int
     {
-        if (null !== $this->min && $this->value < $this->min) {
+        if ($this->min !== null && $this->value < $this->min) {
             return $this->setAndReturnError($this::INVALID_NUMERIC_LT, [
                 // in case both are needed in the message pattern
                 '%min%' => $this->min,
-                '%max%' => $this->max
+                '%max%' => $this->max,
             ]);
         }
 
-        if (null !== $this->max && $this->value > $this->max) {
+        if ($this->max !== null && $this->value > $this->max) {
             return $this->setAndReturnError($this::INVALID_NUMERIC_GT, [
                 // in case both are needed in the message pattern
                 '%min%' => $this->min,
-                '%max%' => $this->max
+                '%max%' => $this->max,
             ]);
         }
 

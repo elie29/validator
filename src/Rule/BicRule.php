@@ -66,7 +66,7 @@ class BicRule extends AbstractRule
             'invalidUppercase',
             'invalidAlphaNumeric',
             'invalidBankCode',
-            'invalidCountryCode'
+            'invalidCountryCode',
         ];
 
         foreach ($methodsValidation as $method) {

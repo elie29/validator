@@ -45,7 +45,7 @@ class ChoicesRule extends AbstractRule
         }
 
         $this->messages = $this->messages + [
-            self::INVALID_ITEM => _("%key%: %item% is not in the given list : %list%"),
+            self::INVALID_ITEM => _('%key%: %item% is not in the given list : %list%'),
         ];
     }
 

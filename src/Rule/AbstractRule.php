@@ -7,14 +7,10 @@ namespace Elie\Validator\Rule;
 abstract class AbstractRule implements RuleInterface
 {
 
-    /**
-     * @var int|string
-     */
+    /** @var int|string */
     protected $key;
 
-    /**
-     * @var mixed
-     */
+    /** @var mixed */
     protected $value;
 
     /**
@@ -38,7 +34,7 @@ abstract class AbstractRule implements RuleInterface
      */
     protected $messages = [
         self::UNDEFINED_CODE => 'Code message %code% is undefined',
-        self::EMPTY_KEY      => '%key% is required and should not be empty: %value%',
+        self::EMPTY_KEY => '%key% is required and should not be empty: %value%',
     ];
 
     /**
@@ -149,9 +145,9 @@ abstract class AbstractRule implements RuleInterface
 
         // + is used to add non existent keys
         $replace += [
-            '%key%'   => $this->key,
+            '%key%' => $this->key,
             '%value%' => $this->stringify($this->value),
-            '%code%'  => $errorCode,
+            '%code%' => $errorCode,
         ];
 
         $this->error = str_replace(array_keys($replace), $replace, $message);
@@ -178,7 +174,7 @@ abstract class AbstractRule implements RuleInterface
             return $value ? '<TRUE>' : '<FALSE>';
         }
 
-        if (null === $value) {
+        if ($value === null) {
             return '<NULL>';
         }
 

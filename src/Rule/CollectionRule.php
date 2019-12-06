@@ -19,7 +19,7 @@ class CollectionRule extends AbstractRule
      * Specific options for CollectionRule
      */
     public const RULES = 'rules';
-    public const JSON  = 'json';
+    public const JSON = 'json';
     /**#@-*/
 
     protected $rules = [];
@@ -59,7 +59,7 @@ class CollectionRule extends AbstractRule
         }
 
         $this->messages = $this->messages + [
-            self::INVALID_VALUE => _("%key%: %value% is not in a collection"),
+            self::INVALID_VALUE => _('%key%: %value% is not in a collection'),
         ];
     }
 

@@ -26,15 +26,21 @@ class EmailRuleTest extends TestCase
     public function getEmailValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', RuleInterface::VALID, ''
+            '',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value elie29@gmail.com should be valid' => [
-            'elie29@gmail.com', RuleInterface::VALID, ''
+            'elie29@gmail.com',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value elie.com should not be valid' => [
-            'elie.com', RuleInterface::ERROR, 'email: elie.com is not a valid email'
+            'elie.com',
+            RuleInterface::ERROR,
+            'email: elie.com is not a valid email',
         ];
     }
 }

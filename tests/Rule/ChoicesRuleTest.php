@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Elie\Validator\Rule;
 
-use PHPUnit\Framework\TestCase;
 use Generator;
+use PHPUnit\Framework\TestCase;
 
 class ChoicesRuleTest extends TestCase
 {
@@ -61,7 +61,7 @@ class ChoicesRuleTest extends TestCase
 
         $rule = new ChoicesRule('foo', $selection, [
             ChoicesRule::LIST => $list,
-            ChoicesRule::REQUIRED => true
+            ChoicesRule::REQUIRED => true,
         ]);
 
         assertThat($rule->validate(), is(equalTo(ChoicesRule::ERROR)));

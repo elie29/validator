@@ -66,7 +66,7 @@ class Validator implements ValidatorInterface
         return $this->validatedContext;
     }
 
-    public function setRules(array $rules):self
+    public function setRules(array $rules): self
     {
         $this->rules = $rules;
         // Keep chaining

@@ -61,7 +61,7 @@ class RangeRule extends AbstractRule
 
         if (! in_array($this->value, $this->range, true)) {
             return $this->setAndReturnError($this::INVALID_RANGE, [
-                '%range%' => $this->stringify($this->range)
+                '%range%' => $this->stringify($this->range),
             ]);
         }
 

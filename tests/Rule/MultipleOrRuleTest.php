@@ -16,7 +16,7 @@ class MultipleOrRuleTest extends TestCase
             MultipleAndRule::RULES => [
                 [StringRule::class, StringRule::REQUIRED => true, StringRule::MAX => 2],
                 [NumericRule::class],
-            ]
+            ],
         ]);
 
         $res = $rule->validate();
@@ -32,7 +32,7 @@ class MultipleOrRuleTest extends TestCase
             MultipleAndRule::RULES => [
                 [StringRule::class, StringRule::REQUIRED => true, StringRule::MAX => 2],
                 [NumericRule::class],
-            ]
+            ],
         ]);
 
         $res = $rule->validate();
