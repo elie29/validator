@@ -75,8 +75,7 @@ class BooleanRule extends AbstractRule
     protected function isBool(): bool
     {
         $val = $this->value;
-        return
-            $val === 0 || $val === 1 ||
+        return $val === 0 || $val === 1 ||
             $val === '0' || $val === '1' ||
             $val === true || $val === false;
     }

@@ -63,7 +63,7 @@ class CompareRule extends AbstractRule implements CompareConstants
         if (! $this->$method()) {
             return $this->setAndReturnError($this::INVALID_COMPARE, [
                 '%label%' => $this::SIGNS[$this->sign],
-                '%expected%' => $this->stringify($this->expected)
+                '%expected%' => $this->stringify($this->expected),
             ]);
         }
 
@@ -75,7 +75,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function eq()
+    protected function eq(): bool
     {
         return $this->value == $this->expected;
     }
@@ -85,7 +85,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function seq()
+    protected function seq(): bool
     {
         return $this->value === $this->expected;
     }
@@ -95,7 +95,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function neq()
+    protected function neq(): bool
     {
         return $this->value != $this->expected;
     }
@@ -105,7 +105,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function nseq()
+    protected function nseq(): bool
     {
         return $this->value !== $this->expected;
     }
@@ -115,7 +115,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function lte()
+    protected function lte(): bool
     {
         return $this->value <= $this->expected;
     }
@@ -125,7 +125,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function gte()
+    protected function gte(): bool
     {
         return $this->value >= $this->expected;
     }
@@ -135,7 +135,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function lt()
+    protected function lt(): bool
     {
         return $this->value < $this->expected;
     }
@@ -145,7 +145,7 @@ class CompareRule extends AbstractRule implements CompareConstants
      *
      * @return bool
      */
-    protected function gt()
+    protected function gt(): bool
     {
         return $this->value > $this->expected;
     }

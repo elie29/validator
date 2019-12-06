@@ -26,28 +26,45 @@ class StringRuleTest extends TestCase
     public function getStringValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', [], RuleInterface::VALID, ''
+            '',
+            [],
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value between 4 and 8 characters' => [
-            'Peter ', [StringRule::MIN => 4, StringRule::MAX => 8], RuleInterface::VALID, ''
+            'Peter ',
+            [StringRule::MIN => 4, StringRule::MAX => 8],
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value should be more than 3 characters' => [
-            'Simon ', [StringRule::MIN => 3], RuleInterface::VALID, ''
+            'Simon ',
+            [StringRule::MIN => 3],
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value should be a string not number' => [
-            25, [], RuleInterface::ERROR, 'name does not have a string value: 25'
+            25,
+            [],
+            RuleInterface::ERROR,
+            'name does not have a string value: 25',
         ];
 
         yield 'Given value should be a string not boolean' => [
-            false, [], RuleInterface::ERROR, 'name does not have a string value: <FALSE>'
+            false,
+            [],
+            RuleInterface::ERROR,
+            'name does not have a string value: <FALSE>',
         ];
 
         yield 'Given value is not between 4 and 8 characters' => [
-            'Ben', [StringRule::MIN => 4, StringRule::MAX => 8],
-            RuleInterface::ERROR, 'name: The length of Ben is not between 4 and 8'
+            'Ben',
+            [StringRule::MIN => 4, StringRule::MAX => 8],
+            RuleInterface::ERROR,
+            'name: The length of Ben is not between 4 and 8',
         ];
     }
 }

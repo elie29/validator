@@ -74,7 +74,7 @@ class IpRule extends AbstractRule
         // invalid flag?
         if (($all & $this->flag) !== $this->flag || $this->flag === (FILTER_FLAG_IPV4 | FILTER_FLAG_IPV6)) {
             $this->setAndReturnError($this::INVALID_IP_FLAG, [
-                '%flag%' => $this->flag
+                '%flag%' => $this->flag,
             ]);
             return false;
         }

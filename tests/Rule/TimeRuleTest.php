@@ -26,31 +26,45 @@ class TimeRuleTest extends TestCase
     public function getTimeValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', RuleInterface::VALID, ''
+            '',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given time 22:25 should be valid' => [
-            '22:25', RuleInterface::VALID, ''
+            '22:25',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given time 22:25:38 should be valid' => [
-            '22:25:38', RuleInterface::VALID, ''
+            '22:25:38',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given time 8:2:4 should be valid' => [
-            '8:2:4', RuleInterface::VALID, ''
+            '8:2:4',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given time 25:2 should not be valid' => [
-            '25:2', RuleInterface::ERROR, 'time: 25:2 is not a valid time'
+            '25:2',
+            RuleInterface::ERROR,
+            'time: 25:2 is not a valid time',
         ];
 
         yield 'Given time 21 should not be valid' => [
-            '21', RuleInterface::ERROR, 'time: 21 is not a valid time'
+            '21',
+            RuleInterface::ERROR,
+            'time: 21 is not a valid time',
         ];
 
         yield 'Given time 20:2:3:6 should not be valid' => [
-            '20:2:3:6', RuleInterface::ERROR, 'time: 20:2:3:6 is not a valid time'
+            '20:2:3:6',
+            RuleInterface::ERROR,
+            'time: 20:2:3:6 is not a valid time',
         ];
     }
 }

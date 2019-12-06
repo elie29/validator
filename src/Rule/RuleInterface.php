@@ -83,5 +83,5 @@ interface RuleInterface
      *
      * @return void
      */
-    public function setValue($value);
+    public function setValue($value): void;
 }

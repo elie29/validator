@@ -16,7 +16,7 @@ class MultipleAndRuleTest extends TestCase
             MultipleAndRule::RULES => [
                 [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
-            ]
+            ],
         ]);
 
         $res = $rule->validate();
@@ -33,7 +33,7 @@ class MultipleAndRuleTest extends TestCase
             MultipleAndRule::RULES => [
                 [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
-            ]
+            ],
         ]);
 
         $res = $rule->validate();
@@ -50,7 +50,7 @@ class MultipleAndRuleTest extends TestCase
             MultipleAndRule::RULES => [
                 [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
-            ]
+            ],
         ]);
 
         $res = $rule->validate();

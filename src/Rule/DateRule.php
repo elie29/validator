@@ -124,7 +124,7 @@ class DateRule extends AbstractRule
         $codeError = $this::INVALID_DATE;
         foreach ($this->getFormat() as $format) {
             $codeError = static::checkDate($this->separator, $format, $this->value);
-            if (null === $codeError) {
+            if ($codeError === null) {
                 // The first valid format
                 return $this::VALID;
             }
@@ -132,7 +132,7 @@ class DateRule extends AbstractRule
 
         return $this->setAndReturnError($codeError, [
             '%format%' => $this->stringify($this->format),
-            '%separator%' => $this->separator
+            '%separator%' => $this->separator,
         ]);
     }
 

@@ -19,7 +19,7 @@ class NumericRuleTest extends TestCase
 
         // Empty string value with cast
         $rule = new NumericRule('name', '', [
-            NumericRule::CAST => true
+            NumericRule::CAST => true,
         ]);
         $res = $rule->validate();
         assertThat($res, identicalTo(NumericRule::VALID));
@@ -27,7 +27,7 @@ class NumericRuleTest extends TestCase
 
         // int
         $rule = new NumericRule('name', '12', [
-            NumericRule::CAST => true
+            NumericRule::CAST => true,
         ]);
         $res = $rule->validate();
         assertThat($res, identicalTo(NumericRule::VALID));
@@ -35,7 +35,7 @@ class NumericRuleTest extends TestCase
 
         // float
         $rule = new NumericRule('name', '12.2', [
-            NumericRule::CAST => true
+            NumericRule::CAST => true,
         ]);
         $res = $rule->validate();
         assertThat($res, identicalTo(NumericRule::VALID));
@@ -59,28 +59,45 @@ class NumericRuleTest extends TestCase
     public function getNumericValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', [], RuleInterface::VALID, ''
+            '',
+            [],
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value between 24 and 29' => [
-            '25', [NumericRule::MIN => 24, NumericRule::MAX => 29], RuleInterface::VALID, ''
+            '25',
+            [NumericRule::MIN => 24, NumericRule::MAX => 29],
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value should be numeric' => [
-            'nothing', [NumericRule::MIN => 24, NumericRule::MAX => 29],
-            RuleInterface::ERROR, 'age: nothing is not numeric'
+            'nothing',
+            [NumericRule::MIN => 24, NumericRule::MAX => 29],
+            RuleInterface::ERROR,
+            'age: nothing is not numeric',
         ];
 
         yield 'Given value is less than 24' => [
-            '21', [NumericRule::MIN => 24, NumericRule::MAX => 29], RuleInterface::ERROR, 'age: 21 is less than 24'
+            '21',
+            [NumericRule::MIN => 24, NumericRule::MAX => 29],
+            RuleInterface::ERROR,
+            'age: 21 is less than 24',
         ];
 
         yield 'Given value is greater than 29' => [
-            '30', [NumericRule::MIN => 24, NumericRule::MAX => 29], RuleInterface::ERROR, 'age: 30 is greater than 29'
+            '30',
+            [NumericRule::MIN => 24, NumericRule::MAX => 29],
+            RuleInterface::ERROR,
+            'age: 30 is greater than 29',
         ];
 
         yield 'Given value could not be empty' => [
-            '', ['required' => true], RuleInterface::ERROR, 'age is required and should not be empty: '
+            '',
+            ['required' => true],
+            RuleInterface::ERROR,
+            'age is required and should not be empty: ',
         ];
     }
 }

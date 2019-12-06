@@ -20,9 +20,7 @@ class CallableRule extends AbstractRule
      */
     public const CALLABLE = 'callable';
 
-    /**
-     * @var callable _invoke|function($key, $value): bool
-     */
+    /** @var callable _invoke|function($key, $value): bool */
     protected $callable;
 
     /**

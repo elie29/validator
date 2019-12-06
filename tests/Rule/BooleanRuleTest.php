@@ -20,7 +20,7 @@ class BooleanRuleTest extends TestCase
         assertThat($rule->getValue(), nullValue());
 
         $rule = new BooleanRule('name', '', [
-            BooleanRule::CAST => true
+            BooleanRule::CAST => true,
         ]);
 
         $res = $rule->validate();
@@ -46,19 +46,27 @@ class BooleanRuleTest extends TestCase
     public function getBooleanValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            null, BooleanRule::VALID, ''
+            null,
+            BooleanRule::VALID,
+            '',
         ];
 
         yield 'Given value could be 1' => [
-            '1 ', BooleanRule::VALID, ''
+            '1 ',
+            BooleanRule::VALID,
+            '',
         ];
 
         yield 'Given value could be true' => [
-            true, BooleanRule::VALID, ''
+            true,
+            BooleanRule::VALID,
+            '',
         ];
 
         yield 'Given value could not be a string' => [
-            'test', BooleanRule::ERROR, 'name: test is not a valid boolean'
+            'test',
+            BooleanRule::ERROR,
+            'name: test is not a valid boolean',
         ];
     }
 }

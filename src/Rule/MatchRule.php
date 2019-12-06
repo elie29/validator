@@ -59,7 +59,7 @@ class MatchRule extends AbstractRule
 
         if (! preg_match($this->pattern, $this->value)) {
             return $this->setAndReturnError($this::INVALID_PATTERN, [
-                '%pattern%' => $this->pattern
+                '%pattern%' => $this->pattern,
             ]);
         }
 

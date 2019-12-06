@@ -51,15 +51,21 @@ class JsonRuleTest extends TestCase
     public function getJsonValueProvider(): \Generator
     {
         yield 'Given value could be empty' => [
-            '', RuleInterface::VALID, ''
+            '',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value {"a":1,"b":2,"c":3,"d":4,"e":5} should be valid' => [
-            '{"a":1,"b":2,"c":3,"d":4,"e":5}', RuleInterface::VALID, ''
+            '{"a":1,"b":2,"c":3,"d":4,"e":5}',
+            RuleInterface::VALID,
+            '',
         ];
 
         yield 'Given value elie.com should not be valid' => [
-            'elie.com', RuleInterface::ERROR, 'json: elie.com is not a valid json format'
+            'elie.com',
+            RuleInterface::ERROR,
+            'json: elie.com is not a valid json format',
         ];
     }
 }
