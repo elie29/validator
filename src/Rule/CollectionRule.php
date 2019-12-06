@@ -85,17 +85,17 @@ class CollectionRule extends AbstractRule
         }
 
         $validatedContext = [];
-        foreach ($collection as $data) {
-            $validatedData = [];
-            foreach ($this->rules as $rule) {
-                $class = $this->resolve($rule, $data);
+        // Apply each rule to all data keys
+        foreach ($this->rules as $rule) {
+            $class = $this->resolve($rule);
+            foreach ($collection as $k => $data) {
+                $class->setValue($data[$class->getKey()] ?? null);
                 if ($class->validate() === RuleInterface::ERROR) {
                     $this->error = $class->getError();
                     return RuleInterface::ERROR;
                 }
-                $validatedData[$class->getKey()] = $class->getValue();
+                $validatedContext[$k][$class->getKey()] = $class->getValue();
             }
-            $validatedContext[] = $validatedData;
         }
 
         $this->value = $validatedContext;
@@ -103,14 +103,14 @@ class CollectionRule extends AbstractRule
         return RuleInterface::VALID;
     }
 
-    protected function resolve(array $rule, $data): RuleInterface
+    protected function resolve(array $rule): RuleInterface
     {
         // The first element must be the key context
         $key = $rule[0];
         // The second element must be the class validator name
         $class = $rule[1];
 
-        return new $class($key, $data[$key] ?? null, $rule);
+        return new $class($key, null, $rule);
     }
 
     public function getValue()
