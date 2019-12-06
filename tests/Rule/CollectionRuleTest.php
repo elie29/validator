@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace Elie\Validator\Rule;
 
 use PHPUnit\Framework\TestCase;
-use function Composer\Autoload\getData;
 
 class CollectionRuleTest extends TestCase
 {
