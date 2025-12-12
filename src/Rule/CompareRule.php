@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -13,19 +13,18 @@ class CompareRule extends AbstractRule implements CompareConstants
     /**
      * Sign value supported ==, ===, !=, !==, <=, >=, <, >.
      * Default sets to ==.
-     * @var string
      */
-    protected $sign = self::EQ;
+    protected string $sign = self::EQ;
 
     /**
      * Expected value.
      * Default sets to null.
-     * @var mixed
      */
-    protected $expected = null;
+    protected mixed $expected = null;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
@@ -33,8 +32,9 @@ class CompareRule extends AbstractRule implements CompareConstants
      *   'sign' => {string:optional:EQ by default},
      *   'expected' => {mixed:optional:null by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -46,7 +46,7 @@ class CompareRule extends AbstractRule implements CompareConstants
             $this->expected = $params['expected'];
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_COMPARE => '%key%: %value% is not %label% %expected%',
         ];
     }
@@ -60,7 +60,7 @@ class CompareRule extends AbstractRule implements CompareConstants
         }
 
         $method = $this->sign;
-        if (! $this->$method()) {
+        if (!$this->$method()) {
             return $this->setAndReturnError($this::INVALID_COMPARE, [
                 '%label%' => $this::SIGNS[$this->sign],
                 '%expected%' => $this->stringify($this->expected),

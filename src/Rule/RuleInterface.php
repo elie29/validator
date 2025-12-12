@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -34,7 +34,7 @@ interface RuleInterface
      *
      * @param int|string $key Context key.
      * @param mixed $value Value to be tested.
-     * @param array  $params Rule could be parameterized.
+     * @param array $params Rule could be parameterized.
      *
      * Params could have the following structure:
      * [
@@ -43,14 +43,14 @@ interface RuleInterface
      *    'messages' => {array:optional:key/value message patterns}
      * ]
      */
-    public function __construct($key, $value, array $params = []);
+    public function __construct(int|string $key, mixed $value, array $params = []);
 
     /**
      * Runs the rule and returns the result.
      *
      * @return int RuleInterface::CHECK to continue checking,
-     *    RuleInterface::VALID if value respect the rule and
-     *    RuleInterface::ERROR if error occurs.
+     *    RuleInterface::VALID if the value respects the rule and
+     *    RuleInterface::ERROR if an error occurs.
      */
     public function validate(): int;
 
@@ -66,7 +66,7 @@ interface RuleInterface
      *
      * @return int|string
      */
-    public function getKey();
+    public function getKey(): int|string;
 
     /**
      * Retrieve the value. Value will be trimmed
@@ -74,7 +74,7 @@ interface RuleInterface
      *
      * @return mixed
      */
-    public function getValue();
+    public function getValue(): mixed;
 
     /**
      * Set value properly.
@@ -83,5 +83,5 @@ interface RuleInterface
      *
      * @return void
      */
-    public function setValue($value): void;
+    public function setValue(mixed $value): void;
 }

@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class StringRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getStringValueProvider
-     */
-    public function testValidate($value, $params, $expectedResult, $expectedError): void
-    {
-        $rule = new StringRule('name', $value, $params);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getStringValueProvider(): \Generator
+    public static function getStringValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -35,6 +23,13 @@ class StringRuleTest extends TestCase
         yield 'Given value between 4 and 8 characters' => [
             'Peter ',
             [StringRule::MIN => 4, StringRule::MAX => 8],
+            RuleInterface::VALID,
+            '',
+        ];
+
+        yield 'Given value should not be cleaned' => [
+            "f\x00f",
+            [RuleInterface::REQUIRED => true],
             RuleInterface::VALID,
             '',
         ];
@@ -66,5 +61,17 @@ class StringRuleTest extends TestCase
             RuleInterface::ERROR,
             'name: The length of Ben is not between 4 and 8',
         ];
+    }
+
+    #[DataProvider('getStringValueProvider')]
+    public function testValidate($value, $params, $expectedResult, $expectedError): void
+    {
+        $rule = new StringRule('name', $value, $params);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

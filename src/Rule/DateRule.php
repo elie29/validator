@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -29,10 +29,11 @@ class DateRule extends AbstractRule
 
     /**
      * Date format.
-     * simple: d/m/y => 2/9/71
+     * Simple: d/m/y => 2/9/71
      * full: dd/mm/yyyy => 02/09/1971
      * We can provide one or more formats to validate a date.
-     * format tokens are :
+     * <code>
+     * Format tokens are:
      *     d: day from 1 to 31
      *     dd: day from 01 to 31
      *     m: month from 1 to 12
@@ -44,31 +45,32 @@ class DateRule extends AbstractRule
      *             69 => 2069
      *             72 => 1972
      *     yyyy: Year with four digits, we can omit all zeros on the left
-     *         2  => 0002
+     *         2 => 0002
      *         69 => 0069
      *         72 => 0072
-     * @var array
+     * </code>
      */
-    protected $format = ['dd/mm/yyyy'];
+    protected array $format = ['dd/mm/yyyy'];
 
     /**
      * Accepted separators for a date.
-     * comma, dash, dot and slash.
-     * @var string
+     * Comma, dash, dot and slash.
      */
-    protected $separator = '[,-./]';
+    protected string $separator = '[,-./]';
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
-     *   'format'=>{string|array:optional:dd/mm/yyyy by default},
-     *   'separator'=>{string:optional:(,-./) by default}
+     *   'format' => {string|array:optional:dd/mm/yyyy by default},
+     *   'separator' => {string:optional:[,-./] by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -80,11 +82,77 @@ class DateRule extends AbstractRule
             $this->setSeparator($params[$this::SEPARATOR]);
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_DATE => '%key%: %value% is not a valid date',
             $this::INVALID_DATE_FORMAT => '%key%: %value% does not have a valid format: ' .
                 '%format% or separator: %separator%',
         ];
+    }
+
+    /**
+     * Validate a Gregorian date according to separator and format options.
+     * <code>
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '27/02/2017'); // returns null
+     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '29/02/2017'); // returns INVALID_DATE
+     * </code>
+     *
+     * @return string|NULL Null if the date is valid otherwise INVALID_DATE|INVALID_DATE_FORMAT
+     */
+    public static function checkDate(string $separator, string $format, string $date): ?string
+    {
+        $separator = '#' . $separator . '#';
+
+        $tokens = preg_split($separator, $format);
+
+        if ($tokens === false || static::invalidTokens($tokens)) {
+            return self::INVALID_DATE_FORMAT;
+        }
+
+        $dates = preg_split($separator, $date);
+
+        // We must have 3 tokens for a date
+        if ($dates === false || count($dates) !== 3) {
+            return self::INVALID_DATE;
+        }
+
+        return static::checkDatesWithTokens($tokens, $dates);
+    }
+
+    protected static function invalidTokens(array $tokens): bool
+    {
+        // We must have 3 unique tokens
+        return count(array_unique($tokens, SORT_REGULAR)) !== 3;
+    }
+
+    protected static function checkDatesWithTokens(array $tokens, array $dates): ?string
+    {
+        $d = $m = $y = 0;
+
+        // Loop over format tokens
+        for ($t = 0; $t < 3; $t += 1) {
+            switch ($tokens[$t]) {
+                case 'd':
+                case 'dd':
+                    $d = (int)$dates[$t];
+                    break;
+                case 'm':
+                case 'mm':
+                    $m = (int)$dates[$t];
+                    break;
+                case 'yy':
+                    $y = (int)$dates[$t];
+                    $y = ($y >= 70) ? $y + 1900 : $y + 2000;
+                    break;
+                case 'yyyy':
+                    $y = (int)$dates[$t];
+                    break;
+                default:
+                    // No valid format
+                    return self::INVALID_DATE_FORMAT;
+            }
+        }
+
+        return checkdate($m, $d, $y) ? null : self::INVALID_DATE;
     }
 
     public function getFormat(): array
@@ -92,21 +160,22 @@ class DateRule extends AbstractRule
         return $this->format;
     }
 
+    /**
+     * @param array|string $format
+     * @return DateRule
+     */
+    public function setFormat(array|string $format): static
+    {
+        $this->format = (array)$format;
+        return $this;
+    }
+
     public function getSeparator(): string
     {
         return $this->separator;
     }
 
-    /**
-     * @param array|string $format
-     */
-    public function setFormat($format): self
-    {
-        $this->format = (array) $format;
-        return $this;
-    }
-
-    public function setSeparator(string $separator): self
+    public function setSeparator(string $separator): static
     {
         $this->separator = $separator;
         return $this;
@@ -134,80 +203,5 @@ class DateRule extends AbstractRule
             '%format%' => $this->stringify($this->format),
             '%separator%' => $this->separator,
         ]);
-    }
-
-    /**
-     * Validate a Gregorian date according to separator and format options.
-     * <code>
-     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '27/02/2017'); // returns null<br/>
-     *    DateRule::checkDate('[/]', 'dd/mm/yyyy', '29/02/2017'); // returns INVALID_DATE<br/>
-     * </code>
-     *
-     * @return string|NULL Null if date is valid otherwise INVALID_DATE|INVALID_DATE_FORMAT
-     */
-    public static function checkDate(string $separator, string $format, string $date): ?string
-    {
-        $separator = '#' . $separator . '#';
-
-        $tokens = preg_split($separator, $format);
-
-        if ($tokens === false || static::invalidTokens($tokens)) {
-            return self::INVALID_DATE_FORMAT;
-        }
-
-        $dates = preg_split($separator, $date);
-
-        // We must have 3 tokens for a date
-        if ($dates === false || count($dates) !== 3) {
-            return self::INVALID_DATE;
-        }
-
-        return static::checkDatesWithTokens($tokens, $dates);
-    }
-
-    protected static function invalidTokens(array $tokens): bool
-    {
-        $seen = [];
-        foreach ($tokens as $token) {
-            // token already seen
-            if (isset($seen[$token])) {
-                return true;
-            }
-            $seen[$token] = true;
-        }
-
-        // We must have 3 tokens
-        return count($seen) !== 3;
-    }
-
-    protected static function checkDatesWithTokens(array $tokens, array $dates): ?string
-    {
-        $d = $m = $y = 0;
-
-        // Loop over format tokens
-        for ($t = 0; $t < 3; $t += 1) {
-            switch ($tokens[$t]) {
-                case 'd':
-                case 'dd':
-                    $d = (int) $dates[$t];
-                    break;
-                case 'm':
-                case 'mm':
-                    $m = (int) $dates[$t];
-                    break;
-                case 'yy':
-                    $y = (int) $dates[$t];
-                    $y = ($y >= 70) ? $y + 1900 : $y + 2000;
-                    break;
-                case 'yyyy':
-                    $y = (int) $dates[$t];
-                    break;
-                default:
-                    // No valid format
-                    return self::INVALID_DATE_FORMAT;
-            }
-        }
-
-        return checkdate($m, $d, $y) ? null : self::INVALID_DATE;
     }
 }

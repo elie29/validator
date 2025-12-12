@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -25,26 +25,27 @@ class MatchRule extends AbstractRule
     /**
      * A regular pattern string, e.g.:
      * /^[a-z]{2, 12}$/i
-     * @var string
      */
-    protected $pattern;
+    protected string $pattern;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'pattern' => {string:required}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         $this->pattern = $params[$this::PATTERN];
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_PATTERN => '%key%: %value% does not match %pattern%',
         ];
     }
@@ -57,7 +58,7 @@ class MatchRule extends AbstractRule
             return $run;
         }
 
-        if (! preg_match($this->pattern, $this->value)) {
+        if (!preg_match($this->pattern, $this->value)) {
             return $this->setAndReturnError($this::INVALID_PATTERN, [
                 '%pattern%' => $this->pattern,
             ]);

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -20,25 +20,27 @@ class CallableRule extends AbstractRule
      */
     public const CALLABLE = 'callable';
 
-    /** @var callable _invoke|function($key, $value): bool */
+    /** @var callable _invoke|function($key, $value, CallableRule $rule): bool */
     protected $callable;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'callable' => {callable:required:should receive key/value/CallableRule and return boolean}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         $this->callable = $params[self::CALLABLE];
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             self::INVALID_CALLABLE_CHECK => '%key%: %value% did not pass the callable check',
         ];
     }
@@ -53,7 +55,7 @@ class CallableRule extends AbstractRule
 
         $callable = $this->callable;
 
-        if (! $callable($this->key, $this->value, $this)) {
+        if (!$callable($this->key, $this->value, $this)) {
             return $this->setAndReturnError($this::INVALID_CALLABLE_CHECK);
         }
 

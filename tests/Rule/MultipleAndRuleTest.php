@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -14,33 +14,33 @@ class MultipleAndRuleTest extends TestCase
         // Should be string and email
         $rule = new MultipleAndRule('name', 'foo@gmail.com', [
             MultipleAndRule::RULES => [
-                [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
             ],
         ]);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(RuleInterface::VALID));
+        $this->assertSame(RuleInterface::VALID, $res);
 
-        assertThat($rule->getError(), is(emptyString()));
+        $this->assertSame('', $rule->getError());
     }
 
-    public function testValidateCouldBeEmpry(): void
+    public function testValidateCouldBeEmpty(): void
     {
         // Could be empty or a valid email string
         $rule = new MultipleAndRule('name', '', [
             MultipleAndRule::RULES => [
-                [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
             ],
         ]);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(RuleInterface::VALID));
+        $this->assertSame(RuleInterface::VALID, $res);
 
-        assertThat($rule->getError(), is(emptyString()));
+        $this->assertSame('', $rule->getError());
     }
 
     public function testValidateError(): void
@@ -48,15 +48,64 @@ class MultipleAndRuleTest extends TestCase
         // Should be string and email
         $rule = new MultipleAndRule('name', 'foo', [
             MultipleAndRule::RULES => [
-                [StringRule::class, StringRule::REQUIRED => true, StringRule::MIN => 1],
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MIN => 1],
                 [EmailRule::class],
             ],
         ]);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(RuleInterface::ERROR));
+        $this->assertSame(RuleInterface::ERROR, $res);
 
-        assertThat($rule->getError(), is(identicalTo('name: foo is not a valid email')));
+        $this->assertSame('name: foo is not a valid email', $rule->getError());
+    }
+
+    public function testValidateWithNumericAndRangeRules(): void
+    {
+        // Value must be numeric and within range
+        $rule = new MultipleAndRule('score', '75', [
+            MultipleAndRule::RULES => [
+                [NumericRule::class, RuleInterface::REQUIRED => true],
+                [RangeRule::class, RangeRule::RANGE => ['50', '75']],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('', $rule->getError());
+    }
+
+    public function testValidateMultipleRulesWithFirstFailure(): void
+    {
+        // When the first rule fails, validation should stop at the first error
+        $rule = new MultipleAndRule('value', 'abc', [
+            MultipleAndRule::RULES => [
+                [NumericRule::class, RuleInterface::REQUIRED => true],
+                [RangeRule::class, RangeRule::RANGE => [50, 75]],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::ERROR, $res);
+        $this->assertStringContainsString('is not numeric', $rule->getError());
+    }
+
+    public function testValidateWithThreeRules(): void
+    {
+        // Test with three rules all passing
+        $rule = new MultipleAndRule('email', 'test@example.com', [
+            MultipleAndRule::RULES => [
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MIN => 5],
+                [StringRule::class, StringRule::MAX => 50],
+                [EmailRule::class],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('', $rule->getError());
     }
 }

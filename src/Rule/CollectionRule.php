@@ -1,11 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
 /**
- * This class validates an array of data (it could be a json array and would be decoded).
+ * This class validates an array of data (it could be a JSON array and would be decoded).
  */
 class CollectionRule extends AbstractRule
 {
@@ -22,31 +22,33 @@ class CollectionRule extends AbstractRule
     public const JSON = 'json';
     /**#@-*/
 
-    protected $rules = [];
+    protected array $rules = [];
 
-    protected $decode = false; // for json value
+    protected bool $decode = false; // for json value
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'rules' => {array:optional:list of rules with their params},
      *   'json' => {boolean:optional:false by default},
      * ]
+     * </code>
      * <code>
-     *    $params = [<br/>
-     *      'required' => true,<br/>
-     *      'rules' => [<br/>
-     *         ['code', StringRule::class, 'min' => 1, 'max' => 255],<br/>
-     *         ['email', EmailRule::class],<br/>
+     *    $params = [
+     *      'required' => true,
+     *      'rules' => [
+     *         ['code', StringRule::class, 'min' => 1, 'max' => 255],
+     *         ['email', EmailRule::class],
      *      ]
      *    ]
      * </code>
      *
-     * Value is considered valid if 'rules' is empty
+     * Value is considered valid if 'rules' are empty
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -55,11 +57,11 @@ class CollectionRule extends AbstractRule
         }
 
         if (isset($params[self::JSON])) {
-            $this->decode = (bool) $params[self::JSON];
+            $this->decode = (bool)$params[self::JSON];
         }
 
-        $this->messages = $this->messages + [
-            self::INVALID_VALUE => _('%key%: %value% is not in a collection'),
+        $this->messages += [
+            self::INVALID_VALUE => '%key%: %value% is not in a collection',
         ];
     }
 
@@ -74,13 +76,23 @@ class CollectionRule extends AbstractRule
         return $this->rules === [] ? self::VALID : $this->isValid();
     }
 
+    public function getValue(): mixed
+    {
+        // don't change the value on error or if it is not empty
+        if ($this->value || $this->error) {
+            return $this->value;
+        }
+
+        return [];
+    }
+
     protected function isValid(): int
     {
         $this->error = '';
 
         $collection = $this->decode ? json_decode($this->value, true) : $this->value;
 
-        if (! is_array($collection)) {
+        if (!is_array($collection)) {
             return $this->setAndReturnError(self::INVALID_VALUE);
         }
 
@@ -111,16 +123,6 @@ class CollectionRule extends AbstractRule
         $class = $rule[1];
 
         return new $class($key, null, $rule);
-    }
-
-    public function getValue()
-    {
-        // don't change value on error or if it is not empty
-        if ($this->value || $this->error) {
-            return $this->value;
-        }
-
-        return [];
     }
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator;
 
@@ -11,42 +11,36 @@ class Validator implements ValidatorInterface
 
     /**
      * Context to be validated.
-     * @var array
      */
-    protected $context = [];
+    protected array $context = [];
 
     /**
      * Validated context.
-     * @var array
      */
-    protected $validatedContext = [];
+    protected array $validatedContext = [];
 
     /**
      * Rules that validate context.
-     * @var array
      */
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * Defaults to false, meaning that validation
      * won't stop when an error is encountered.
-     * @var bool
      */
-    protected $stopOnError = false;
+    protected bool $stopOnError = false;
 
     /**
      * Defaults to false, meaning that validation
      * will append the key to the validated context if
      * it is not found.
-     * @var bool
      */
-    protected $appendExistingItemOnly = false;
+    protected bool $appendExistingItemOnly = false;
 
     /**
-     * Contains the error(s) found during rules validation.
-     * @var array
+     * Contains the error(s) found during rule validation.
      */
-    protected $errors = [];
+    protected array $errors = [];
 
     public function __construct(array $context, array $rules = [], bool $stopOnError = false)
     {
@@ -55,7 +49,7 @@ class Validator implements ValidatorInterface
         $this->setStopOnError($stopOnError);
     }
 
-    public function setContext(array $context): self
+    public function setContext(array $context): static
     {
         $this->context = $context;
         return $this;
@@ -66,21 +60,21 @@ class Validator implements ValidatorInterface
         return $this->validatedContext;
     }
 
-    public function setRules(array $rules): self
+    public function getRules(): array
+    {
+        return $this->rules;
+    }
+
+    public function setRules(array $rules): static
     {
         $this->rules = $rules;
         // Keep chaining
         return $this;
     }
 
-    public function getRules(): array
+    public function appendExistingItemsOnly(bool $value): static
     {
-        return $this->rules;
-    }
-
-    public function appendExistingItemsOnly(bool $choice): self
-    {
-        $this->appendExistingItemOnly = $choice;
+        $this->appendExistingItemOnly = $value;
         // Keep chaining
         return $this;
     }
@@ -95,7 +89,7 @@ class Validator implements ValidatorInterface
         return implode($separator, $this->errors);
     }
 
-    public function get($key)
+    public function get(int|string $key): mixed
     {
         return $this->context[$key] ?? null;
     }
@@ -105,7 +99,7 @@ class Validator implements ValidatorInterface
         return $this->stopOnError;
     }
 
-    public function setStopOnError(bool $stopOnError): self
+    public function setStopOnError(bool $stopOnError): static
     {
         $this->stopOnError = $stopOnError;
 
@@ -132,7 +126,7 @@ class Validator implements ValidatorInterface
             $res = false;
 
             if ($this->stopOnError) {
-                return $res;
+                return false;
             }
         }
 
@@ -153,7 +147,7 @@ class Validator implements ValidatorInterface
     {
         $key = $rule->getKey();
 
-        if ($this->appendExistingItemOnly && ! array_key_exists($key, $this->context)) {
+        if ($this->appendExistingItemOnly && !array_key_exists($key, $this->context)) {
             return;
         }
 

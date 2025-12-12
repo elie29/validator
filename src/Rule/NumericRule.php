@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -30,20 +30,21 @@ class NumericRule extends AbstractRule
     /**
      * Minimum value.
      */
-    protected $min = null;
+    protected ?int $min = null;
 
     /**
      * Maximum value.
      */
-    protected $max = null;
+    protected ?int $max = null;
 
     /**
-     * Cast the value into numeric float or int.
+     * Cast the value into a numeric float or int.
      */
-    protected $cast = false;
+    protected bool $cast = false;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default:only if value is string},
@@ -52,33 +53,34 @@ class NumericRule extends AbstractRule
      *   'max' => {int:optional:null by default},
      *   'cast' => {bool:optional:cast the value into numeric:false by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         if (isset($params[$this::MIN])) {
-            $this->min = (int) $params[$this::MIN];
+            $this->min = (int)$params[$this::MIN];
         }
 
         if (isset($params[$this::MAX])) {
-            $this->max = (int) $params[$this::MAX];
+            $this->max = (int)$params[$this::MAX];
         }
 
         if (isset($params[$this::CAST])) {
-            $this->cast = (bool) $params[$this::CAST];
+            $this->cast = (bool)$params[$this::CAST];
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_NUMERIC => '%key%: %value% is not numeric',
             $this::INVALID_NUMERIC_LT => '%key%: %value% is less than %min%',
             $this::INVALID_NUMERIC_GT => '%key%: %value% is greater than %max%',
         ];
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
-        if ($this->cast && ! $this->error) {
+        if ($this->cast && !$this->error) {
             // float or int and empty value
             return $this->value ? 0 + $this->value : 0;
         }
@@ -93,7 +95,7 @@ class NumericRule extends AbstractRule
             return $run;
         }
 
-        if (! is_numeric($this->value)) {
+        if (!is_numeric($this->value)) {
             return $this->setAndReturnError($this::INVALID_NUMERIC);
         }
 

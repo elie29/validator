@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -22,17 +22,19 @@ class EmailRule extends AbstractRule
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             self::INVALID_EMAIL => '%key%: %value% is not a valid email',
         ];
     }
@@ -45,7 +47,7 @@ class EmailRule extends AbstractRule
             return $run;
         }
 
-        if (! $this->isValid()) {
+        if (!$this->isValid()) {
             return $this->setAndReturnError(self::INVALID_EMAIL);
         }
 

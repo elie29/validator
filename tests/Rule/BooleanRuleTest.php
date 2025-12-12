@@ -1,13 +1,42 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class BooleanRuleTest extends TestCase
 {
+
+    public static function getBooleanValueProvider(): Generator
+    {
+        yield 'Given value could be empty' => [
+            null,
+            RuleInterface::VALID,
+            '',
+        ];
+
+        yield 'Given value could be 1' => [
+            '1 ',
+            RuleInterface::VALID,
+            '',
+        ];
+
+        yield 'Given value could be true' => [
+            true,
+            RuleInterface::VALID,
+            '',
+        ];
+
+        yield 'Given value could not be a string' => [
+            'test',
+            RuleInterface::ERROR,
+            'name: test is not a valid boolean',
+        ];
+    }
 
     public function testValidateEmptyValue(): void
     {
@@ -16,8 +45,8 @@ class BooleanRuleTest extends TestCase
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(BooleanRule::VALID));
-        assertThat($rule->getValue(), nullValue());
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertNull($rule->getValue());
 
         $rule = new BooleanRule('name', '', [
             BooleanRule::CAST => true,
@@ -25,48 +54,19 @@ class BooleanRuleTest extends TestCase
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(BooleanRule::VALID));
-        assertThat($rule->getValue(), is(false));
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertFalse($rule->getValue());
     }
 
-    /**
-     * @dataProvider getBooleanValueProvider
-     */
+    #[DataProvider('getBooleanValueProvider')]
     public function testValidate($value, $expectedResult, $expectedError): void
     {
         $rule = new BooleanRule('name', $value);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo($expectedResult));
+        $this->assertSame($expectedResult, $res);
 
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getBooleanValueProvider(): \Generator
-    {
-        yield 'Given value could be empty' => [
-            null,
-            BooleanRule::VALID,
-            '',
-        ];
-
-        yield 'Given value could be 1' => [
-            '1 ',
-            BooleanRule::VALID,
-            '',
-        ];
-
-        yield 'Given value could be true' => [
-            true,
-            BooleanRule::VALID,
-            '',
-        ];
-
-        yield 'Given value could not be a string' => [
-            'test',
-            BooleanRule::ERROR,
-            'name: test is not a valid boolean',
-        ];
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

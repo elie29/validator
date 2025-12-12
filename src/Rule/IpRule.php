@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -27,26 +27,28 @@ class IpRule extends AbstractRule
     /**
      * flag range. default to FILTER_FLAG_IPV4
      */
-    protected $flag = FILTER_FLAG_IPV4;
+    protected int $flag = FILTER_FLAG_IPV4;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'flag' => {int:optional:FILTER_FLAG_IPV4 by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         if (isset($params[$this::FLAG])) {
-            $this->flag = (int) $params[$this::FLAG];
+            $this->flag = (int)$params[$this::FLAG];
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_IP => '%key%: %value% is not a valid IP',
             $this::INVALID_IP_FLAG => 'Filter IP flag: %flag% is not valid',
         ];

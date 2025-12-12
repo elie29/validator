@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
 /**
  * This class verifies that a value is a valid array.
- * empty value could be null or []
+ * An empty value could be null or []
  */
 class ArrayRule extends AbstractRule
 {
@@ -28,44 +28,46 @@ class ArrayRule extends AbstractRule
     /**
      * Minimum size.
      */
-    protected $min = 0;
+    protected int $min = 0;
 
     /**
      * Maximum size.
      */
-    protected $max;
+    protected ?int $max = null;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'min' => {int:optional:0 by default},
      *   'max' => {int:optional:value count by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         if (isset($params[$this::MIN])) {
-            $this->min = (int) $params[$this::MIN];
+            $this->min = (int)$params[$this::MIN];
         }
 
         if (isset($params[$this::MAX])) {
-            $this->max = (int) $params[$this::MAX];
+            $this->max = (int)$params[$this::MAX];
         }
 
         // + won't replace existing keys set by users
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_ARRAY => '%key% does not have an array value: %value%',
             $this::INVALID_ARRAY_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
         ];
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
-        // don't change value on error or if it is not empty
+        // don't change the value on error or if it is not empty
         if ($this->value || $this->error) {
             return $this->value;
         }
@@ -80,7 +82,7 @@ class ArrayRule extends AbstractRule
             return $run;
         }
 
-        if (! is_array($this->value)) {
+        if (!is_array($this->value)) {
             return $this->setAndReturnError($this::INVALID_ARRAY);
         }
 

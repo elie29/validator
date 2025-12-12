@@ -1,11 +1,12 @@
 # Validator Project
 
-[![Build Status](https://travis-ci.org/elie29/validator.svg?branch=master)](https://travis-ci.org/elie29/validator)
+[![build](https://github.com/elie29/validator/actions/workflows/php-build.yml/badge.svg)](https://github.com/elie29/validator/actions/workflows/php-build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/elie29/validator/badge.svg)](https://coveralls.io/github/elie29/validator)
+[![PHP Version](https://img.shields.io/packagist/php-v/elie29/validator.svg)](https://packagist.org/packages/elie29/validator)
 
 ## Introduction
 
-A library for validating a context (POST, GET etc...) by running given rules.
+A library for validating a context (POST, GET, etc...) by running given rules.
 
 ## Installation
 
@@ -17,7 +18,7 @@ composer require elie29/validator
 
 ## Getting Started
 
-`Validator` requires one or several rules ([constraints](#available-rules)) in order to validate a given context.
+`Validator` requires one or several rules ([constraints](#available-rules)) to validate a given context.
 
 A basic example with \$\_POST
 
@@ -34,7 +35,7 @@ use Elie\Validator\Validator;
 /**
  * A key could have multiple rules
  *  - name could not be empty (required and minimum 1 character length)
- *  - age could be empty (non existent, null or '') otherwise NumericRule is applied
+ *  - age could be empty (non-existent, null or '') otherwise NumericRule is applied
  *  - age could be empty or among several values
  *  - email is required and should be a valid string email
  */
@@ -56,31 +57,32 @@ $validator->validate(); // bool depends on $_POST content
 
 ### Available rules
 
-1. [All Rules](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
+1. [All Rules](https://github.com/elie29/validator/tree/main/src/Rule/AbstractRule.php) accept `required`, `trim` and `messages` options.
    `required` is false by default while `trim` is true.
-1. [ArrayRule](https://github.com/elie29/validator/blob/master/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to empty array [].
-1. [BicRule](https://github.com/elie29/validator/blob/master/src/Rule/BicRule.php)
-1. [BooleanRule](https://github.com/elie29/validator/blob/master/src/Rule/BooleanRule.php) accepts `cast` option.
-1. [CallableRule](https://github.com/elie29/validator/blob/master/src/Rule/CallableRule.php) accepts `callable` function.
-1. [ChoicesRule](https://github.com/elie29/validator/blob/master/src/Rule/ChoicesRule.php) accepts `list` option.
-1. [CollectionRule](https://github.com/elie29/validator/blob/master/src/Rule/CollectionRule.php) accepts `list` and `json` options.
-1. [CompareRule](https://github.com/elie29/validator/blob/master/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/blob/master/src/Rule/CompareConstants.php) by default, `expected` is null by default.
-1. [DateRule](https://github.com/elie29/validator/blob/master/src/Rule/DateRule.php) accepts `format` and `separator` options.
-1. [EmailRule](https://github.com/elie29/validator/blob/master/src/Rule/EmailRule.php)
-1. [IpRule](https://github.com/elie29/validator/blob/master/src/Rule/IpRule.php) accepts `flag` option.
-1. [JsonRule](https://github.com/elie29/validator/blob/master/src/Rule/JsonRule.php) accepts `decode` option
-1. [MatchRule](https://github.com/elie29/validator/blob/master/src/Rule/MatchRule.php) requires `pattern` option.
-1. [MultipleAndRule](https://github.com/elie29/validator/blob/master/src/Rule/MultipleAndRule.php) requires `rules` option.
-1. [MultipleOrRule](https://github.com/elie29/validator/blob/master/src/Rule/MultipleOrRule.php) requires `rules` option.
-1. [NumericRule](https://github.com/elie29/validator/blob/master/src/Rule/NumericRule.php) accepts `min`, `max` and `cast` options.
-1. [RangeRule](https://github.com/elie29/validator/blob/master/src/Rule/RangeRule.php) accepts `range` option.
-1. [StringRule](https://github.com/elie29/validator/blob/master/src/Rule/StringRule.php) accepts `min` and `max` options.
-1. [TimeRule](https://github.com/elie29/validator/blob/master/src/Rule/TimeRule.php)
-1. [Your own rule](#how-to-add-a-new-rule)
+2. [ArrayRule](https://github.com/elie29/validator/tree/main/src/Rule/ArrayRule.php) accepts `min` and `max` options. Empty value is cast to an empty array [].
+3. [BicRule](https://github.com/elie29/validator/tree/main/src/Rule/BicRule.php) validates Bank Identifier Code (SWIFT-BIC).
+4. [BooleanRule](https://github.com/elie29/validator/tree/main/src/Rule/BooleanRule.php) accepts `cast` option.
+5. [CallableRule](https://github.com/elie29/validator/tree/main/src/Rule/CallableRule.php) accepts `callable` function.
+6. [ChoicesRule](https://github.com/elie29/validator/tree/main/src/Rule/ChoicesRule.php) accepts `list` option.
+7. [CollectionRule](https://github.com/elie29/validator/tree/main/src/Rule/CollectionRule.php) accepts `rules` and `json` options.
+8. [CompareRule](https://github.com/elie29/validator/tree/main/src/Rule/CompareRule.php) accepts `sign` and `expected` options. `sign` is [CompareRule::EQ](https://github.com/elie29/validator/tree/main/src/Rule/CompareConstants.php) by default, `expected` is null by default.
+9. [DateRule](https://github.com/elie29/validator/tree/main/src/Rule/DateRule.php) accepts `format` and `separator` options.
+10. [EmailRule](https://github.com/elie29/validator/tree/main/src/Rule/EmailRule.php) validates email addresses.
+11. [IpRule](https://github.com/elie29/validator/tree/main/src/Rule/IpRule.php) accepts `flag` option.
+12. [JsonRule](https://github.com/elie29/validator/tree/main/src/Rule/JsonRule.php) accepts `decode` option.
+13. [MatchRule](https://github.com/elie29/validator/tree/main/src/Rule/MatchRule.php) requires `pattern` option.
+14. [MultipleAndRule](https://github.com/elie29/validator/tree/main/src/Rule/MultipleAndRule.php) requires `rules` option (all rules must pass).
+15. [MultipleOrRule](https://github.com/elie29/validator/tree/main/src/Rule/MultipleOrRule.php) requires `rules` option (at least one rule must pass).
+16. [NumericRule](https://github.com/elie29/validator/tree/main/src/Rule/NumericRule.php) accepts `min`, `max` and `cast` options.
+17. [RangeRule](https://github.com/elie29/validator/tree/main/src/Rule/RangeRule.php) accepts `range` option.
+18. [StringCleanerRule](https://github.com/elie29/validator/tree/main/src/Rule/StringCleanerRule.php) removes invisible characters from strings.
+19. [StringRule](https://github.com/elie29/validator/tree/main/src/Rule/StringRule.php) accepts `min` and `max` options.
+20. [TimeRule](https://github.com/elie29/validator/tree/main/src/Rule/TimeRule.php) validates time format.
+21. [Your own rule](#how-to-add-a-new-rule)
 
 ### How to add a new rule
 
-You need to implement [RuleInterface](https://github.com/elie29/validator/blob/master/src/Rule/RuleInterface.php) or to extend [AbstractRule](https://github.com/elie29/validator/blob/master/src/Rule/AbstractRule.php)
+You need to implement [RuleInterface](https://github.com/elie29/validator/tree/main/src/Rule/RuleInterface.php) or to extend [AbstractRule](https://github.com/elie29/validator/tree/main/src/Rule/AbstractRule.php)
 
 ```php
 <?php
@@ -89,12 +91,11 @@ use Elie\Validator\Rule\AbstractRule;
 
 class MyValueRule extends AbstractRule
 {
-
     public const INVALID_MY_VALUE = 'invalidMyValue';
 
-    protected $my_value = null;
+    protected mixed $my_value = null;
 
-    public function __construct(string $key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -102,7 +103,7 @@ class MyValueRule extends AbstractRule
             $this->my_value = $params['my_value'];
         }
 
-        // + in order to add non existent key
+        // + to add a non-existent key
         $this->messages += [
             $this::INVALID_MY_VALUE => '%key%: %value% my message %my_value%'
         ];
@@ -129,15 +130,15 @@ class MyValueRule extends AbstractRule
 
 ## Validated Context
 
-Once validate is called, we can use validatedContext method in order to retrieve all validated values from the original
+Once validate is called, we can use the validatedContext method to retrieve all validated values from the original
 context.
 
-By default, all keys set in the rules array will be found in the validatedContext array. However, if we don't want to append
-non existing keys, we should call appendExistingItemsOnly(true) before validation.
+By default, all keys set in the 'rules' array will be found in the validatedContext array. However, if we don't want to append
+non-existing keys, we should call appendExistingItemsOnly(true) before validation.
 
 ## Assertion Integration
 
-Instead of using assertion key by key, you can validate the whole context and than use [Assertion](https://github.com/beberlei/assert) or [Assert](https://github.com/webmozart/assert) as follow:
+Instead of using assertion key by key, you can validate the whole context and then use [Assertion](https://github.com/beberlei/assert) or [Assert](https://github.com/webmozart/assert) as follows:
 
 ```php
 <?php
@@ -145,6 +146,7 @@ Instead of using assertion key by key, you can validate the whole context and th
 use Assert\Assertion;
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Rule\RuleInterface;
 use Elie\Validator\Rule\StringRule;
 use Elie\Validator\Validator;
 use Webmozart\Assert\Assert;
@@ -157,28 +159,36 @@ $rules =[
 
 $validator = new Validator($_POST, $rules);
 
+// Using webmozart/assert
 Assert::true($validator->validate(), $validator->getImplodedErrors());
 
-// OR
-
+// OR using beberlei/assert
 Assertion::true($validator->validate(), $validator->getImplodedErrors());
+
+// OR using PHPUnit in tests
+$this->assertSame(RuleInterface::VALID, $validator->validate(), $validator->getImplodedErrors());
 ```
 
 ### Partial Validation
 
-Sometimes we need to validate the context partially, whenever we have a Json item or
-keys that depend on each others.
+Sometimes we need to validate the context partially, whenever we have a JSON item or
+keys that depend on each other.
 
-The following is an example when a context - eg. \$\_POST - should contains a Json user data:
+The following is an example when a context - e.g., \$\_POST - should contain JSON user data:
 
 ```php
+use Elie\Validator\Rule\JsonRule;
+use Elie\Validator\Rule\MatchRule;
+use Elie\Validator\Rule\NumericRule;
+use Elie\Validator\Validator;
+
 $rules = [
     ['user', JsonRule::class, JsonRule::REQUIRED => true],
 ];
 
 $validator = new Validator($_POST, $rules);
 
-Assertion::true($validator->validate()); // this assertion validates that the user is in Json format
+Assertion::true($validator->validate()); // this assertion validates that the user is in JSON format
 
 $validatedPost = $validator->getValidatedContext();
 
@@ -192,12 +202,12 @@ $validator->setRules($rules);
 
 // Decode user as it is a valid JSON
 $user = json_decode($validatedPost['user'], true);
-$validator->setContext($user); // new context is now user data
+$validator->setContext($user); // the new context is now user data
 
 Assertion::true($validator->validate()); // this assertion validates user data
 
 /*
-Validate accepts a boolean argument - mergedValidatedContext - which is false by default. If set to true
+Validate accepts a boolean argument - mergedValidatedContext - which is false by default. If set to true, 
 $validator->getValidatedContext() would return:
 
 array:4 [▼
@@ -216,7 +226,7 @@ to [Partial Validation](#partial-validation) without merging data:
 
 ```php
 $rules = [
-    // With Json decode, validated value will be decoded into array
+    // With json-decode, a validated value will be decoded into an array
     ['users', JsonRule::class, JsonRule::REQUIRED => true, JsonRule::DECODE => true],
 ];
 
@@ -224,7 +234,7 @@ $validator = new Validator([
     'users' => '[{"name":"John","age":25},{"name":"Brad","age":42}]'
 ], $rules);
 
-Assertion::true($validator->validate()); // this validate that users is a valid Json format
+Assertion::true($validator->validate()); // this validates that users is a valid JSON format
 
 // But we need to validate all user data as well (suppose it should contain name and age):
 $validator->setRules([
@@ -247,7 +257,7 @@ foreach ($users as $user) {
 
 ```
 
-A new [CollectionRule](https://github.com/elie29/validator/blob/master/src/Rule/CollectionRule.php) has been added in order to validate a collection data (array or json) as follow:
+A new [CollectionRule](https://github.com/elie29/validator/tree/main/src/Rule/CollectionRule.php) has been added to validate collection data (array or JSON) as follows:
 
 ```php
 $rules = [
@@ -263,11 +273,11 @@ $data = [
 
 $validator = new Validator($data, $rules);
 
-assertThat($validator->validate(), is(true));
+$this->assertSame(RuleInterface::VALID, $validator->validate());
 
 $users = $validator->getValidatedContext()['users'];
 
-assertThat($users, arrayWithSize(2));
+$this->assertCount(2, $users);
 ```
 
 ## Development Prerequisites
@@ -276,16 +286,9 @@ assertThat($users, arrayWithSize(2));
 
 - UTF-8
 
-### Code style formatter
-
-- Zend Framework coding standard
-
 ### Composer commands
 
-- `clean`: Cleans all generated files
-- `test`: Launches unit test
-- `test-coverage`: Launches unit test with clover.xml file generation
-- `cs-check`: For code sniffer check
-- `cs-fix`: For code sniffer fix
-- `phpstan`: Launches PHP Static Analysis Tool
-- `check`: Launches `clean`, `cs-check`, `test` and `phpstan`
+- `composer test`: Runs unit tests without coverage
+- `composer test-coverage`: Runs unit tests with code coverage (requires Xdebug)
+- `composer cover`: Runs tests with coverage and starts a local server to view coverage report at <http://localhost:5001>
+- `composer clean`: Cleans all generated files (build directory and clover.xml)

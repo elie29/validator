@@ -1,8 +1,8 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
-namespace Elie\Validator\Rule\Stub;
+namespace Elie\Validator\Stub;
 
 use Elie\Validator\Rule\AbstractRule;
 

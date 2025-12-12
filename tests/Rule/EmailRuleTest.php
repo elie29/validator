@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class EmailRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getEmailValueProvider
-     */
-    public function testValidate($value, $expectedResult, $expectedError): void
-    {
-        $rule = new EmailRule('email', $value);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getEmailValueProvider(): \Generator
+    public static function getEmailValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -42,5 +30,17 @@ class EmailRuleTest extends TestCase
             RuleInterface::ERROR,
             'email: elie.com is not a valid email',
         ];
+    }
+
+    #[DataProvider('getEmailValueProvider')]
+    public function testValidate($value, $expectedResult, $expectedError): void
+    {
+        $rule = new EmailRule('email', $value);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

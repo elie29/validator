@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -28,15 +28,16 @@ class StringRule extends AbstractRule
     /**
      * Minimum string length.
      */
-    protected $min = 0;
+    protected int $min = 0;
 
     /**
      * Maximum string length.
      */
-    protected $max = 0;
+    protected ?int $max = null;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
@@ -44,22 +45,23 @@ class StringRule extends AbstractRule
      *   'min' => {int:optional:0 by default},
      *   'max' => {int:optional:value length by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         if (isset($params[$this::MIN])) {
-            $this->min = (int) $params[$this::MIN];
+            $this->min = (int)$params[$this::MIN];
         }
         if (isset($params[$this::MAX])) {
-            $this->max = (int) $params[$this::MAX];
+            $this->max = (int)$params[$this::MAX];
         }
 
         $this->messages = $this->messages + [
-            $this::INVALID_STRING => '%key% does not have a string value: %value%',
-            $this::INVALID_STRING_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
-        ];
+                $this::INVALID_STRING => '%key% does not have a string value: %value%',
+                $this::INVALID_STRING_LENGTH => '%key%: The length of %value% is not between %min% and %max%',
+            ];
     }
 
     public function validate(): int
@@ -70,7 +72,7 @@ class StringRule extends AbstractRule
             return $run;
         }
 
-        if (! is_string($this->value)) {
+        if (!is_string($this->value)) {
             return $this->setAndReturnError($this::INVALID_STRING);
         }
 

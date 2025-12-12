@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -15,29 +15,31 @@ class MultipleAndRule extends AbstractRule
      */
     public const RULES = 'rules';
 
-    protected $rules = [];
+    protected array $rules = [];
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'messages' => {array:optional:key/value message patterns},
      *   'rules' => {array:optional:list of rules with their params},
      * ]
+     * </code>
+     * Should be string and email:
      * <code>
-     *    should be string and email
-     *    $params = [<br/>
-     *      'required' => true,<br/>
-     *      'rules' => [<br/>
-     *         [StringRule::class, 'min' => 1, 'max' => 255],<br/>
-     *         [EmailRule::class],<br/>
+     *    $params = [
+     *      'required' => true,
+     *      'rules' => [
+     *         [StringRule::class, 'min' => 1, 'max' => 255],
+     *         [EmailRule::class],
      *      ]
      *    ]
      * </code>
      *
-     * Value is considered valid if 'rules' is empty
+     * Value is considered valid if 'rules' are empty
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 

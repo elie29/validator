@@ -5,3 +5,4 @@ clover.xml
 .project
 .idea
 .phpunit.result.cache
+clover.xml
