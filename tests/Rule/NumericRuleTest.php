@@ -1,62 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class NumericRuleTest extends TestCase
 {
 
-    public function testValidateEmptyValue(): void
-    {
-        // Empty string value.  Value is not required by default!
-        $rule = new NumericRule('name', '');
-        $res = $rule->validate();
-        assertThat($res, identicalTo(NumericRule::VALID));
-        assertThat($rule->getValue(), emptyString());
-
-        // Empty string value with cast
-        $rule = new NumericRule('name', '', [
-            NumericRule::CAST => true,
-        ]);
-        $res = $rule->validate();
-        assertThat($res, identicalTo(NumericRule::VALID));
-        assertThat($rule->getValue(), identicalTo(0));
-
-        // int
-        $rule = new NumericRule('name', '12', [
-            NumericRule::CAST => true,
-        ]);
-        $res = $rule->validate();
-        assertThat($res, identicalTo(NumericRule::VALID));
-        assertThat($rule->getValue(), identicalTo(12));
-
-        // float
-        $rule = new NumericRule('name', '12.2', [
-            NumericRule::CAST => true,
-        ]);
-        $res = $rule->validate();
-        assertThat($res, identicalTo(NumericRule::VALID));
-        assertThat($rule->getValue(), identicalTo(12.2));
-    }
-
-    /**
-     * @dataProvider getNumericValueProvider
-     */
-    public function testValidate($value, $params, $expectedResult, $expectedError): void
-    {
-        $rule = new NumericRule('age', $value, $params);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getNumericValueProvider(): \Generator
+    public static function getNumericValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -99,5 +54,50 @@ class NumericRuleTest extends TestCase
             RuleInterface::ERROR,
             'age is required and should not be empty: ',
         ];
+    }
+
+    public function testValidateEmptyValue(): void
+    {
+        // Empty string value.  Value is not required by default!
+        $rule = new NumericRule('name', '');
+        $res = $rule->validate();
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('', $rule->getValue());
+
+        // Empty string value with cast
+        $rule = new NumericRule('name', '', [
+            NumericRule::CAST => true,
+        ]);
+        $res = $rule->validate();
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame(0, $rule->getValue());
+
+        // int
+        $rule = new NumericRule('name', '12', [
+            NumericRule::CAST => true,
+        ]);
+        $res = $rule->validate();
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame(12, $rule->getValue());
+
+        // float
+        $rule = new NumericRule('name', '12.2', [
+            NumericRule::CAST => true,
+        ]);
+        $res = $rule->validate();
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame(12.2, $rule->getValue());
+    }
+
+    #[DataProvider('getNumericValueProvider')]
+    public function testValidate($value, $params, $expectedResult, $expectedError): void
+    {
+        $rule = new NumericRule('age', $value, $params);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -24,21 +24,22 @@ class RangeRule extends AbstractRule
 
     /**
      * Range values.
-     * Default sets to empty array.
-     * @var array
+     * Default sets to an empty array.
      */
-    protected $range = [];
+    protected array $range = [];
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'range' => {array:optional:empty array by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -46,7 +47,7 @@ class RangeRule extends AbstractRule
             $this->range = $params[$this::RANGE];
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_RANGE => '%key%: %value% is out of range %range%',
         ];
     }
@@ -59,7 +60,7 @@ class RangeRule extends AbstractRule
             return $run;
         }
 
-        if (! in_array($this->value, $this->range, true)) {
+        if (!in_array($this->value, $this->range, true)) {
             return $this->setAndReturnError($this::INVALID_RANGE, [
                 '%range%' => $this->stringify($this->range),
             ]);

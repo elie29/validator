@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -25,34 +25,36 @@ class BooleanRule extends AbstractRule
     /**
      * Cast the value into boolean
      */
-    protected $cast = false;
+    protected bool $cast = false;
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default:only if value is string},
      *   'messages' => {array:optional:key/value message patterns},
      *   'cast' => {bool:optional:cast the value into bool:false by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
         if (isset($params[$this::CAST])) {
-            $this->cast = (bool) $params[$this::CAST];
+            $this->cast = (bool)$params[$this::CAST];
         }
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_BOOLEAN => '%key%: %value% is not a valid boolean',
         ];
     }
 
-    public function getValue()
+    public function getValue(): mixed
     {
-        if ($this->cast && ! $this->error) {
-            return (bool) $this->value;
+        if ($this->cast && !$this->error) {
+            return (bool)$this->value;
         }
         return $this->value;
     }
@@ -65,7 +67,7 @@ class BooleanRule extends AbstractRule
             return $run;
         }
 
-        if (! $this->isBool()) {
+        if (!$this->isBool()) {
             return $this->setAndReturnError($this::INVALID_BOOLEAN);
         }
 

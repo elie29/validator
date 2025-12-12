@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -27,17 +27,19 @@ class BicRule extends AbstractRule
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional:false by default},
      *   'trim' => {bool:optional:true by default},
      *   'messages' => {array:optional:key/value message patterns}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
-        $this->messages = $this->messages + [
+        $this->messages += [
             $this::INVALID_BIC_LIMIT => '%key%: %value% has an invalid length',
             $this::INVALID_BIC_UPPER => '%key%: %value% should be uppercase',
             $this::INVALID_BIC_ALNUM => '%key%: %value% should be alphanumeric',
@@ -62,15 +64,15 @@ class BicRule extends AbstractRule
     protected function setErrorCode(): int
     {
         $methodsValidation = [
-            'invalidLimit',
-            'invalidUppercase',
-            'invalidAlphaNumeric',
-            'invalidBankCode',
-            'invalidCountryCode',
+            fn() => $this->invalidLimit(),
+            fn() => $this->invalidUppercase(),
+            fn() => $this->invalidAlphaNumeric(),
+            fn() => $this->invalidBankCode(),
+            fn() => $this->invalidCountryCode(),
         ];
 
         foreach ($methodsValidation as $method) {
-            $codeError = $this->$method();
+            $codeError = $method();
             if ($codeError !== null) {
                 return $this->setAndReturnError($codeError);
             }

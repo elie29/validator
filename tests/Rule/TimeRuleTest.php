@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class TimeRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getTimeValueProvider
-     */
-    public function testValidate($value, $expectedResult, $expectedError): void
-    {
-        $rule = new TimeRule('time', $value);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getTimeValueProvider(): \Generator
+    public static function getTimeValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -66,5 +54,17 @@ class TimeRuleTest extends TestCase
             RuleInterface::ERROR,
             'time: 20:2:3:6 is not a valid time',
         ];
+    }
+
+    #[DataProvider('getTimeValueProvider')]
+    public function testValidate($value, $expectedResult, $expectedError): void
+    {
+        $rule = new TimeRule('time', $value);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

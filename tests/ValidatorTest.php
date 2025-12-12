@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator;
 
@@ -10,11 +10,11 @@ use Elie\Validator\Rule\CollectionRule;
 use Elie\Validator\Rule\EmailRule;
 use Elie\Validator\Rule\JsonRule;
 use Elie\Validator\Rule\MatchRule;
-use Elie\Validator\Rule\MultipleAndRule;
-use Elie\Validator\Rule\MultipleOrRule;
 use Elie\Validator\Rule\NumericRule;
-use Elie\Validator\Rule\RangeRule;
+use Elie\Validator\Rule\RuleInterface;
 use Elie\Validator\Rule\StringRule;
+use Elie\Validator\Stub\DataProvider as StubDataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 class ValidatorTest extends TestCase
@@ -29,21 +29,22 @@ class ValidatorTest extends TestCase
         $validator->setRules([$rule]);
 
         $res = $validator->validate();
-        assertThat($res, is(true));
+        $this->assertTrue($res);
 
         $validatedContext = $validator->getValidatedContext();
-        assertThat($validatedContext, anArray(['name' => 'Ben']));
+        $this->assertArrayHasKey('name', $validatedContext);
+        $this->assertContains('Ben', $validatedContext);
 
         $value = $validator->get('name');
-        assertThat($value, identicalTo('Ben '));
+        $this->assertSame('Ben ', $value);
 
         $value = $validator->get('age');
-        assertThat($value, nullValue());
+        $this->assertNull($value);
 
         $rules = $validator->getRules();
-        assertThat($rules[0], anArray($rule));
+        $this->assertSame($rule, $rules[0]);
 
-        assertThat($validator->shouldStopOnError(), is(false));
+        $this->assertFalse($validator->shouldStopOnError());
     }
 
     public function testValidatorStopOnError(): void
@@ -55,20 +56,20 @@ class ValidatorTest extends TestCase
         ]);
 
         $res = $validator->validate();
-        assertThat($res, is(false));
+        $this->assertFalse($res);
 
         // value should not exist on error
         $validatedContext = $validator->getValidatedContext();
-        assertThat($validatedContext, emptyArray());
+        $this->assertSame([], $validatedContext);
 
-        assertThat($validator->shouldStopOnError(), is(true));
+        $this->assertTrue($validator->shouldStopOnError());
     }
 
     public function testValidatorWithJsonPartialValidation(): void
     {
         $rules = [
-            ['email', EmailRule::class, EmailRule::REQUIRED => true],
-            ['user', JsonRule::class, JsonRule::REQUIRED => true, JsonRule::DECODE => true],
+            ['email', EmailRule::class, RuleInterface::REQUIRED => true],
+            ['user', JsonRule::class, RuleInterface::REQUIRED => true, JsonRule::DECODE => true],
         ];
 
         $data = [
@@ -78,7 +79,7 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($data, $rules);
 
-        assertThat($validator->validate(), is(true));
+        $this->assertTrue($validator->validate());
 
         // In order to validate users json context
         $validator->setRules([
@@ -90,18 +91,18 @@ class ValidatorTest extends TestCase
         $validator->setContext($user);
 
         // Validate and merge context
-        assertThat($validator->validate(true), is(true));
+        $this->assertTrue($validator->validate(true));
 
         $data = $validator->getValidatedContext();
-        assertThat($data, hasEntry('age', 25));
-        assertThat($data, hasKey('user'));
+        $this->assertSame(25, $data['age']);
+        $this->assertArrayHasKey('user', $data);
     }
 
     public function testValidatorWithRawPartialValidation(): void
     {
         $rules = [
-            ['email', EmailRule::class, EmailRule::REQUIRED => true],
-            ['tags', ArrayRule::class, ArrayRule::REQUIRED => true],
+            ['email', EmailRule::class, RuleInterface::REQUIRED => true],
+            ['tags', ArrayRule::class, RuleInterface::REQUIRED => true],
         ];
 
         $data = [
@@ -115,7 +116,7 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($data, $rules);
 
-        assertThat($validator->validate(), is(true));
+        $this->assertTrue($validator->validate());
 
         // In order to validate tags array context
         $validator->setRules([
@@ -127,17 +128,17 @@ class ValidatorTest extends TestCase
         $data = [];
         foreach ($tags as $tag) {
             $validator->setContext($tag);
-            assertThat($validator->validate(), is(true));
+            $this->assertTrue($validator->validate());
             $data[] = $validator->getValidatedContext();
         }
 
-        assertThat($data, arrayWithSize(3));
+        $this->assertSame(3, count($data));
     }
 
     public function testValidatorWithCollection(): void
     {
         $rules = [
-            ['email', EmailRule::class, EmailRule::REQUIRED => true],
+            ['email', EmailRule::class, RuleInterface::REQUIRED => true],
             ['tags', CollectionRule::class, CollectionRule::RULES => [
                 ['code', NumericRule::class, NumericRule::MAX => 80],
                 ['slug', MatchRule::class, MatchRule::PATTERN => '/^[a-z]{1,5}$/i'],
@@ -155,11 +156,11 @@ class ValidatorTest extends TestCase
 
         $validator = new Validator($data, $rules);
 
-        assertThat($validator->validate(), is(true));
+        $this->assertTrue($validator->validate());
 
         $tags = $validator->getValidatedContext()['tags'];
 
-        assertThat($tags, arrayWithSize(3));
+        $this->assertSame(3, count($tags));
     }
 
     public function testValidatorGetImplodedErrors(): void
@@ -171,20 +172,20 @@ class ValidatorTest extends TestCase
         ]);
 
         $res = $validator->validate();
-        assertThat($res, is(false));
+        $this->assertFalse($res);
 
         // value should not exist on error
         $validatedContext = $validator->getValidatedContext();
-        assertThat($validatedContext, emptyArray());
+        $this->assertSame([], $validatedContext);
 
         $expected = 'name: Ben is not numeric,name does not have an array value: Ben,name: Ben is not a valid boolean';
-        assertThat($validator->getImplodedErrors(','), is($expected));
+        $this->assertSame($expected, $validator->getImplodedErrors(','));
     }
 
     public function testExistingKeysOnlyShouldBeAppendToTheValidatedContext(): void
     {
         $validator = new Validator(
-            // Context
+        // Context
             ['name' => 'John', 'address' => null],
             // Rules
             [
@@ -197,18 +198,16 @@ class ValidatorTest extends TestCase
         $validator->appendExistingItemsOnly(true);
 
         $res = $validator->validate();
-        assertThat($res, is(true));
+        $this->assertTrue($res);
 
         $validatedContext = $validator->getValidatedContext();
 
-        assertThat($validatedContext, hasKey('name'));
-        assertThat($validatedContext, hasKey('address'));
-        assertThat($validatedContext, not(hasKey('age')));
+        $this->assertArrayHasKey('name', $validatedContext);
+        $this->assertArrayHasKey('address', $validatedContext);
+        $this->assertArrayNotHasKey('age', $validatedContext);
     }
 
-    /**
-     * @dataProvider getValidatorProvider
-     */
+    #[DataProviderExternal(StubDataProvider::class, 'getValidatorProvider')]
     public function testValidate($context, $rules, $expectedResult, $errorsSize): void
     {
         $validator = new Validator($context);
@@ -216,90 +215,7 @@ class ValidatorTest extends TestCase
 
         $res = $validator->validate();
 
-        assertThat($res, identicalTo($expectedResult));
-        assertThat($validator->getErrors(), arrayWithSize($errorsSize));
-    }
-
-    public function getValidatorProvider(): \Generator
-    {
-        yield 'Age and name are valid' => [
-            // context
-            [
-                'age' => 25,
-                'name' => 'Ben',
-            ],
-            // rules
-            [
-                ['age', NumericRule::class, 'min' => 5, 'max' => 65],
-                ['name', StringRule::class, 'min' => 3, 'max' => 30],
-            ],
-            // expectedResult
-            true,
-            // errorsSize
-            0,
-        ];
-
-        yield 'Validate with multiple and rule' => [
-            [
-                'age' => 25,
-            ],
-            [
-                ['age', MultipleAndRule::class, MultipleAndRule::REQUIRED => true, MultipleAndRule::RULES => [
-                    [NumericRule::class, NumericRule::MIN => 14],
-                    [RangeRule::class, RangeRule::RANGE => [25, 26]],
-                ]],
-            ],
-            true,
-            0,
-        ];
-
-        yield 'Validate with multiple or rule' => [
-            [
-                'foo' => 'bar',
-            ],
-            [
-                ['foo', MultipleOrRule::class, MultipleOrRule::REQUIRED => true, MultipleOrRule::RULES => [
-                    [NumericRule::class, NumericRule::MIN => 14],
-                    [StringRule::class, StringRule::MIN => 1],
-                ]],
-            ],
-            true,
-            0,
-        ];
-
-        yield 'Age is not valid' => [
-            [
-                'age' => 25,
-            ],
-            [
-                ['age', NumericRule::class, 'min' => 26, 'max' => 65],
-            ],
-            false,
-            1,
-        ];
-        yield 'Key with numeric value' => [
-            [
-                0 => 25,
-                1 => 'Test',
-            ],
-            [
-                [0, NumericRule::class, 'min' => 22, 'max' => 65],
-                [1, StringRule::class, 'min' => 0, 'max' => 10],
-            ],
-            true,
-            0,
-        ];
-        yield 'Key with index context' => [
-            [
-                28,
-                'Test2',
-            ],
-            [
-                [0, NumericRule::class, 'min' => 22, 'max' => 65],
-                [1, StringRule::class, 'min' => 0, 'max' => 10],
-            ],
-            true,
-            0,
-        ];
+        $this->assertSame($expectedResult, $res);
+        $this->assertSame($errorsSize, count($validator->getErrors()));
     }
 }

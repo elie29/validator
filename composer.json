@@ -20,15 +20,14 @@
     "source": "https://github.com/elie29/validator"
   },
   "require": {
-    "php": "^7.1",
-    "ext-json": "*"
+    "php": "^8.2",
+    "ext-json": "*",
+    "ext-ctype": "*"
   },
   "require-dev": {
     "mockery/mockery": "^1.2",
-    "phpstan/phpstan": "^0.12.0",
-    "phpstan/phpstan-mockery": "^0.12.0",
-    "phpunit/phpunit": "^7.5",
-    "zendframework/zend-coding-standard": "^1.0"
+    "phpunit/phpunit": "^11.5",
+    "symfony/var-dumper": "^6.4"
   },
   "autoload": {
     "psr-4": {
@@ -36,28 +35,25 @@
     }
   },
   "autoload-dev": {
-    "files": [
-      "vendor/hamcrest/hamcrest-php/hamcrest/Hamcrest.php"
-    ],
     "psr-4": {
       "Elie\\Validator\\": "tests"
     }
   },
   "config": {
-    "sort-packages": true
+    "sort-packages": true,
+    "allow-plugins": true,
+    "optimize-autoloader": true,
+    "platform": {
+      "php": "8.2"
+    }
   },
   "scripts": {
-    "check": [
-      "@clean",
-      "@cs-check",
-      "@test",
-      "@phpstan"
+    "test": "phpunit --color=always --display-deprecations --display-errors --display-warnings --no-coverage",
+    "test-coverage": "@php -d xdebug.mode=coverage vendor/bin/phpunit --display-phpunit-deprecations --color=always",
+    "cover": [
+      "@test-coverage",
+      "php -S localhost:5001 -t build/coverage"
     ],
-    "phpstan": "phpstan analyse src tests --error-format=checkstyle > build/phpstan.xml || true",
-    "cs-check": "phpcs",
-    "cs-fix": "phpcbf",
-    "test": "phpunit",
-    "test-coverage": "phpunit --coverage-clover clover.xml",
     "clean": [
       "rm -rf build/*",
       "rm -f clover.xml"

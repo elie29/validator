@@ -1,9 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Elie\Validator\Stub\DataProvider as StubDataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 class ArrayRuleTest extends TestCase
@@ -14,86 +16,31 @@ class ArrayRuleTest extends TestCase
         // Empty string value. Value is not required by default!
         $rule = new ArrayRule('name', []);
         $res = $rule->validate();
-        assertThat($res, identicalTo(ArrayRule::VALID));
-        assertThat($rule->getValue(), emptyArray());
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame([], $rule->getValue());
 
         $rule = new ArrayRule('name', ['foo' => 'bar']);
         $res = $rule->validate();
-        assertThat($res, identicalTo(ArrayRule::VALID));
-        assertThat($rule->getValue(), hasEntry('foo', 'bar'));
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('bar', $rule->getValue()['foo']);
 
-        // with error : value remains unchanged
+        // with error: value remains unchanged
         $rule = new ArrayRule('name', 15);
         $res = $rule->validate();
-        assertThat($res, identicalTo(ArrayRule::ERROR));
-        assertThat($rule->getValue(), is(15));
+        $this->assertSame(RuleInterface::ERROR, $res);
+        $this->assertSame(15, $rule->getValue());
     }
 
-    /**
-     * @dataProvider getArrayValueProvider
-     */
+    #[DataProviderExternal(StubDataProvider::class, 'getArrayValueProvider')]
     public function testValidate($value, $params, $expectedResult, $expectedError): void
     {
         $rule = new ArrayRule('name', $value, $params);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo($expectedResult));
+        $this->assertSame($expectedResult, $res);
 
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getArrayValueProvider(): \Generator
-    {
-        yield 'Given value could be empty' => [
-            [],
-            [],
-            ArrayRule::VALID,
-            '',
-        ];
-
-        yield 'Given value between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'],
-            [ArrayRule::MIN => 3, ArrayRule::MAX => 8],
-            ArrayRule::VALID,
-            '',
-        ];
-
-        yield 'Given value should be more than 3' => [
-            ['Peter', 'Ben', 'Harold'],
-            [ArrayRule::MIN => 3],
-            ArrayRule::VALID,
-            '',
-        ];
-
-        yield 'Given value should be an array' => [
-            new \stdClass(),
-            [],
-            ArrayRule::ERROR,
-            'name does not have an array value: stdClass object',
-        ];
-
-        yield 'Given value is not between 4 and 8' => [
-            ['Peter', 'Ben', 'Harold'],
-            [ArrayRule::MIN => 4, ArrayRule::MAX => 8],
-            ArrayRule::ERROR,
-            "name: The length of array (  0 => 'Peter',  1 => 'Ben',  2 => 'Harold',) is not between 4 and 8",
-        ];
-
-        yield 'Required value should not be an empty array' => [
-            [],
-            [RuleInterface::REQUIRED => true],
-            RuleInterface::ERROR,
-            'name is required and should not be empty: array ()',
-        ];
-
-        yield 'Required value should not be an empty array, with specific message' => [
-            [],
-            [RuleInterface::REQUIRED => true, 'messages' => [
-                RuleInterface::EMPTY_KEY => '%key% is required. `%value%` is empty!',
-            ]],
-            RuleInterface::ERROR,
-            'name is required. `array ()` is empty!',
-        ];
+        $this->assertSame($expectedError, $rule->getError());
     }
 }
+

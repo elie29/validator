@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V2.0.6 - TBD
+## V3.0.0 - TBD
 
 ### Added
 
@@ -10,7 +10,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Changed
 
-- Nothing.
+- [#31] Upgrade composer.json to require PHP 8.2 minimum compatibility.
 
 ### Deprecated
 

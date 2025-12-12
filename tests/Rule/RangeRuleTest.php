@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class RangeRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getRangeValueProvider
-     */
-    public function testValidate($value, $params, $expectedResult, $expectedError): void
-    {
-        $rule = new RangeRule('value', $value, $params);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getRangeValueProvider(): \Generator
+    public static function getRangeValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -52,5 +40,17 @@ class RangeRuleTest extends TestCase
             RuleInterface::ERROR,
             'value: 0 is out of range array (  0 => 0,  1 => \'false\',)',
         ];
+    }
+
+    #[DataProvider('getRangeValueProvider')]
+    public function testValidate($value, $params, $expectedResult, $expectedError): void
+    {
+        $rule = new RangeRule('value', $value, $params);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

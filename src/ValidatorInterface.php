@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator;
 
@@ -14,25 +14,22 @@ interface ValidatorInterface
      * Assign a context to be validated.
      *
      * @param array $context Associative array of keys to be validated.
-     *     Each key should correspond to rule's key to be validated.
+     *     Each key should correspond to the rule's key to be validated.
      *
-     * @param array $rules List of rules {@see setRules} in order to
-     *     validate the context.
+     * @param array $rules List of rules {@see setRules} to validate the context.
      *
-     * @param bool  $stopOnError Defaults to false, meaning
-     *     all rules will be validated regardless errors found.
+     * @param bool $stopOnError Defaults to false, meaning all rules will be validated regardless of errors found.
      */
     public function __construct(array $context, array $rules = [], bool $stopOnError = false);
 
     /**
      * Add a new context to be validated.
      *
-     * @param array $context Array containing a list of
-     *     values to be validated such as a post or get or any information.
+     * @param array $context Array containing a list of values to be validated such as a post or get or any information.
      *
      * @return ValidatorInterface
      */
-    public function setContext(array $context);
+    public function setContext(array $context): ValidatorInterface;
 
     /**
      * Retrieves validated context.
@@ -51,9 +48,9 @@ interface ValidatorInterface
      * A key could have more than one validator class.
      *
      * <code>
-     *    $rules = [<br/>
-     *      ['age',  NumericRule::class, 'min' => 1, 'max' => 99],<br/>
-     *      ['role', RangeRule::class, 'range' => ['M', 'U', 'E']],<br/>
+     *    $rules = [
+     *      ['age', NumericRule::class, 'min' => 1, 'max' => 99],
+     *      ['role', RangeRule::class, 'range' => ['M', 'U', 'E']],
      *    ]
      * </code>
      *
@@ -61,7 +58,7 @@ interface ValidatorInterface
      *
      * @return ValidatorInterface
      */
-    public function setRules(array $rules);
+    public function setRules(array $rules): ValidatorInterface;
 
     /**
      * Return all set rules.
@@ -76,7 +73,7 @@ interface ValidatorInterface
      *
      * @return ValidatorInterface
      */
-    public function appendExistingItemsOnly(bool $value);
+    public function appendExistingItemsOnly(bool $value): ValidatorInterface;
 
     /**
      * Return all errors found.
@@ -88,20 +85,20 @@ interface ValidatorInterface
     /**
      * Return all errors found.
      *
-     * @param string $separator Default separator is <br/>.
+     * @param string $separator Default separator is .
      *
      * @return string
      */
-    public function getImplodedErrors(string $separator = '<br/>'): string;
+    public function getImplodedErrors(string $separator = ''): string;
 
     /**
      * Retrieves the value of a requested key from the {@link context}.
      *
-     * @param string|int $key Key to be get.
+     * @param int|string $key Key to be got.
      *
-     * @return mixed|null The retrieved value.
+     * @return mixed The retrieved value.
      */
-    public function get($key);
+    public function get(int|string $key): mixed;
 
     /**
      * Whether to stop on error or not.
@@ -113,17 +110,17 @@ interface ValidatorInterface
     /**
      * Change stopOnError value.
      *
-     * @param bool $stopOnError Stop validation when a first error occurs.
+     * @param bool $stopOnError Stop validation when the first error occurs.
      *
      * @return ValidatorInterface
      */
-    public function setStopOnError(bool $stopOnError);
+    public function setStopOnError(bool $stopOnError): ValidatorInterface;
 
     /**
-     * Each rule is executed. If error is found and stop on error
+     * Each rule is executed. If an error is found and stop on error
      * is set to true, we stop the process and we return false.
      *
-     * keys context will be ignored if they don't have any rule.
+     * Keys context will be ignored if they don't have any rule.
      *
      * @param bool $mergeValidatedContext Merge validated values with existing one.
      *  Useful with partial validation

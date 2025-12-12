@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
+use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class MatchRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getMatchValueProvider
-     */
-    public function testValidate($value, $params, $expectedResult, $expectedError): void
-    {
-        $rule = new MatchRule('value', $value, $params);
-
-        $res = $rule->validate();
-
-        assertThat($res, identicalTo($expectedResult));
-
-        assertThat($rule->getError(), identicalTo($expectedError));
-    }
-
-    public function getMatchValueProvider(): \Generator
+    public static function getMatchValueProvider(): Generator
     {
         yield 'Given value could be empty' => [
             '',
@@ -45,5 +33,17 @@ class MatchRuleTest extends TestCase
             RuleInterface::ERROR,
             'value: test does not match /^[0-9]+$/',
         ];
+    }
+
+    #[DataProvider('getMatchValueProvider')]
+    public function testValidate($value, $params, $expectedResult, $expectedError): void
+    {
+        $rule = new MatchRule('value', $value, $params);
+
+        $res = $rule->validate();
+
+        $this->assertSame($expectedResult, $res);
+
+        $this->assertSame($expectedError, $rule->getError());
     }
 }

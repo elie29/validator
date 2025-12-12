@@ -1,29 +1,17 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
 use Generator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ChoicesRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider validDataProvider
-     */
-    public function testValidateEmptyValues($selection, $expectedResult): void
-    {
-        $list = ['foo', 'bar'];
-
-        $rule = new ChoicesRule('key1', $selection, [ChoicesRule::LIST => $list]);
-
-        assertThat($rule->validate(), is(equalTo(ChoicesRule::VALID)));
-        assertThat($rule->getValue(), is(equalTo($expectedResult)));
-    }
-
-    public function validDataProvider(): Generator
+    public static function validDataProvider(): Generator
     {
         yield 'Test null value' => [
             null,
@@ -43,6 +31,17 @@ class ChoicesRuleTest extends TestCase
         ];
     }
 
+    #[DataProvider('validDataProvider')]
+    public function testValidateEmptyValues($selection, $expectedResult): void
+    {
+        $list = ['foo', 'bar'];
+
+        $rule = new ChoicesRule('key1', $selection, [ChoicesRule::LIST => $list]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+        $this->assertSame($expectedResult, $rule->getValue());
+    }
+
     public function testValidateError(): void
     {
         $list = ['foo', 'bar'];
@@ -50,8 +49,8 @@ class ChoicesRuleTest extends TestCase
 
         $rule = new ChoicesRule('key2', $selection, [ChoicesRule::LIST => $list]);
 
-        assertThat($rule->validate(), is(equalTo(ChoicesRule::ERROR)));
-        assertThat($rule->getError(), is(stringValue()));
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+        $this->assertIsString($rule->getError());
     }
 
     public function testValidateRequiredError(): void
@@ -61,10 +60,10 @@ class ChoicesRuleTest extends TestCase
 
         $rule = new ChoicesRule('foo', $selection, [
             ChoicesRule::LIST => $list,
-            ChoicesRule::REQUIRED => true,
+            RuleInterface::REQUIRED => true,
         ]);
 
-        assertThat($rule->validate(), is(equalTo(ChoicesRule::ERROR)));
-        assertThat($rule->getError(), is(stringValue()));
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+        $this->assertIsString($rule->getError());
     }
 }

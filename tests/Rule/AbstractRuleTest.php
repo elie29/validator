@@ -1,30 +1,30 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
-use Elie\Validator\Rule\Stub\StubAbstractRule;
+use Elie\Validator\Stub\DataProvider as StubDataProvider;
+use Elie\Validator\Stub\StubAbstractRule;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
 use PHPUnit\Framework\TestCase;
 
 class AbstractRuleTest extends TestCase
 {
 
-    /**
-     * @dataProvider getValueProvider
-     */
-    public function testValidateEmptyCases($value, $params, $expectedError, $expectedResult): void
+    #[DataProviderExternal(StubDataProvider::class, 'getValueProvider')]
+    public function testValidateEmptyCases($value, $params, $expectedResult, $expectedError): void
     {
         /** @var RuleInterface $rule */
         $rule = new StubAbstractRule('key', $value, $params);
 
         $res = $rule->validate();
-        assertThat($res, identicalTo($expectedResult));
+        $this->assertSame($expectedResult, $res);
 
         $error = $rule->getError();
-        assertThat($error, identicalTo($expectedError));
+        $this->assertSame($expectedError, $error);
 
-        assertThat('key', identicalTo($rule->getKey()));
+        $this->assertSame('key', $rule->getKey());
     }
 
     public function testValidatorValue(): void
@@ -33,53 +33,8 @@ class AbstractRuleTest extends TestCase
         $rule = new StubAbstractRule('key', ' ', []);
 
         $res = $rule->validate();
-        assertThat($res, identicalTo(RuleInterface::VALID));
+        $this->assertSame(RuleInterface::VALID, $res);
 
-        assertThat('', equalTo($rule->getValue()));
-    }
-
-    public function getValueProvider(): \Generator
-    {
-        yield 'Trim is true but required is false by default' => [
-            '  ',
-            [],
-            '',
-            RuleInterface::VALID,
-        ];
-
-        yield 'Value could be empty if not required' => [
-            '  ',
-            [StringRule::TRIM => true, RuleInterface::REQUIRED => false],
-            '',
-            RuleInterface::VALID,
-        ];
-
-        yield 'Required value could be one character space' => [
-            ' ',
-            [StringRule::TRIM => false, RuleInterface::REQUIRED => true],
-            '',
-            RuleInterface::CHECK,
-        ];
-
-        yield 'Required value could be false' => [
-            false,
-            [RuleInterface::REQUIRED => true],
-            '',
-            RuleInterface::CHECK,
-        ];
-
-        yield 'Required value should not be an empty string' => [
-            '',
-            [RuleInterface::REQUIRED => true],
-            'key is required and should not be empty: ',
-            RuleInterface::ERROR,
-        ];
-
-        yield 'Required value should not be null' => [
-            null,
-            [RuleInterface::REQUIRED => true],
-            'key is required and should not be empty: <NULL>',
-            RuleInterface::ERROR,
-        ];
+        $this->assertSame('', $rule->getValue());
     }
 }

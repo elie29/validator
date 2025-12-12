@@ -1,12 +1,12 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
 /**
  * This class verifies that given values is among a given list.
- * empty value could be null or []
+ * An empty value could be null or []
  */
 class ChoicesRule extends AbstractRule
 {
@@ -23,20 +23,21 @@ class ChoicesRule extends AbstractRule
 
     /**
      * List of authorized values.
-     * Default sets to empty array.
-     * @var array
+     * Default sets to an empty array.
      */
-    protected $list = [];
+    protected array $list = [];
 
     /**
      * Params could have the following structure:
+     * <code>
      * [
      *   'required' => {bool:optional},
      *   'messages' => {array:optional:key/value message patterns},
      *   'list' => {array:optional:empty array by default}
      * ]
+     * </code>
      */
-    public function __construct($key, $value, array $params = [])
+    public function __construct(int|string $key, mixed $value, array $params = [])
     {
         parent::__construct($key, $value, $params);
 
@@ -44,8 +45,8 @@ class ChoicesRule extends AbstractRule
             $this->list = $params[self::LIST];
         }
 
-        $this->messages = $this->messages + [
-            self::INVALID_ITEM => _('%key%: %item% is not in the given list : %list%'),
+        $this->messages += [
+            self::INVALID_ITEM => '%key%: %item% is not in the given list : %list%',
         ];
     }
 
@@ -58,7 +59,7 @@ class ChoicesRule extends AbstractRule
         }
 
         foreach ($this->value as $item) {
-            if (! in_array($item, $this->list, true)) {
+            if (!in_array($item, $this->list, true)) {
                 return $this->setAndReturnError(self::INVALID_ITEM, [
                     '%item%' => $item,
                     '%list%' => $this->stringify($this->list),

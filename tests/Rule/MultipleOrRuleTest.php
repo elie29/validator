@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -14,33 +14,34 @@ class MultipleOrRuleTest extends TestCase
         // Should be string and numeric
         $rule = new MultipleOrRule('name', '562', [
             MultipleAndRule::RULES => [
-                [StringRule::class, StringRule::REQUIRED => true, StringRule::MAX => 2],
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MAX => 2],
                 [NumericRule::class],
             ],
         ]);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(RuleInterface::VALID));
+        $this->assertSame(RuleInterface::VALID, $res);
 
-        assertThat($rule->getError(), is(emptyString()));
+        $this->assertSame('', $rule->getError());
     }
 
     public function testValidateErrors(): void
     {
         $rule = new MultipleOrRule('name', 'abc', [
             MultipleAndRule::RULES => [
-                [StringRule::class, StringRule::REQUIRED => true, StringRule::MAX => 2],
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MAX => 2],
                 [NumericRule::class],
             ],
         ]);
 
         $res = $rule->validate();
 
-        assertThat($res, identicalTo(RuleInterface::ERROR));
+        $this->assertSame(RuleInterface::ERROR, $res);
 
-        assertThat($rule->getError(), equalTo(
-            "name: The length of abc is not between 0 and 2\nname: abc is not numeric"
-        ));
+        $this->assertSame(
+            "name: The length of abc is not between 0 and 2\nname: abc is not numeric",
+            $rule->getError()
+        );
     }
 }

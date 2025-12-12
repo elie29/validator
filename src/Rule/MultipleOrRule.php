@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -24,7 +24,7 @@ class MultipleOrRule extends MultipleAndRule
                 return RuleInterface::VALID;
             }
 
-            // keep track on all errors
+            // keep track of all errors
             $errors[] = $class->getError();
         }
 

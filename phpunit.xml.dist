@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <phpunit
-   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-   xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/5.2/phpunit.xsd"
-   bootstrap="./vendor/autoload.php"
-   backupGlobals="false"
-   backupStaticAttributes="false"
-   beStrictAboutTestsThatDoNotTestAnything="false"
-   beStrictAboutTodoAnnotatedTests="true"
-   stopOnFailure="false"
-   convertErrorsToExceptions="true"
-   convertNoticesToExceptions="true"
-   convertWarningsToExceptions="true"
-   verbose="true"
-   colors="true">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd"
+        bootstrap="bootstrap.php"
+        colors="true"
+        cacheResult="false"
+>
+    <testsuites>
+        <!-- Tests unitaires -->
+        <testsuite name="Unit Tests">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
 
-   <testsuites>
-      <testsuite name="Validator Suite tests">
-         <directory>./tests</directory>
-      </testsuite>
-   </testsuites>
+    <!-- Configure which source files belong to your project (used for coverage and error reporting) -->
+    <source>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </source>
 
-   <logging>
-      <log type="coverage-html" target="./build/coverage" />
-   </logging>
-
-   <filter>
-      <whitelist processUncoveredFilesFromWhitelist="true">
-         <directory suffix=".php">./src</directory>
-      </whitelist>
-   </filter>
+    <!-- Configure coverage *reports* -->
+    <coverage includeUncoveredFiles="true">
+        <report>
+            <html outputDirectory="./build/coverage"/>
+            <text outputFile="php://stdout"/>
+        </report>
+    </coverage>
+    <php>
+        <env name="APP_ENV" value="testing"/>
+    </php>
 </phpunit>

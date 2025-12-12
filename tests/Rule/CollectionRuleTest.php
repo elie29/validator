@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Elie\Validator\Rule;
 
@@ -24,11 +24,11 @@ class CollectionRuleTest extends TestCase
 
         $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules]);
 
-        assertThat($rule->validate(), is(true));
+        $this->assertEquals(RuleInterface::VALID, $rule->validate());
 
         $tags = $rule->getValue();
 
-        assertThat($tags, arrayWithSize(3));
+        $this->assertSame(3, count($tags));
     }
 
     public function testJsonValidate(): void
@@ -46,11 +46,11 @@ class CollectionRuleTest extends TestCase
 
         $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules, CollectionRule::JSON => true]);
 
-        assertThat($rule->validate(), is(true));
+        $this->assertEquals(RuleInterface::VALID, $rule->validate());
 
         $tags = $rule->getValue();
 
-        assertThat($tags, arrayWithSize(3));
+        $this->assertSame(3, count($tags));
     }
 
     public function testValidateEmptyData(): void
@@ -63,8 +63,9 @@ class CollectionRuleTest extends TestCase
 
         $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules]);
 
-        assertThat($rule->validate(), is(true));
-        assertThat($rule->getValue(), arrayValue()); // value cast to array
+        $this->assertEquals(RuleInterface::VALID, $rule->validate());
+
+        $this->assertTrue(is_array($rule->getValue())); // value cast to array
     }
 
     public function testValidateOnError(): void
@@ -82,8 +83,9 @@ class CollectionRuleTest extends TestCase
 
         $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules]);
 
-        assertThat($rule->validate(), is(false));
-        assertThat($rule->getError(), containsString('slug: three does not match /^[a-z]{1,3}$/i'));
+        $this->assertEquals(RuleInterface::ERROR, $rule->validate());
+
+        $this->assertStringContainsString('slug: three does not match /^[a-z]{1,3}$/i', $rule->getError());
     }
 
     public function testValidateErrorFormat(): void
@@ -95,7 +97,7 @@ class CollectionRuleTest extends TestCase
 
         $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules]);
 
-        assertThat($rule->validate(), is(false));
-        assertThat($rule->getError(), containsString('tags: {email: "elie29@gmail.com"} is not in a collection'));
+        $this->assertEquals(RuleInterface::ERROR, $rule->validate());
+        $this->assertStringContainsString('tags: {email: "elie29@gmail.com"} is not in a collection', $rule->getError());
     }
 }
