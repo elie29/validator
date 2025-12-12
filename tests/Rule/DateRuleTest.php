@@ -113,4 +113,43 @@ class DateRuleTest extends TestCase
 
         $this->assertSame($expectedError, $rule->getError());
     }
+
+    public function testGetFormat(): void
+    {
+        $rule = new DateRule('date', '12/03/2017', []);
+
+        // Default format
+        $this->assertSame(['dd/mm/yyyy'], $rule->getFormat());
+    }
+
+    public function testSetFormatWithString(): void
+    {
+        $rule = new DateRule('date', '12/03/2017', []);
+        $rule->setFormat('dd-mm-yyyy');
+
+        $this->assertSame(['dd-mm-yyyy'], $rule->getFormat());
+    }
+
+    public function testSetFormatWithArray(): void
+    {
+        $rule = new DateRule('date', '12/03/2017', []);
+        $rule->setFormat(['dd/mm/yyyy', 'yyyy-mm-dd']);
+
+        $this->assertSame(['dd/mm/yyyy', 'yyyy-mm-dd'], $rule->getFormat());
+    }
+
+    public function testSetSeparator(): void
+    {
+        $rule = new DateRule('date', '12.03.2017', []);
+        $rule->setSeparator('[.]');
+
+        $this->assertSame('[.]', $rule->getSeparator());
+
+        // Validate with a new separator
+        $rule->setFormat('dd.mm.yyyy');
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::VALID, $res);
+    }
 }
+

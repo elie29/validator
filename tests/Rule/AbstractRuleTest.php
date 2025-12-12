@@ -37,4 +37,41 @@ class AbstractRuleTest extends TestCase
 
         $this->assertSame('', $rule->getValue());
     }
+
+    public function testSetValue(): void
+    {
+        /** @var RuleInterface $rule */
+        $rule = new StubAbstractRule('key', 'initial', []);
+
+        $this->assertSame('initial', $rule->getValue());
+
+        $rule->setValue('updated');
+
+        $this->assertSame('updated', $rule->getValue());
+    }
+
+    public function testGetKey(): void
+    {
+        /** @var RuleInterface $rule */
+        $rule = new StubAbstractRule('myKey', 'value', []);
+
+        $this->assertSame('myKey', $rule->getKey());
+    }
+
+    public function testGetKeyWithIntegerKey(): void
+    {
+        /** @var RuleInterface $rule */
+        $rule = new StubAbstractRule(123, 'value', []);
+
+        $this->assertSame(123, $rule->getKey());
+    }
+
+    public function testGetError(): void
+    {
+        /** @var RuleInterface $rule */
+        $rule = new StubAbstractRule('key', 'value', [RuleInterface::REQUIRED => true]);
+
+        // Before validation, error should be empty
+        $this->assertSame('', $rule->getError());
+    }
 }

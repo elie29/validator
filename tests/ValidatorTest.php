@@ -218,4 +218,60 @@ class ValidatorTest extends TestCase
         $this->assertSame($expectedResult, $res);
         $this->assertSame($errorsSize, count($validator->getErrors()));
     }
+
+    public function testSetContext(): void
+    {
+        $validator = new Validator(['name' => 'John']);
+        
+        $this->assertSame('John', $validator->get('name'));
+        
+        $validator->setContext(['name' => 'Jane', 'age' => 25]);
+        
+        $this->assertSame('Jane', $validator->get('name'));
+        $this->assertSame(25, $validator->get('age'));
+    }
+
+    public function testAppendExistingItemsOnlyDefaultBehavior(): void
+    {
+        // Default behavior: appendExistingItemOnly = false
+        // All validated keys should be added to validatedContext even if not in original context
+        $validator = new Validator(
+            ['name' => 'John'],
+            [
+                ['name', StringRule::class],
+                ['age', NumericRule::class], // Not in original context
+            ]
+        );
+        
+        $res = $validator->validate();
+        $this->assertTrue($res);
+        
+        $validatedContext = $validator->getValidatedContext();
+        
+        $this->assertArrayHasKey('name', $validatedContext);
+        $this->assertArrayHasKey('age', $validatedContext); // Should be added even though not in original context
+        $this->assertNull($validatedContext['age']); // Value will be null
+    }
+
+    public function testValidateMergeValidatedContext(): void
+    {
+        $validator = new Validator(['name' => 'John'], [
+            ['name', StringRule::class],
+        ]);
+        
+        $this->assertTrue($validator->validate());
+        $this->assertArrayHasKey('name', $validator->getValidatedContext());
+        
+        // Change context and validate with merge = true
+        $validator->setContext(['age' => 25]);
+        $validator->setRules([['age', NumericRule::class]]);
+        
+        $this->assertTrue($validator->validate(true));
+        
+        $validatedContext = $validator->getValidatedContext();
+        
+        // Should have both name and age
+        $this->assertArrayHasKey('name', $validatedContext);
+        $this->assertArrayHasKey('age', $validatedContext);
+    }
 }

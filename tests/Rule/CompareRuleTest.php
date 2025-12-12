@@ -83,7 +83,7 @@ class CompareRuleTest extends TestCase
             '',
         ];
 
-        yield 'Given value should be geater or equal to 5' => [
+        yield 'Given value should be greater or equal to 5' => [
             '5',
             [CompareConstants::SIGN => CompareConstants::GTE, CompareConstants::EXPECTED => '5'],
             RuleInterface::VALID,
@@ -108,5 +108,99 @@ class CompareRuleTest extends TestCase
         $this->assertSame($expectedResult, $res);
 
         $this->assertSame($expectedError, $rule->getError());
+    }
+
+    public function testTypeComparisonStringVsInt(): void
+    {
+        // String '5' == int 5 (loose comparison)
+        $rule = new CompareRule('value', '5', [
+            CompareConstants::SIGN => CompareConstants::EQ,
+            CompareConstants::EXPECTED => 5,
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+
+        // String '5' !== int 5 (strict comparison)
+        $rule = new CompareRule('value', '5', [
+            CompareConstants::SIGN => CompareConstants::SEQ,
+            CompareConstants::EXPECTED => 5,
+        ]);
+
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+    }
+
+    public function testTypeComparisonArrays(): void
+    {
+        // Arrays with the same values and order should be strictly equal
+        $rule = new CompareRule('data', [1, 2, 3], [
+            CompareConstants::SIGN => CompareConstants::SEQ,
+            CompareConstants::EXPECTED => [1, 2, 3],
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+
+        // Arrays with different order should not be equal
+        $rule = new CompareRule('data', [1, 2, 3], [
+            CompareConstants::SIGN => CompareConstants::SEQ,
+            CompareConstants::EXPECTED => [3, 2, 1],
+        ]);
+
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+    }
+
+    public function testTypeComparisonBooleanVsInt(): void
+    {
+        // true == 1 (loose comparison)
+        $rule = new CompareRule('flag', true, [
+            CompareConstants::SIGN => CompareConstants::EQ,
+            CompareConstants::EXPECTED => 1,
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+
+        // true !== 1 (strict comparison)
+        $rule = new CompareRule('flag', true, [
+            CompareConstants::SIGN => CompareConstants::SEQ,
+            CompareConstants::EXPECTED => 1,
+        ]);
+
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+    }
+
+    public function testNotStrictlyEqualComparison(): void
+    {
+        // Test NSEQ - not strictly equal
+        $rule = new CompareRule('value', '5', [
+            CompareConstants::SIGN => CompareConstants::NSEQ,
+            CompareConstants::EXPECTED => 5,
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+
+        $rule = new CompareRule('value', 5, [
+            CompareConstants::SIGN => CompareConstants::NSEQ,
+            CompareConstants::EXPECTED => 5,
+        ]);
+
+        $this->assertSame(RuleInterface::ERROR, $rule->validate());
+    }
+
+    public function testComparisonWithNull(): void
+    {
+        // null == false (loose comparison)
+        $rule = new CompareRule('value', null, [
+            CompareConstants::SIGN => CompareConstants::EQ,
+            CompareConstants::EXPECTED => false,
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
+
+        // null !== false, but null is considered empty
+        $rule = new CompareRule('value', null, [
+            CompareConstants::SIGN => CompareConstants::SEQ,
+            CompareConstants::EXPECTED => false,
+        ]);
+
+        $this->assertSame(RuleInterface::VALID, $rule->validate());
     }
 }

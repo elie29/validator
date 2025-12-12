@@ -100,4 +100,52 @@ class CollectionRuleTest extends TestCase
         $this->assertEquals(RuleInterface::ERROR, $rule->validate());
         $this->assertStringContainsString('tags: {email: "elie29@gmail.com"} is not in a collection', $rule->getError());
     }
+
+    public function testValidateWithEmptyRules(): void
+    {
+        $data = [
+            ['code' => 12, 'slug' => 'one'],
+            ['code' => 13, 'slug' => 'two'],
+        ];
+
+        // Empty rules should make the rule valid
+        $rule = new CollectionRule('tags', $data, []);
+
+        $this->assertEquals(RuleInterface::VALID, $rule->validate());
+    }
+
+    public function testValidateMalformedJson(): void
+    {
+        $data = '{"invalid": json without closing brace';
+        $rules = [
+            ['code', NumericRule::class],
+        ];
+
+        $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules, CollectionRule::JSON => true]);
+
+        $this->assertEquals(RuleInterface::ERROR, $rule->validate());
+        $this->assertStringContainsString('is not in a collection', $rule->getError());
+    }
+
+    public function testValidateNonJsonStringWithJsonFlag(): void
+    {
+        $data = 'plain text not json';
+        $rules = [
+            ['code', NumericRule::class],
+        ];
+
+        $rule = new CollectionRule('tags', $data, [CollectionRule::RULES => $rules, CollectionRule::JSON => true]);
+
+        $this->assertEquals(RuleInterface::ERROR, $rule->validate());
+        $this->assertStringContainsString('is not in a collection', $rule->getError());
+    }
+
+    public function testGetValueReturnsEmptyArrayWhenValueIsNullAndNoError(): void
+    {
+        $rule = new CollectionRule('tags', null, []);
+
+        $rule->validate();
+
+        $this->assertSame([], $rule->getValue());
+    }
 }

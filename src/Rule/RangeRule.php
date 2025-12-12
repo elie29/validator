@@ -43,12 +43,12 @@ class RangeRule extends AbstractRule
     {
         parent::__construct($key, $value, $params);
 
-        if (isset($params[$this::RANGE])) {
-            $this->range = $params[$this::RANGE];
+        if (isset($params[self::RANGE])) {
+            $this->range = $params[self::RANGE];
         }
 
         $this->messages += [
-            $this::INVALID_RANGE => '%key%: %value% is out of range %range%',
+            self::INVALID_RANGE => '%key%: %value% is out of range %range%',
         ];
     }
 
@@ -61,7 +61,7 @@ class RangeRule extends AbstractRule
         }
 
         if (!in_array($this->value, $this->range, true)) {
-            return $this->setAndReturnError($this::INVALID_RANGE, [
+            return $this->setAndReturnError(self::INVALID_RANGE, [
                 '%range%' => $this->stringify($this->range),
             ]);
         }

@@ -59,4 +59,53 @@ class MultipleAndRuleTest extends TestCase
 
         $this->assertSame('name: foo is not a valid email', $rule->getError());
     }
+
+    public function testValidateWithNumericAndRangeRules(): void
+    {
+        // Value must be numeric and within range
+        $rule = new MultipleAndRule('score', '75', [
+            MultipleAndRule::RULES => [
+                [NumericRule::class, RuleInterface::REQUIRED => true],
+                [RangeRule::class, RangeRule::RANGE => ['50', '75']],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('', $rule->getError());
+    }
+
+    public function testValidateMultipleRulesWithFirstFailure(): void
+    {
+        // When the first rule fails, validation should stop at the first error
+        $rule = new MultipleAndRule('value', 'abc', [
+            MultipleAndRule::RULES => [
+                [NumericRule::class, RuleInterface::REQUIRED => true],
+                [RangeRule::class, RangeRule::RANGE => [50, 75]],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::ERROR, $res);
+        $this->assertStringContainsString('is not numeric', $rule->getError());
+    }
+
+    public function testValidateWithThreeRules(): void
+    {
+        // Test with three rules all passing
+        $rule = new MultipleAndRule('email', 'test@example.com', [
+            MultipleAndRule::RULES => [
+                [StringRule::class, RuleInterface::REQUIRED => true, StringRule::MIN => 5],
+                [StringRule::class, StringRule::MAX => 50],
+                [EmailRule::class],
+            ],
+        ]);
+
+        $res = $rule->validate();
+
+        $this->assertSame(RuleInterface::VALID, $res);
+        $this->assertSame('', $rule->getError());
+    }
 }
