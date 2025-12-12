@@ -2,7 +2,7 @@
 
 [![build](https://github.com/elie29/validator/actions/workflows/php-build.yml/badge.svg)](https://github.com/elie29/validator/actions/workflows/php-build.yml)
 [![Coverage Status](https://coveralls.io/repos/github/elie29/validator/badge.svg)](https://coveralls.io/github/elie29/validator)
-![PHP Version](https://img.shields.io/badge/php-8.2%20|%208.3%20|%208.4%20|%208.5-blue)
+[![PHP Version](https://img.shields.io/packagist/php-v/elie29/validator.svg)](https://packagist.org/packages/elie29/validator)
 
 ## Introduction
 
