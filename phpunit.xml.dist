@@ -24,6 +24,7 @@
     <coverage includeUncoveredFiles="true">
         <report>
             <html outputDirectory="./build/coverage"/>
+            <clover outputFile="clover.xml"/>
             <text outputFile="php://stdout"/>
         </report>
     </coverage>
