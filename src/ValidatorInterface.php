@@ -23,11 +23,11 @@ interface ValidatorInterface
     public function __construct(array $context, array $rules = [], bool $stopOnError = false);
 
     /**
-     * Add a new context to be validated.
+     * Set a new context to be validated.
      *
-     * @param array $context Array containing a list of values to be validated such as a post or get or any information.
+     * @param array $context Array containing a list of values to be validated such as $_POST, $_GET or any data.
      *
-     * @return ValidatorInterface
+     * @return ValidatorInterface For method chaining.
      */
     public function setContext(array $context): ValidatorInterface;
 
@@ -39,7 +39,9 @@ interface ValidatorInterface
     public function getValidatedContext(): array;
 
     /**
-     * List of rules that should have each the following structure:
+     * Set validation rules for the context.
+     *
+     * Each rule should have the following structure:
      * <ul>
      *   <li>key is used to find its associated value in the context.
      *   <li>rule classname used for validation
@@ -49,14 +51,14 @@ interface ValidatorInterface
      *
      * <code>
      *    $rules = [
-     *      ['age', NumericRule::class, 'min' => 1, 'max' => 99],
-     *      ['role', RangeRule::class, 'range' => ['M', 'U', 'E']],
+     *      ['age', NumericRule::class, NumericRule::MIN => 1, NumericRule::MAX => 99],
+     *      ['role', RangeRule::class, RangeRule::RANGE => ['M', 'U', 'E']],
      *    ]
      * </code>
      *
      * @param array $rules Rules to be set.
      *
-     * @return ValidatorInterface
+     * @return ValidatorInterface For method chaining.
      */
     public function setRules(array $rules): ValidatorInterface;
 
@@ -68,10 +70,12 @@ interface ValidatorInterface
     public function getRules(): array;
 
     /**
-     * @param bool $value True, append only found keys in the context to the validated context.
-     * Defaults to false, so all keys set in the rules will be added to the validated context.
+     * Control whether to append only existing context keys to validated context.
      *
-     * @return ValidatorInterface
+     * @param bool $value True to append only keys found in the context to the validated context.
+     *                    False (default) to add all keys set in the rules to the validated context.
+     *
+     * @return ValidatorInterface For method chaining.
      */
     public function appendExistingItemsOnly(bool $value): ValidatorInterface;
 
@@ -108,11 +112,12 @@ interface ValidatorInterface
     public function shouldStopOnError(): bool;
 
     /**
-     * Change stopOnError value.
+     * Set whether to stop validation on first error.
      *
-     * @param bool $stopOnError Stop validation when the first error occurs.
+     * @param bool $stopOnError True to stop validation when the first error occurs.
+     *                          False (default) to validate all rules regardless of errors.
      *
-     * @return ValidatorInterface
+     * @return ValidatorInterface For method chaining.
      */
     public function setStopOnError(bool $stopOnError): ValidatorInterface;
 

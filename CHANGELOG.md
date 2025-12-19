@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V3.0.1 - TBD
+## V3.0.1 - 2025-12-19
 
 ### Added
 
@@ -22,7 +22,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ### Fixed
 
-- Nothing.
+- [#33](https://github.com/elie29/validator/issues/33) StringRule concatenation error.
 
 ## V3.0.0 - 2025-12-12
 

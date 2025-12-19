@@ -49,6 +49,13 @@ class Validator implements ValidatorInterface
         $this->setStopOnError($stopOnError);
     }
 
+    /**
+     * Set a new context to be validated.
+     *
+     * @param array $context Array containing values to be validated.
+     *
+     * @return static For method chaining.
+     */
     public function setContext(array $context): static
     {
         $this->context = $context;
@@ -65,17 +72,30 @@ class Validator implements ValidatorInterface
         return $this->rules;
     }
 
+    /**
+     * Set validation rules for the context.
+     *
+     * @param array $rules Rules to be set.
+     *
+     * @return static For method chaining.
+     */
     public function setRules(array $rules): static
     {
         $this->rules = $rules;
-        // Keep chaining
         return $this;
     }
 
+    /**
+     * Control whether to append only existing context keys to validated context.
+     *
+     * @param bool $value True to append only keys found in the context.
+     *                    False (default) to add all keys set in the rules.
+     *
+     * @return static For method chaining.
+     */
     public function appendExistingItemsOnly(bool $value): static
     {
         $this->appendExistingItemOnly = $value;
-        // Keep chaining
         return $this;
     }
 
@@ -99,10 +119,16 @@ class Validator implements ValidatorInterface
         return $this->stopOnError;
     }
 
+    /**
+     * Set whether to stop validation on first error.
+     *
+     * @param bool $stopOnError True to stop on first error, false to validate all rules.
+     *
+     * @return static For method chaining.
+     */
     public function setStopOnError(bool $stopOnError): static
     {
         $this->stopOnError = $stopOnError;
-
         return $this;
     }
 

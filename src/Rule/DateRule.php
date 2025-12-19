@@ -161,8 +161,11 @@ class DateRule extends AbstractRule
     }
 
     /**
-     * @param array|string $format
-     * @return DateRule
+     * Set the accepted date format(s).
+     *
+     * @param array|string $format Single format or array of formats (e.g., 'Y-m-d' or ['Y-m-d', 'd/m/Y']).
+     *
+     * @return static For method chaining.
      */
     public function setFormat(array|string $format): static
     {
@@ -175,6 +178,13 @@ class DateRule extends AbstractRule
         return $this->separator;
     }
 
+    /**
+     * Set the date separator character.
+     *
+     * @param string $separator The separator character (e.g., '-', '/', '.').
+     *
+     * @return static For method chaining.
+     */
     public function setSeparator(string $separator): static
     {
         $this->separator = $separator;
