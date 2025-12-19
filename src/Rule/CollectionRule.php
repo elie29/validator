@@ -100,6 +100,7 @@ class CollectionRule extends AbstractRule
         // Apply each rule to all data keys
         foreach ($this->rules as $rule) {
             $class = $this->resolve($rule);
+            // $k is the key of the collection, normally the index
             foreach ($collection as $k => $data) {
                 $class->setValue($data[$class->getKey()] ?? null);
                 if ($class->validate() === RuleInterface::ERROR) {

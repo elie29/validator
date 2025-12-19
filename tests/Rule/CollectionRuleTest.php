@@ -29,6 +29,8 @@ class CollectionRuleTest extends TestCase
         $tags = $rule->getValue();
 
         $this->assertSame(3, count($tags));
+        $this->assertSame('one', $tags[0]['slug']);
+        $this->assertSame($data, $tags);
     }
 
     public function testJsonValidate(): void

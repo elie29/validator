@@ -52,7 +52,174 @@ $rules =[
 
 $validator = new Validator($_POST, $rules, true); // stop processing on error.
 
-$validator->validate(); // bool depends on $_POST content
+if ($validator->validate()) {
+    // Validation passed - use validated context
+    $validatedData = $validator->getValidatedContext();
+    // Process $validatedData safely
+} else {
+    // Validation failed - handle errors
+    $errors = $validator->getErrors(); // array of error messages
+    // or get formatted string:
+    echo $validator->getImplodedErrors(); // errors separated by <br/>
+}
+```
+
+## Common Usage Patterns
+
+### Basic Form Validation
+
+```php
+use Elie\Validator\Validator;
+use Elie\Validator\Rule\{EmailRule, StringRule, NumericRule};
+
+// Validate a contact form
+$rules = [
+    ['name', StringRule::class, StringRule::MIN => 2, StringRule::MAX => 100, StringRule::REQUIRED => true],
+    ['email', EmailRule::class, EmailRule::REQUIRED => true],
+    ['age', NumericRule::class, NumericRule::MIN => 18, NumericRule::MAX => 120],
+    ['message', StringRule::class, StringRule::MIN => 10, StringRule::MAX => 1000],
+];
+
+$validator = new Validator($_POST, $rules);
+
+if ($validator->validate()) {
+    $data = $validator->getValidatedContext();
+    // All values are trimmed by default and validated
+    sendEmail($data['email'], $data['name'], $data['message']);
+} else {
+    // Display all errors to user
+    foreach ($validator->getErrors() as $error) {
+        echo "<p class='error'>$error</p>";
+    }
+}
+```
+
+### API Request Validation
+
+```php
+use Elie\Validator\Validator;
+use Elie\Validator\Rule\{ChoicesRule, BooleanRule, NumericRule};
+
+// Validate API query parameters
+$rules = [
+    ['page', NumericRule::class, NumericRule::MIN => 1, NumericRule::CAST => true],
+    ['limit', NumericRule::class, NumericRule::MIN => 1, NumericRule::MAX => 100, NumericRule::CAST => true],
+    ['sort', ChoicesRule::class, ChoicesRule::LIST => ['asc', 'desc']],
+    ['active', BooleanRule::class, BooleanRule::CAST => true],
+];
+
+$validator = new Validator($_GET, $rules);
+$validator->appendExistingItemsOnly(true); // Don't include missing optional parameters
+
+if ($validator->validate()) {
+    $params = $validator->getValidatedContext();
+    // $params only contains provided parameters, properly cast
+    $results = fetchRecords($params);
+    return json_encode($results);
+} else {
+    http_response_code(400);
+    return json_encode(['errors' => $validator->getErrors()]);
+}
+```
+
+### Working with Optional Fields
+
+```php
+// Fields that aren't required can be omitted or empty
+$rules = [
+    ['username', StringRule::class, StringRule::MIN => 3, StringRule::REQUIRED => true],
+    ['bio', StringRule::class, StringRule::MAX => 500], // Optional, only validated if provided
+    ['website', EmailRule::class], // Optional URL field
+];
+
+$validator = new Validator($data, $rules);
+$validator->appendExistingItemsOnly(true); // Exclude missing optional fields from output
+
+if ($validator->validate()) {
+    $validatedData = $validator->getValidatedContext();
+    // $validatedData only contains 'username' and any optional fields that were provided
+}
+```
+
+### Conditional Validation
+
+```php
+use Elie\Validator\Rule\{MultipleOrRule, EmailRule, MatchRule};
+
+// Accept either email OR phone number
+$rules = [
+    ['contact', MultipleOrRule::class, MultipleOrRule::REQUIRED => true, MultipleOrRule::RULES => [
+        [EmailRule::class],
+        [MatchRule::class, MatchRule::PATTERN => '/^\+?[1-9]\d{1,14}$/'], // E.164 phone format
+    ]],
+];
+
+$validator = new Validator(['contact' => 'user@example.com'], $rules);
+$validator->validate(); // true - email is valid
+
+$validator->setContext(['contact' => '+1234567890']);
+$validator->validate(); // true - phone is valid
+```
+
+### Custom Error Messages
+
+```php
+use Elie\Validator\Rule\{StringRule, RuleInterface};
+
+$rules = [
+    ['username', StringRule::class, 
+        StringRule::MIN => 3,
+        StringRule::MAX => 20,
+        StringRule::REQUIRED => true,
+        RuleInterface::MESSAGES => [
+            RuleInterface::EMPTY_KEY => 'Username is required',
+            StringRule::INVALID_MIN_VALUE => 'Username must be at least 3 characters',
+            StringRule::INVALID_MAX_VALUE => 'Username cannot exceed 20 characters',
+        ]
+    ],
+];
+
+$validator = new Validator(['username' => 'ab'], $rules);
+if (!$validator->validate()) {
+    echo $validator->getImplodedErrors(); // "Username must be at least 3 characters"
+}
+```
+
+### Handling Whitespace
+
+```php
+// By default, all string values are trimmed
+$rules = [
+    ['title', StringRule::class, StringRule::MIN => 1], // Leading/trailing spaces removed
+];
+
+// To preserve whitespace:
+$rules = [
+    ['code', StringRule::class, StringRule::MIN => 1, 'trim' => false],
+];
+
+$validator = new Validator(['title' => '  Hello  '], $rules);
+$validator->validate();
+$validated = $validator->getValidatedContext();
+// With trim=true (default): $validated['title'] = 'Hello'
+// With trim=false: $validated['title'] = '  Hello  '
+```
+
+### Stop on First Error
+
+```php
+// Third parameter controls error handling behavior
+$validator = new Validator($data, $rules, true); // Stops at first error
+$validator->validate();
+
+// OR set it later
+$validator = new Validator($data, $rules);
+$validator->setStopOnError(true);
+
+if (!$validator->validate()) {
+    // Only the first error will be in getErrors()
+    $firstError = $validator->getErrors()[0];
+}
 ```
 
 ### Available rules
@@ -142,14 +309,91 @@ class MyValueRule extends AbstractRule
 }
 ```
 
-## Validated Context
+## Understanding Validated Context
 
-Once validate is called, we can use the validatedContext method to retrieve all validated values from the original
-context.
+The validated context is the processed output after validation runs. It's **not the same** as your input data:
 
-By default, all keys set in the 'rules' array will be found in the validatedContext array. However, if we don't want to
-append
-non-existing keys, we should call appendExistingItemsOnly(true) before validation.
+### Key Differences from Input
+
+```php
+use Elie\Validator\Rule\{StringRule, NumericRule, BooleanRule};
+
+$input = [
+    'name' => '  John Doe  ',    // Has whitespace
+    'age' => '25',               // String representation
+    'active' => 'true',          // String boolean
+];
+
+$rules = [
+    ['name', StringRule::class],
+    ['age', NumericRule::class, NumericRule::CAST => true],
+    ['active', BooleanRule::class, BooleanRule::CAST => true],
+];
+
+$validator = new Validator($input, $rules);
+$validator->validate();
+
+$validated = $validator->getValidatedContext();
+
+// Results:
+// $validated['name'] = 'John Doe'     // Trimmed
+// $validated['age'] = 25              // Cast to int
+// $validated['active'] = true         // Cast to bool
+
+// Original input is unchanged:
+// $input['name'] = '  John Doe  '
+// $input['age'] = '25'
+```
+
+### Controlling Output Keys
+
+By default, all rules' keys appear in validated context, even if not in input:
+
+```php
+$input = ['username' => 'john'];
+
+$rules = [
+    ['username', StringRule::class],
+    ['email', EmailRule::class], // Not in input
+];
+
+$validator = new Validator($input, $rules);
+$validator->validate();
+
+// Default behavior:
+$validated = $validator->getValidatedContext();
+// $validated = ['username' => 'john', 'email' => null]
+
+// To exclude missing keys:
+$validator->appendExistingItemsOnly(true);
+$validator->validate();
+$validated = $validator->getValidatedContext();
+// $validated = ['username' => 'john']
+```
+
+### When to Use appendExistingItemsOnly(true)
+
+- **API endpoints** - Only return fields that were provided
+- **Partial updates** - PATCH operations where only some fields update
+- **Optional configurations** - Settings where absence has meaning
+
+```php
+// Example: Partial user profile update
+$rules = [
+    ['name', StringRule::class, StringRule::MAX => 100],
+    ['bio', StringRule::class, StringRule::MAX => 500],
+    ['website', StringRule::class, StringRule::MAX => 255],
+];
+
+$validator = new Validator($_POST, $rules);
+$validator->appendExistingItemsOnly(true);
+
+if ($validator->validate()) {
+    $updates = $validator->getValidatedContext();
+    // Only update fields that were actually submitted
+    updateUserProfile($userId, $updates);
+}
+```
 
 ## Assertion Integration
 
@@ -296,6 +540,122 @@ $users = $validator->getValidatedContext()['users'];
 
 $this->assertCount(2, $users);
 ```
+
+## Best Practices and Tips
+
+### Rule Parameter Keys
+
+**Always use class constants for rule parameters**, not strings:
+
+```php
+// ✅ CORRECT
+['age', NumericRule::class, NumericRule::MIN => 18, NumericRule::MAX => 120]
+
+// ❌ WRONG - 'min' and 'max' as strings won't work
+['age', NumericRule::class, 'min' => 18, 'max' => 120]
+```
+
+### Validation Flow Pattern
+
+```php
+// Recommended pattern for all validations:
+$validator = new Validator($inputData, $rules);
+
+if (!$validator->validate()) {
+    // Handle errors first
+    logErrors($validator->getErrors());
+    return ['success' => false, 'errors' => $validator->getErrors()];
+}
+
+// Only proceed with validated data
+$safeData = $validator->getValidatedContext();
+processData($safeData);
+```
+
+### Reusing Validator Instances
+
+Validators can be reused for multiple validations:
+
+```php
+$validator = new Validator([], $userRules);
+
+foreach ($batchData as $userData) {
+    $validator->setContext($userData);
+    
+    if ($validator->validate()) {
+        processUser($validator->getValidatedContext());
+    } else {
+        logErrors($userData['id'], $validator->getErrors());
+    }
+}
+```
+
+### Composition vs Multiple Rules
+
+```php
+// When rules must ALL pass, use MultipleAndRule:
+['email', MultipleAndRule::class, MultipleAndRule::RULES => [
+    [StringRule::class, StringRule::MAX => 255],
+    [EmailRule::class],
+]]
+
+// When ANY rule can pass, use MultipleOrRule:
+['identifier', MultipleOrRule::class, MultipleOrRule::RULES => [
+    [EmailRule::class],
+    [MatchRule::class, MatchRule::PATTERN => '/^\d{10}$/'], // 10-digit ID
+]]
+
+// Avoid chaining the same key twice - use composition instead:
+// ❌ Less efficient:
+['email', StringRule::class, StringRule::MAX => 255],
+['email', EmailRule::class],
+
+// ✅ Better - uses composition:
+['email', MultipleAndRule::class, MultipleAndRule::RULES => [
+    [StringRule::class, StringRule::MAX => 255],
+    [EmailRule::class],
+]]
+```
+
+### Testing Your Validations
+
+```php
+use PHPUnit\Framework\TestCase;
+use Elie\Validator\Rule\RuleInterface;
+
+class UserValidatorTest extends TestCase
+{
+    public function testValidUserData(): void
+    {
+        $validator = new Validator(
+            ['username' => 'john', 'age' => 25],
+            $this->getUserRules()
+        );
+        
+        $this->assertTrue($validator->validate());
+        $this->assertEmpty($validator->getErrors());
+    }
+    
+    public function testInvalidAge(): void
+    {
+        $validator = new Validator(
+            ['username' => 'john', 'age' => 150],
+            $this->getUserRules()
+        );
+        
+        $this->assertFalse($validator->validate());
+        $this->assertNotEmpty($validator->getErrors());
+        $this->assertStringContainsString('age', $validator->getImplodedErrors());
+    }
+}
+```
+
+### Performance Considerations
+
+- Use `stopOnError => true` for large datasets when you only need to know if validation passed
+- Use `appendExistingItemsOnly(true)` to reduce memory footprint with sparse data
+- Reuse validator instances instead of creating new ones in loops
+- For nested/complex validations, use CollectionRule instead of manual iteration
 
 ## Development Prerequisites
 
