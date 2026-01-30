@@ -2,473 +2,106 @@
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## V3.0.1 - 2025-12-19
+## [3.0.0+] - PHP 8.2+ Era
 
-### Added
+### V3.0.1 - 2025-12-19
 
-- Nothing.
+- Fixed: [#33](https://github.com/elie29/validator/issues/33) StringRule concatenation error
 
-### Changed
+### V3.0.0 - 2025-12-12
 
-- Nothing.
+- Breaking Change: [#31](https://github.com/elie29/validator/issues/31) Upgrade to require PHP 8.2 minimum compatibility
 
-### Deprecated
+## [2.0.0+] - PHP 7.1+ Era
 
-- Nothing.
+### V2.0.5 - 2019-12-06
 
-### Removed
+- [#29](https://github.com/elie29/validator/issues/29) CollectionRule enhancement
 
-- Nothing.
+### V2.0.4 - 2019-12-05
 
-### Fixed
+- Added: [#28](https://github.com/elie29/validator/issues/28) CollectionRule to validate collection data
+- [#25](https://github.com/elie29/validator/issues/25) PHP 7.4 CI support (code remains PHP 7.1 compliant)
 
-- [#33](https://github.com/elie29/validator/issues/33) StringRule concatenation error.
+### V2.0.3 - 2019-12-03
 
-## V3.0.0 - 2025-12-12
+- [#26](https://github.com/elie29/validator/issues/26) Changed key type to mixed in all rules
 
-### Added
+### V2.0.2 - 2019-12-03
 
-- Nothing.
+- [#23](https://github.com/elie29/validator/issues/23) Made setValue() method public
+- [#24](https://github.com/elie29/validator/issues/24) Pass CallableRule instance to callable function
 
-### Changed
+### V2.0.1 - 2019-10-10
 
-- [#31] Upgrade composer.json to require PHP 8.2 minimum compatibility.
+- Added: [#22](https://github.com/elie29/validator/issues/22) CallableRule validator
 
-### Deprecated
+### V2.0.0 - 2019-09-29
 
-- Nothing.
+- Breaking Change: [#20](https://github.com/elie29/validator/issues/20) Updated composer dependencies
 
-### Removed
+## [1.1.x] - Feature Enhancement Era (2019)
 
-- Nothing.
+### V1.1.9 - 2019-09-23
 
-### Fixed
+- Added: [#19](https://github.com/elie29/validator/issues/19) MultiSelect validator
+- Fixed: [#18](https://github.com/elie29/validator/issues/18) MultipleAndRule returns empty error
 
-- Nothing.
+### V1.1.8 - 2019-09-16
 
-## V2.0.5 - 2019-12-06
+- [#17](https://github.com/elie29/validator/issues/17) Accept rules for indexed context arrays
 
-### Added
+### V1.1.7 - 2019-07-11
 
-- Nothing.
+- [#16](https://github.com/elie29/validator/issues/16) Option to exclude non-existing items from validated context
 
-### Changed
+### V1.1.5 - 2019-03-09
 
-- [#29](https://github.com/elie29/validator/issues/29) CollectionRule enhancement.
+- [#15](https://github.com/elie29/validator/issues/15) Replaced canonize with stringify method
 
-### Deprecated
+### V1.1.4 - 2019-03-18
 
-- Nothing.
+- Added: [#14](https://github.com/elie29/validator/issues/14) Rule composition with MultipleAndRule and MultipleOrRule
 
-### Removed
+### V1.1.3 - 2019-02-28
 
-- Nothing.
+- Fixed: [#13](https://github.com/elie29/validator/issues/13) BooleanRule now accepts null or empty string
 
-### Fixed
+### V1.1.2 - 2019-02-28
 
-- Nothing.
+- Fixed: [#12](https://github.com/elie29/validator/issues/12) StringCleanerRule should not clean string on validation error
 
-## V2.0.4 - 2019-12-05
+### V1.1.1 - 2019-02-28
 
-### Added
+- [#10](https://github.com/elie29/validator/issues/10) StringRule now treats empty array as invalid
+- Added: [#11](https://github.com/elie29/validator/issues/11) StringCleanerRule
 
-- [#28](https://github.com/elie29/validator/issues/28) Add a collection rule to validate collection data.
+### V1.1.0 - 2019-02-23
 
-### Changed
+- Breaking Change: [#9](https://github.com/elie29/validator/issues/9) JsonRule now returns decoded value
+- Added: [#8](https://github.com/elie29/validator/issues/8) Cast option to return transformed valid values
+- [#7](https://github.com/elie29/validator/issues/7) Reorganized constants - each rule manages its own
 
-- [#25](https://github.com/elie29/validator/issues/25) PHP 7.4 migration [Only for travis, code is still 7.1 compliant].
+## [1.0.x] - Foundation Era (2019)
 
-### Deprecated
+### V1.0.4 - 2019-02-23
 
-- Nothing.
+- Added: [#6](https://github.com/elie29/validator/issues/6) Support for merged validated data
 
-### Removed
+### V1.0.3 - 2019-02-21
 
-- Nothing.
+- Added: [#5](https://github.com/elie29/validator/issues/5) Imploded errors method
 
-### Fixed
+### V1.0.2 - 2019-02-21
 
-- Nothing.
+- Added: [#2](https://github.com/elie29/validator/issues/2) Customizable error messages
+- Added: [#3](https://github.com/elie29/validator/issues/3) ArrayRule validator
+- [#4](https://github.com/elie29/validator/issues/4) Changed options to use constants
 
-## V2.0.3 - 2019-12-03
+### V1.0.1 - 2019-02-21
 
-### Added
+- [#1](https://github.com/elie29/validator/issues/1) Added rules to Validator constructor signature
 
-- Nothing.
+### V1.0.0 - 2019-02-20
 
-### Changed
-
-- [#26](https://github.com/elie29/validator/issues/26) In all rules, key should be mixed.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V2.0.2 - 2019-12-03
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#23](https://github.com/elie29/validator/issues/23) Make setValue public.
-- [#24](https://github.com/elie29/validator/issues/24) Pass CallableRule to the Callable function.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V2.0.1 - 2019-10-10
-
-### Added
-
-- [#22](https://github.com/elie29/validator/issues/22) Add callable validator rule.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V2.0.0 - 2019-09-29
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#20](https://github.com/elie29/validator/issues/20) Update composer [BC].
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.9 - 2019-09-23
-
-### Added
-
-- [#19](https://github.com/elie29/validator/issues/19) MultiSelect validator.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- [#18](https://github.com/elie29/validator/issues/18) MultipleAndRule returns empty error.
-
-## V1.1.8 - 2019-09-16
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#17](https://github.com/elie29/validator/issues/17) Accept rules for indexed context.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.7 - 2019-07-11
-
-### Added
-
-- [#16](https://github.com/elie29/validator/issues/16) Do not append none existing item.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.5 - 2019-03-09
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#15](https://github.com/elie29/validator/issues/15) Replace canonize by stringfiy.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.4 - 2019-03-18
-
-### Added
-
-- [#14](https://github.com/elie29/validator/issues/14) Add composition rule with And/Or decoration.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.3 - 2019-02-28
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- [#13](https://github.com/elie29/validator/issues/13) BooleanRule should accept null or ''.
-
-## V1.1.2 - 2019-02-28
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- [#12](https://github.com/elie29/validator/issues/12) StringCleanerRule should not clean string on error.
-
-## V1.1.1 - 2019-02-28
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#10](https://github.com/elie29/validator/issues/10) isEmpty could not be [] for StringRule.
-- [#11](https://github.com/elie29/validator/issues/11) Add StringCleanerRule.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.1.0 - 2019-02-23 [BC]
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#9](https://github.com/elie29/validator/issues/9) JsonRule value should return decoded value.
-- [#8](https://github.com/elie29/validator/issues/8) Enable Cast option in order to return a valid value.
-- [#7](https://github.com/elie29/validator/issues/7) Reorganize constants so each Rule could manage its own.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.0.4 - 2019-02-23
-
-### Added
-
-- [#6](https://github.com/elie29/validator/issues/6) Provide merged validated data.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.0.3 - 2019-02-21
-
-### Added
-
-- [#5](https://github.com/elie29/validator/issues/5) Add imploded errors.
-
-### Changed
-
-- Nothing.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.0.2 - 2019-02-21
-
-### Added
-
-- [#2](https://github.com/elie29/validator/issues/2) Add customizable messages on error.
-- [#3](https://github.com/elie29/validator/issues/3) Add ArrayRule to validator.
-
-### Changed
-
-- [#4](https://github.com/elie29/validator/issues/4) Change options into constants.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.0.1 - 2019-02-21
-
-### Added
-
-- Nothing.
-
-### Changed
-
-- [#1](https://github.com/elie29/validator/issues/1) Add rules to Validator signature.
-
-### Deprecated
-
-- Nothing.
-
-### Removed
-
-- Nothing.
-
-### Fixed
-
-- Nothing.
-
-## V1.0.0 - 2019-02-20
-
-First Release
+- Initial release
