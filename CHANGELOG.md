@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## [3.0.0+] - PHP 8.2+ Era
 
-### V3.0.2 - TBD
+### V3.0.2 - 2026-02-09
 
 - [#36](https://github.com/elie29/validator/issues/36) Compact the CHANGELOG file
 - [#35](https://github.com/elie29/validator/issues/35) Minor composer.json update (no breaking changes)
