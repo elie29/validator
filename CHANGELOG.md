@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## [3.0.0+] - PHP 8.2+ Era
 
+### V3.0.3 - TBD
+
+- Dependency maintenance: updated phpunit, php-file-iterator, and symfony/polyfill-mbstring in composer.lock
+- Added package.xml for PEAR packaging support
+
 ### V3.0.2 - 2026-02-09
 
 - [#36](https://github.com/elie29/validator/issues/36) Compact the CHANGELOG file
