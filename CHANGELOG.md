@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## [3.0.0+] - PHP 8.2+ Era
 
+### V3.0.4 - TBD
+
 ### V3.0.3 - 2026-05-29
 
 - Dependency maintenance: updated phpunit, php-file-iterator, and symfony/polyfill-mbstring in composer.lock
