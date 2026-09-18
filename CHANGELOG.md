@@ -4,6 +4,8 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## [3.0.0+] - PHP 8.2+ Era
 
+### V3.0.5 - TBD
+
 ### V3.0.4 - 2026-09-18
 
 - Dependency maintenance: updated dev dependencies in composer.lock
