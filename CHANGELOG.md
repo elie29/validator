@@ -4,7 +4,11 @@ All notable changes to this project will be documented in this file, in reverse 
 
 ## [3.0.0+] - PHP 8.2+ Era
 
-### V3.0.4 - TBD
+### V3.0.4 - 2026-09-18
+
+- Dependency maintenance: updated dev dependencies in composer.lock
+- Updated bundled composer.phar to Composer 2.10.3
+- Fixed `.gitattributes` export-ignore to reference `composer.phar` (file was renamed from `composer`)
 
 ### V3.0.3 - 2026-05-29
 
